@@ -473,8 +473,8 @@ namespace Reports.Controllers
             catch (Exception ex)
             {
                 var message = ex.Message;
-                //return "Error occured while generating report " + message;
-                return "Failure";
+                return "Failure " + message;
+                //return "Failure";
             }
 
         }
@@ -657,8 +657,8 @@ namespace Reports.Controllers
             catch (Exception ex)
             {
                 var message = ex.Message;
-                //return "Error occured while generating report " + message;
-                return "Failure";
+                return "Failure " + message;
+                //return "Failure";
             }
 
             return strPath;
