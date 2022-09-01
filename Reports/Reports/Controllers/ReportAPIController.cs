@@ -169,23 +169,39 @@ namespace Reports.Controllers
                                 FormatType = "F7";
                                 break;
                             case "2":
-                                FormatType = "F1";
+                                if (IndivRow["Value"] != null && IndivRow["Value"].ToString().Trim() != string.Empty)
+                                {
+                                    FormatType = "F1";
+                                }
                                 break;
                             case "3":
-                                if (LabReport["F1ReferenceRange"].ToString() != "") FormatType = "F1";
-                                else if (LabReport["F1Unit"].ToString() != "") FormatType = "F8";
-                                else FormatType = "F4";
+                                if (IndivRow["Value"] != null && IndivRow["Value"].ToString().Trim() != string.Empty)
+                                {
+                                    if (LabReport["F1ReferenceRange"].ToString() != "") FormatType = "F1";
+                                    else if (LabReport["F1Unit"].ToString() != "") FormatType = "F8";
+                                    else FormatType = "F4";
+                                }
                                 break;
 
                             case "4":
-                                FormatType = "F2";
+                                
                                 LabReport["F2ParamDesc"] = IndivRow["Value"].ToString();
+                                if (IndivRow["Value"] != null && IndivRow["Value"].ToString().Trim() != string.Empty)
+                                {
+                                    FormatType = "F2";
+                                }
                                 break;
                             case "5":
-                                FormatType = "F1";
+                                if (IndivRow["Value"] != null && IndivRow["Value"].ToString().Trim() != string.Empty)
+                                {
+                                    FormatType = "F1";
+                                }
                                 break;
                             case "6":
-                                FormatType = "F4";
+                                if (IndivRow["Value"] != null && IndivRow["Value"].ToString().Trim() != string.Empty)
+                                {
+                                    FormatType = "F4";
+                                }
                                 break;
                             case "7":
                                 string[] strTemp = IndivRow["Value"].ToString().Split(Convert.ToChar("#"));
@@ -230,7 +246,10 @@ namespace Reports.Controllers
                                     //drPreview["F2ParamDesc"]= StripTags(strpp);Commented by Nagaraju to avoid replacing html tags
                                     LabReport["F2ParamDesc"] = strpp;
                                     // drPreview["F2ParamDesc"] = strpp;
-                                    FormatType = "F2";
+                                    if (IndivRow["Value"] != null && IndivRow["Value"].ToString().Trim() != string.Empty)
+                                    {
+                                        FormatType = "F2";
+                                    }
                                 }
                                 break;
                             case "10":
@@ -448,14 +467,201 @@ namespace Reports.Controllers
                 cryRpt.Refresh();
                 cryRpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + TestOrderID.ToString() + ".pdf");
 
-                return System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + TestOrderID.ToString() + ".pdf";
+                //return System.Configuration.ConfigurationManager.AppSettings["ReportLocation"]  + TestOrderID.ToString() + ".pdf";
+                return "Success";
             }
             catch (Exception ex)
             {
                 var message = ex.Message;
-                return "Error occured while generating report " + message;
+                //return "Error occured while generating report " + message;
+                return "Failure";
             }
 
+        }
+
+
+        //https://localhost:44351/api/reportapi/Radiology?TestOrderID=1424957&UHID=PFBS.0000397737&isExternal=true
+        //https://localhost:44351/api/reportapi/Radiology?TestOrderID=1424957&TestOrderItemID=5517950&UHID=PFBS.0000397737&isExternal=true
+        [Route("api/reportapi/Radiology")]
+        public string GetRadiology(string TestOrderID, string TestOrderItemID, string UHID)
+        {
+            string strPath = String.Empty;
+
+
+            DataSet ds = new DataSet();
+            DataSet dsResult = new DataSet();
+            DataSet dsHeader = new DataSet();
+            DataSet ds1 = CreateDataSetForRadiology();
+
+            try
+            {
+                string connectionstring = System.Configuration.ConfigurationManager.AppSettings["ConnectionString"];
+                using (SqlConnection con = new SqlConnection(connectionstring))
+                {
+
+                    using (SqlCommand cmd = new SqlCommand("PR_FetchRadiologyResults_MAPI", con))
+                    {
+                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
+                        sqlDataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@TestOrderID", TestOrderID);
+                        //1358599
+                        //1463197
+                        //1473739
+                        //1447060
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@TestOrderItemID", TestOrderItemID);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@TestID", DBNull.Value);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@PatientID", DBNull.Value);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@PatientType", DBNull.Value);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@TBL", 0);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@UserID", 702);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@WorkStationID", 30);
+                        SqlParameter @out = cmd.Parameters.AddWithValue("@Error", String.Empty);
+                        @out.Direction = ParameterDirection.Output;
+                        sqlDataAdapter.Fill(ds);
+                        con.Close();
+                        //con.Open();
+                        //var DataReader = cmd.ExecuteReader();
+                    }
+
+                    using (SqlCommand cmd = new SqlCommand("Pr_FetchTestOrderDetails_MAPI", con))
+                    {
+                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
+                        sqlDataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@UHID", UHID);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@HospitalID", 1);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@Type", 1);
+                        sqlDataAdapter.Fill(dsResult);
+                        con.Close();
+                    }
+
+
+                    bool isInsert = false;
+                    foreach (DataRow IndivRow in ds.Tables[2].Rows)
+                    {
+                        if (!isInsert)
+                        { 
+                            DataRow DoctorData = ds1.Tables[0].NewRow();
+                            DoctorData["DoctorID1"] = ParseToInt(IndivRow["DoctorID"].ToString());
+                            DoctorData["Doctor1"] = IndivRow["DoctorName"].ToString();
+                            DoctorData["Signature1"] = IndivRow["SignaturePath"].ToString();
+                            DoctorData["Sign1"] = false;
+                            DoctorData["TestOrderItemID"] = IndivRow["TestOrderItemId"].ToString();
+                            DoctorData["DoctorNameWithDesignation"] = IndivRow["DoctorName2l"].ToString();
+                            ds1.Tables[0].Rows.Add(DoctorData);
+                            isInsert = true;
+                        }
+                    }
+
+
+
+                    DataRow PatientRow = ds1.Tables[1].NewRow();
+
+                    if (dsResult.Tables[0] != null && dsResult.Tables[0].Rows.Count >= 1)
+                    {
+
+                        PatientRow["Department"] = dsResult.Tables[0].Rows[0]["Specialisation"].ToString(); // Pr_FetchTestOrderDetails_MAPI[0].
+                        PatientRow["OrderNo"] = dsResult.Tables[0].Rows[0]["OrderSlNo"].ToString();
+                        PatientRow["IPNo"] = dsResult.Tables[0].Rows[0]["IpNo"].ToString();
+                        PatientRow["UHID"] = dsResult.Tables[0].Rows[0]["RegCode"].ToString(); //CustomerRow["UHID"] = "1";
+                        PatientRow["BillNo"] = dsResult.Tables[0].Rows[0]["BillNo"].ToString();
+                        PatientRow["BillRemarks"] = dsResult.Tables[0].Rows[0]["BillRemarks"].ToString();
+                        PatientRow["Name"] = dsResult.Tables[0].Rows[0]["PatientName"].ToString();
+                        PatientRow["AgeGender"] = dsResult.Tables[0].Rows[0]["AgeGender"].ToString();
+                        PatientRow["OrderDate"] = dsResult.Tables[0].Rows[0]["OrderDate"].ToString();
+                        //CustomerRow["IPBillNoColName"] = "1";
+                        //ReportDate	Pr_FetchTestResults_MAPI[1].ResultEnteredAt	minimum value from the table	t
+                        PatientRow["PatientID"] = ParseToInt(dsResult.Tables[0].Rows[0]["PatientId"].ToString());
+                        PatientRow["PatPhone"] = dsResult.Tables[0].Rows[0]["PatPhone"].ToString();
+                        PatientRow["DocPhone"] = dsResult.Tables[0].Rows[0]["DocPhone"].ToString();
+                        PatientRow["Nationality"] = dsResult.Tables[0].Rows[0]["Nationality"].ToString();
+                        PatientRow["WardCaption"] = dsResult.Tables[0].Rows[0]["WardCaption"].ToString();
+                        PatientRow["Ward"] = dsResult.Tables[0].Rows[0]["Ward"].ToString();
+
+                        PatientRow["PayerName"] = dsResult.Tables[0].Rows[0]["Payername"].ToString();
+                        PatientRow["GradeName"] = dsResult.Tables[0].Rows[0]["GradeName"].ToString();
+                        PatientRow["MRNO"] = dsResult.Tables[0].Rows[0]["RegCode"].ToString();
+                        PatientRow["EmpID"] = dsResult.Tables[0].Rows[0]["EmpId"].ToString();
+
+                        PatientRow["CompanyCode"] = dsResult.Tables[0].Rows[0]["CompanyCode"].ToString();
+                        PatientRow["CompanyType"] = dsResult.Tables[0].Rows[0]["CompanyType"].ToString();
+                        PatientRow["PatientType"] = 1;
+                        //CollectionDate Pr_FetchTestResults_MAPI[1].SampleCollectedAt
+                        //AcknowledgeDate Pr_FetchTestResults_MAPI[1].SampleAckAT
+
+
+                    }
+
+
+                    if (ds.Tables[1] != null && ds.Tables[1].Rows.Count >= 1)
+                    {
+                        PatientRow["ReportDate"] = ds.Tables[1].Rows[0]["ResultEnteredAt"].ToString();
+                        PatientRow["ResultEntryDate"] = ds.Tables[1].Rows[0]["ResultEnteredAt"].ToString();
+                        PatientRow["CollectionDate"] = ds.Tables[1].Rows[0]["SampleCollectedAt"].ToString();
+                        PatientRow["AcknowledgeDate"] = ds.Tables[1].Rows[0]["SampleAckAT"].ToString();
+                        PatientRow["Remarks"] = ds.Tables[1].Rows[0]["Remarks"].ToString();
+                        PatientRow["AccessionNumber"] = ds.Tables[1].Rows[0]["SampleNumber"].ToString();
+                        PatientRow["ResultEnteredByID"] = ds.Tables[1].Rows[0]["ResultEnteredbyEmpid"].ToString();
+                        PatientRow["ResultEnteredBy"] = ds.Tables[1].Rows[0]["ResultEnteredBy"].ToString();
+                        PatientRow["ResultVerifiedBy"] = ds.Tables[1].Rows[0]["ResultVerifyedBy"].ToString();
+                    }
+
+                    if (ds.Tables[2] != null && ds.Tables[2].Rows.Count >= 1)
+                    {
+                        PatientRow["Doctor"] = ds.Tables[2].Rows[0]["DoctorName"].ToString();
+                    }
+
+
+                    ds1.Tables[1].Rows.Add(PatientRow);
+
+
+
+                    foreach (DataRow IndivRow in ds.Tables[0].Rows)
+                    {
+                        DataRow ProcReport = ds1.Tables[2].NewRow();
+
+                        ProcReport["ProcID"] = ParseToInt(IndivRow["TestOrderItemID"].ToString());
+                        ProcReport["ProcName"] = IndivRow["TestName"].ToString();
+                        ProcReport["ParamID"] = ParseToInt(IndivRow["ParameterID"].ToString());
+                        ProcReport["ParamName"] = IndivRow["ParameterName"].ToString();
+                        ProcReport["F1Unit"] = IndivRow["UOM"].ToString();
+                       // ProcReport["F1ReferenceRange"] = IndivRow["ParameterName"].ToString();
+                        
+                        if (IndivRow["Value"].ToString().ToString().Trim().Length > 0)
+                        {
+                            ProcReport["F1Result"] = "htmlform"; //  IndivRow["Value"].ToString(); // "htmlform"; // IndivRow["Value"].ToString(); //htmlform
+                            ProcReport["F2ParamDesc"] = IndivRow["Value"].ToString();
+                            ProcReport["FormatType"] = "F2"; // IndivRow["ParameterName"].ToString();
+                        }
+
+                            //ProcReport["F3ImagePath"] = IndivRow["ParameterName"].ToString();
+
+
+
+                            ds1.Tables[2].Rows.Add(ProcReport);
+                    }
+
+
+                    ReportDocument cryRpt = new ReportDocument();
+                    cryRpt.Load(System.Configuration.ConfigurationManager.AppSettings["ReportPath"] + "ResultEntryView.rpt");
+                    cryRpt.SetDataSource(ds1);
+                    cryRpt.Refresh();
+                    cryRpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + TestOrderID.ToString() + ".pdf");
+
+
+                    //return System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + TestOrderID.ToString() + ".pdf";
+                    return "Success";
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+                //return "Error occured while generating report " + message;
+                return "Failure";
+            }
+
+            return strPath;
         }
 
         private string ReferenceRange(string strMinVal, string strMaxVal, bool blnUnits, string strUnit, bool blnPrefix, string strKeyword, string StrSIUnit)
@@ -691,5 +897,81 @@ namespace Reports.Controllers
 
             return ds1;
         }
+
+        private DataSet CreateDataSetForRadiology()
+        {
+            DataSet ds1 = new DataSet();
+
+
+            ds1.Tables.Add("Doctors");
+            ds1.Tables.Add("Patient");
+            ds1.Tables.Add("ProcReport");
+
+
+
+
+            ds1.Tables[0].Columns.Add("DoctorID1", typeof(int));
+            ds1.Tables[0].Columns.Add("Doctor1", typeof(string));
+            ds1.Tables[0].Columns.Add("Signature1", typeof(string));
+            ds1.Tables[0].Columns.Add("Sign1", typeof(bool));
+            ds1.Tables[0].Columns.Add("TestOrderItemID", typeof(int));
+            ds1.Tables[0].Columns.Add("DoctorNameWithDesignation", typeof(string));
+
+            ds1.Tables[1].Columns.Add("Department", typeof(string));
+            ds1.Tables[1].Columns.Add("OrderNo", typeof(string));
+            ds1.Tables[1].Columns.Add("IPNo", typeof(string));
+            ds1.Tables[1].Columns.Add("UHID", typeof(string));
+            ds1.Tables[1].Columns.Add("BillNo", typeof(string));
+            ds1.Tables[1].Columns.Add("BillRemarks", typeof(string));
+            ds1.Tables[1].Columns.Add("Name", typeof(string));
+            ds1.Tables[1].Columns.Add("AgeGender", typeof(string));
+            ds1.Tables[1].Columns.Add("OrderDate", typeof(string));
+            ds1.Tables[1].Columns.Add("ReportDate", typeof(string));
+            ds1.Tables[1].Columns.Add("BedNo", typeof(string));
+            ds1.Tables[1].Columns.Add("Doctor", typeof(string));
+            ds1.Tables[1].Columns.Add("IPBillNoColName", typeof(string));
+            ds1.Tables[1].Columns.Add("PatientID", typeof(long));
+            ds1.Tables[1].Columns.Add("PatPhone", typeof(string));
+            ds1.Tables[1].Columns.Add("DocPhone", typeof(string));
+            ds1.Tables[1].Columns.Add("Nationality", typeof(string));
+            ds1.Tables[1].Columns.Add("WardCaption", typeof(string));
+            ds1.Tables[1].Columns.Add("Ward", typeof(string));
+            ds1.Tables[1].Columns.Add("CollectionDate", typeof(string));
+            ds1.Tables[1].Columns.Add("PatientType", typeof(int));
+            ds1.Tables[1].Columns.Add("AcknowledgeDate", typeof(string));
+            ds1.Tables[1].Columns.Add("Status", typeof(int));
+            ds1.Tables[1].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[1].Columns.Add("AccessionNumber", typeof(string));
+            ds1.Tables[1].Columns.Add("ResultEnteredByID", typeof(string));
+            ds1.Tables[1].Columns.Add("ResultEnteredBy", typeof(string));
+            ds1.Tables[1].Columns.Add("PayerName", typeof(string));
+            ds1.Tables[1].Columns.Add("GradeName", typeof(string));
+            ds1.Tables[1].Columns.Add("MRNO", typeof(string));
+            ds1.Tables[1].Columns.Add("EmpID", typeof(string));
+            ds1.Tables[1].Columns.Add("InsuranceID", typeof(string));
+            ds1.Tables[1].Columns.Add("CurrentPrintingUser", typeof(string));
+            ds1.Tables[1].Columns.Add("ResultEntryDate", typeof(string));
+            ds1.Tables[1].Columns.Add("ResultVerifiedBy", typeof(string));
+            ds1.Tables[1].Columns.Add("CompanyCode", typeof(string));
+            ds1.Tables[1].Columns.Add("CompanyType", typeof(string));
+            ds1.Tables[1].Columns.Add("Qualification", typeof(string));
+            ds1.Tables[1].Columns.Add("DesignationName", typeof(string));
+
+
+            ds1.Tables[2].Columns.Add("ProcID", typeof(int));
+            ds1.Tables[2].Columns.Add("ProcName", typeof(string));
+            ds1.Tables[2].Columns.Add("ParamID", typeof(int));
+            ds1.Tables[2].Columns.Add("ParamName", typeof(string));
+            ds1.Tables[2].Columns.Add("FormatType", typeof(string));
+            ds1.Tables[2].Columns.Add("F1Result", typeof(string));
+            ds1.Tables[2].Columns.Add("F1Unit", typeof(string));
+            ds1.Tables[2].Columns.Add("F1ReferenceRange", typeof(string));
+            ds1.Tables[2].Columns.Add("F2ParamDesc", typeof(string));
+            ds1.Tables[2].Columns.Add("F3ImagePath", typeof(string));
+
+            return ds1;
+        }
+
+
     }
 }
