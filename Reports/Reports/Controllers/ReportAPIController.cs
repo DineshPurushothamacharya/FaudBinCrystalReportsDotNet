@@ -568,7 +568,7 @@ namespace Reports.Controllers
                 {
                     DataRow Patient = dsResultNew.Tables[0].Rows[0];
 
-                    PatientRow["Department"] = Patient["Specialisation"].ToString(); // Pr_FetchTestOrderDetails_MAPI[0].
+                    //PatientRow["Department"] = Patient["Specialisation"].ToString(); // Pr_FetchTestOrderDetails_MAPI[0].
                     PatientRow["OrderNo"] = Patient["OrderSlNo"].ToString();
                     PatientRow["IPNo"] = Patient["IpNo"].ToString();
                     PatientRow["UHID"] = Patient["RegCode"].ToString(); //CustomerRow["UHID"] = "1";
@@ -612,16 +612,6 @@ namespace Reports.Controllers
                     PatientRow["ResultVerifiedBy"] = ds.Tables[1].Rows[0]["ResultVerifyedBy"].ToString();
                 }
 
-                //if (ds.Tables[2] != null && ds.Tables[2].Rows.Count >= 1)
-                //{
-                //    PatientRow["Doctor"] = ds.Tables[2].Rows[0]["DoctorName"].ToString();
-                //}
-
-
-                ds1.Tables[1].Rows.Add(PatientRow);
-
-
-
                 foreach (DataRow IndivRow in ds.Tables[0].Rows)
                 {
                     DataRow ProcReport = ds1.Tables[2].NewRow();
@@ -631,22 +621,19 @@ namespace Reports.Controllers
                     ProcReport["ParamID"] = ParseToInt(IndivRow["ParameterID"].ToString());
                     ProcReport["ParamName"] = IndivRow["ParameterName"].ToString();
                     ProcReport["F1Unit"] = IndivRow["UOM"].ToString();
-                    // ProcReport["F1ReferenceRange"] = IndivRow["ParameterName"].ToString();
+                    
+                    PatientRow["Department"] = IndivRow["Specialisation"].ToString();
 
                     if (IndivRow["Value"].ToString().ToString().Trim().Length > 0)
                     {
-                        ProcReport["F1Result"] = "htmlform"; //  IndivRow["Value"].ToString(); // "htmlform"; // IndivRow["Value"].ToString(); //htmlform
+                        ProcReport["F1Result"] = "htmlform"; 
                         ProcReport["F2ParamDesc"] = IndivRow["Value"].ToString();
-                        ProcReport["FormatType"] = "F2"; // IndivRow["ParameterName"].ToString();
+                        ProcReport["FormatType"] = "F2"; 
                     }
-
-                    //ProcReport["F3ImagePath"] = IndivRow["ParameterName"].ToString();
-
-
 
                     ds1.Tables[2].Rows.Add(ProcReport);
                 }
-
+                ds1.Tables[1].Rows.Add(PatientRow);
 
                 ReportDocument cryRpt = new ReportDocument();
                 cryRpt.Load(System.Configuration.ConfigurationManager.AppSettings["ReportPath"] + "ResultEntryView.rpt");
