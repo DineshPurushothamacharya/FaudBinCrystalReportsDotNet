@@ -181,7 +181,6 @@ C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\th\CrystalDecis
 C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\tr\CrystalDecisions.Shared.resources.dll
 C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\zh-CHS\CrystalDecisions.Shared.resources.dll
 C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\zh-CHT\CrystalDecisions.Shared.resources.dll
-C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\obj\Debug\Reports.csproj.AssemblyReference.cache
 C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\obj\Debug\Reports.csproj.CoreCompileInputs.cache
 C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\obj\Debug\Reports.csproj.CopyComplete
 C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\obj\Debug\Reports.dll

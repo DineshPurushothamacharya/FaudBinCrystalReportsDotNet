@@ -187,3 +187,13 @@ C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\obj\Release\Reports
 C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\obj\Release\Reports.csproj.CopyComplete
 C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\obj\Release\Reports.dll
 C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\obj\Release\Reports.pdb
+C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.CrystalReports.Design.dll
+C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.CrystalReports.Engine.dll
+C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.ReportSource.dll
+C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.Web.dll
+C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.ReportAppServer.CommonControls.dll

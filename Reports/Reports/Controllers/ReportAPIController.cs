@@ -30,13 +30,14 @@ namespace Reports.Controllers
         //https://localhost:44351/api/reportapi?TestOrderID=test
         //https://localhost:44351/api/reportapi?TestOrderID=test&UHID=123
         //https://localhost:44351/api/reportapi?TestOrderID=1358599&UHID=PFBS.0000397737&isExternal=true
+        //https://localhost:44351/api/reportapi?TestOrderID=1426994&UHID=PFBS.0000397737&isExternal=true
         //http://172.16.16.53/api/reportapi?TestOrderID=1358599&UHID=PFBS.0000397737&isExternal=true
         // GET api/<controller>/5
         //[Route("api/reportapi/TestOrderID")]
         public string Get(string TestOrderID, string UHID, bool isExternal)
         {
             DataSet ds = new DataSet();
-            DataSet dsResult = new DataSet();
+            DataSet dsResultNew = new DataSet();
             DataSet dsHeader = new DataSet();
 
             try
@@ -44,6 +45,23 @@ namespace Reports.Controllers
                 string connectionstring = System.Configuration.ConfigurationManager.AppSettings["ConnectionString"];
                 using (SqlConnection con = new SqlConnection(connectionstring))
                 {
+                    using (SqlCommand cmd = new SqlCommand("Pr_FetchVerifiedTestOrderDetails_MAPI", con))
+                    {
+                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
+                        sqlDataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@UHID", UHID);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@TestOrderId", TestOrderID);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@HospitalID", 1);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@Type", 1);
+                        sqlDataAdapter.Fill(dsResultNew);
+                        con.Close();
+                    }
+
+                    if (dsResultNew.Tables[0].Rows.Count == 0)
+                    {
+                        return "Failure";
+                    }
+
                     using (SqlCommand cmd = new SqlCommand("Pr_FetchTestResults_MAPI", con))
                     {
                         SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
@@ -67,18 +85,6 @@ namespace Reports.Controllers
                         //con.Open();
                         //var DataReader = cmd.ExecuteReader();
                     }
-
-                    using (SqlCommand cmd = new SqlCommand("Pr_FetchTestOrderDetails_MAPI", con))
-                    {
-                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
-                        sqlDataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
-                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@UHID", UHID);
-                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@HospitalID", 1);
-                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@Type", 1);
-                        sqlDataAdapter.Fill(dsResult);
-                        con.Close();
-                    }
-
                     using (SqlCommand cmd = new SqlCommand("Pr_FetchLabDeptConfigurations_MAPI", con))
                     {
                         SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
@@ -89,13 +95,7 @@ namespace Reports.Controllers
                     }
 
                 }
-
-
                 DataSet ds1 = CreateDataSet();
-
-
-
-
 
                 if (dsHeader.Tables[0] != null && dsHeader.Tables[0].Rows.Count >= 1)
                 {
@@ -184,7 +184,7 @@ namespace Reports.Controllers
                                 break;
 
                             case "4":
-                                
+
                                 LabReport["F2ParamDesc"] = IndivRow["Value"].ToString();
                                 if (IndivRow["Value"] != null && IndivRow["Value"].ToString().Trim() != string.Empty)
                                 {
@@ -346,48 +346,43 @@ namespace Reports.Controllers
                 }
 
 
-
-
-
-
-
-
                 DataRow PatientRow = ds1.Tables[3].NewRow();
 
-                if (dsResult.Tables[0] != null && dsResult.Tables[0].Rows.Count >= 1)
+                if (dsResultNew.Tables[0].Rows.Count >= 1)
                 {
+                    DataRow Patient = dsResultNew.Tables[0].Rows[0];
 
-                    PatientRow["Department"] = dsResult.Tables[0].Rows[0]["Specialisation"].ToString(); // Pr_FetchTestOrderDetails_MAPI[0].
-                    PatientRow["OrderNo"] = dsResult.Tables[0].Rows[0]["OrderSlNo"].ToString();
-                    PatientRow["IPNo"] = dsResult.Tables[0].Rows[0]["IpNo"].ToString();
-                    PatientRow["UHID"] = dsResult.Tables[0].Rows[0]["RegCode"].ToString(); //CustomerRow["UHID"] = "1";
-                    PatientRow["BillNo"] = dsResult.Tables[0].Rows[0]["BillNo"].ToString();
-                    PatientRow["BillRemarks"] = dsResult.Tables[0].Rows[0]["BillRemarks"].ToString();
-                    PatientRow["Name"] = dsResult.Tables[0].Rows[0]["PatientName"].ToString();
-                    PatientRow["AgeGender"] = dsResult.Tables[0].Rows[0]["AgeGender"].ToString();
-                    PatientRow["OrderDate"] = dsResult.Tables[0].Rows[0]["OrderDate"].ToString();
+                    PatientRow["Department"] = Patient["Specialisation"].ToString(); // Pr_FetchTestOrderDetails_MAPI[0].
+                    PatientRow["OrderNo"] = Patient["OrderSlNo"].ToString();
+                    PatientRow["IPNo"] = Patient["IpNo"].ToString();
+                    PatientRow["UHID"] = Patient["RegCode"].ToString(); //CustomerRow["UHID"] = "1";
+                    PatientRow["BillNo"] = Patient["BillNo"].ToString();
+                    PatientRow["BillRemarks"] = Patient["BillRemarks"].ToString();
+                    PatientRow["Name"] = Patient["PatientName"].ToString();
+                    PatientRow["AgeGender"] = Patient["AgeGender"].ToString();
+                    PatientRow["OrderDate"] = Patient["OrderDate"].ToString();
                     //CustomerRow["IPBillNoColName"] = "1";
-                    //ReportDate	Pr_FetchTestResults_MAPI[1].ResultEnteredAt	minimum value from the table	t
-                    PatientRow["PatientID"] = ParseToInt(dsResult.Tables[0].Rows[0]["PatientId"].ToString());
-                    PatientRow["PatPhone"] = dsResult.Tables[0].Rows[0]["PatPhone"].ToString();
-                    PatientRow["DocPhone"] = dsResult.Tables[0].Rows[0]["DocPhone"].ToString();
-                    PatientRow["Nationality"] = dsResult.Tables[0].Rows[0]["Nationality"].ToString();
-                    PatientRow["WardCaption"] = dsResult.Tables[0].Rows[0]["WardCaption"].ToString();
-                    PatientRow["Ward"] = dsResult.Tables[0].Rows[0]["Ward"].ToString();
+                    //ReportDate	Pr_FetchTestResults_MAPI[1].ResultEnteredAt	minimum value from the tablet
+                    PatientRow["PatientID"] = ParseToInt(Patient["PatientId"].ToString());
+                    PatientRow["PatPhone"] = Patient["PatPhone"].ToString();
+                    PatientRow["DocPhone"] = Patient["DocPhone"].ToString();
+                    PatientRow["Nationality"] = Patient["Nationality"].ToString();
+                    PatientRow["WardCaption"] = Patient["WardCaption"].ToString();
+                    PatientRow["Ward"] = Patient["Ward"].ToString();
+                    PatientRow["Doctor"] = Patient["DoctorName"].ToString();
+                    PatientRow["PayerName"] = Patient["Payername"].ToString();
+                    PatientRow["GradeName"] = Patient["GradeName"].ToString();
+                    PatientRow["MRNO"] = Patient["RegCode"].ToString();
+                    PatientRow["EmpID"] = Patient["EmpId"].ToString();
 
-                    PatientRow["PayerName"] = dsResult.Tables[0].Rows[0]["Payername"].ToString();
-                    PatientRow["GradeName"] = dsResult.Tables[0].Rows[0]["GradeName"].ToString();
-                    PatientRow["MRNO"] = dsResult.Tables[0].Rows[0]["RegCode"].ToString();
-                    PatientRow["EmpID"] = dsResult.Tables[0].Rows[0]["EmpId"].ToString();
-
-                    PatientRow["CompanyCode"] = dsResult.Tables[0].Rows[0]["CompanyCode"].ToString();
-                    PatientRow["CompanyType"] = dsResult.Tables[0].Rows[0]["CompanyType"].ToString();
+                    PatientRow["CompanyCode"] = Patient["CompanyCode"].ToString();
+                    PatientRow["CompanyType"] = Patient["CompanyType"].ToString();
                     PatientRow["PatientType"] = 1;
-                    //CollectionDate Pr_FetchTestResults_MAPI[1].SampleCollectedAt
-                    //AcknowledgeDate Pr_FetchTestResults_MAPI[1].SampleAckAT
+
 
 
                 }
+
 
                 if (ds.Tables[1] != null && ds.Tables[1].Rows.Count >= 1)
                 {
@@ -402,10 +397,10 @@ namespace Reports.Controllers
                     PatientRow["ResultVerifiedBy"] = ds.Tables[1].Rows[0]["ResultVerifyedBy"].ToString();
                 }
 
-                if (ds.Tables[2] != null && ds.Tables[2].Rows.Count >= 1)
-                {
-                    PatientRow["Doctor"] = ds.Tables[2].Rows[0]["DoctorName"].ToString();
-                }
+                //if (ds.Tables[2] != null && ds.Tables[2].Rows.Count >= 1)
+                //{
+                //    PatientRow["Doctor"] = ds.Tables[2].Rows[0]["DoctorName"].ToString();
+                //}
 
 
                 ds1.Tables[3].Rows.Add(PatientRow);
@@ -482,6 +477,7 @@ namespace Reports.Controllers
 
         //https://localhost:44351/api/reportapi/Radiology?TestOrderID=1424957&UHID=PFBS.0000397737&isExternal=true
         //https://localhost:44351/api/reportapi/Radiology?TestOrderID=1424957&TestOrderItemID=5517950&UHID=PFBS.0000397737&isExternal=true
+        //https://localhost:44351/api/reportapi/Radiology?TestOrderID=410658&TestOrderItemID=1398600&UHID=PFBS.0000037559&isExternal=true
         [Route("api/reportapi/Radiology")]
         public string GetRadiology(string TestOrderID, string TestOrderItemID, string UHID)
         {
@@ -490,6 +486,7 @@ namespace Reports.Controllers
 
             DataSet ds = new DataSet();
             DataSet dsResult = new DataSet();
+            DataSet dsResultNew = new DataSet();
             DataSet dsHeader = new DataSet();
             DataSet ds1 = CreateDataSetForRadiology();
 
@@ -498,6 +495,24 @@ namespace Reports.Controllers
                 string connectionstring = System.Configuration.ConfigurationManager.AppSettings["ConnectionString"];
                 using (SqlConnection con = new SqlConnection(connectionstring))
                 {
+
+                    using (SqlCommand cmd = new SqlCommand("Pr_FetchVerifiedRadioLogyOrderDetails_MAPI", con))
+                    {
+                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
+                        sqlDataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@UHID", UHID);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@TestOrderId", TestOrderID);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@TestOrderItemId", TestOrderItemID);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@HospitalID", 1);
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@Type", 0);
+                        sqlDataAdapter.Fill(dsResultNew);
+                        con.Close();
+                    }
+
+                    if (dsResultNew.Tables[0].Rows.Count == 0)
+                    {
+                        return "Failure";
+                    }
 
                     using (SqlCommand cmd = new SqlCommand("PR_FetchRadiologyResults_MAPI", con))
                     {
@@ -523,136 +538,123 @@ namespace Reports.Controllers
                         //var DataReader = cmd.ExecuteReader();
                     }
 
-                    using (SqlCommand cmd = new SqlCommand("Pr_FetchTestOrderDetails_MAPI", con))
+
+
+                    
+                }
+
+                bool isInsert = false;
+                foreach (DataRow IndivRow in ds.Tables[2].Rows)
+                {
+                    if (!isInsert)
                     {
-                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
-                        sqlDataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
-                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@UHID", UHID);
-                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@HospitalID", 1);
-                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@Type", 1);
-                        sqlDataAdapter.Fill(dsResult);
-                        con.Close();
+                        DataRow DoctorData = ds1.Tables[0].NewRow();
+                        DoctorData["DoctorID1"] = ParseToInt(IndivRow["DoctorID"].ToString());
+                        DoctorData["Doctor1"] = IndivRow["DoctorName"].ToString();
+                        DoctorData["Signature1"] = IndivRow["SignaturePath"].ToString();
+                        DoctorData["Sign1"] = false;
+                        DoctorData["TestOrderItemID"] = IndivRow["TestOrderItemId"].ToString();
+                        DoctorData["DoctorNameWithDesignation"] = IndivRow["DoctorName2l"].ToString();
+                        ds1.Tables[0].Rows.Add(DoctorData);
+                        isInsert = true;
                     }
-
-
-                    bool isInsert = false;
-                    foreach (DataRow IndivRow in ds.Tables[2].Rows)
-                    {
-                        if (!isInsert)
-                        { 
-                            DataRow DoctorData = ds1.Tables[0].NewRow();
-                            DoctorData["DoctorID1"] = ParseToInt(IndivRow["DoctorID"].ToString());
-                            DoctorData["Doctor1"] = IndivRow["DoctorName"].ToString();
-                            DoctorData["Signature1"] = IndivRow["SignaturePath"].ToString();
-                            DoctorData["Sign1"] = false;
-                            DoctorData["TestOrderItemID"] = IndivRow["TestOrderItemId"].ToString();
-                            DoctorData["DoctorNameWithDesignation"] = IndivRow["DoctorName2l"].ToString();
-                            ds1.Tables[0].Rows.Add(DoctorData);
-                            isInsert = true;
-                        }
-                    }
+                }
 
 
 
-                    DataRow PatientRow = ds1.Tables[1].NewRow();
+                DataRow PatientRow = ds1.Tables[1].NewRow();
 
-                    if (dsResult.Tables[0] != null && dsResult.Tables[0].Rows.Count >= 1)
-                    {
+                if (dsResultNew.Tables[0].Rows.Count >= 1)
+                {
+                    DataRow Patient = dsResultNew.Tables[0].Rows[0];
 
-                        PatientRow["Department"] = dsResult.Tables[0].Rows[0]["Specialisation"].ToString(); // Pr_FetchTestOrderDetails_MAPI[0].
-                        PatientRow["OrderNo"] = dsResult.Tables[0].Rows[0]["OrderSlNo"].ToString();
-                        PatientRow["IPNo"] = dsResult.Tables[0].Rows[0]["IpNo"].ToString();
-                        PatientRow["UHID"] = dsResult.Tables[0].Rows[0]["RegCode"].ToString(); //CustomerRow["UHID"] = "1";
-                        PatientRow["BillNo"] = dsResult.Tables[0].Rows[0]["BillNo"].ToString();
-                        PatientRow["BillRemarks"] = dsResult.Tables[0].Rows[0]["BillRemarks"].ToString();
-                        PatientRow["Name"] = dsResult.Tables[0].Rows[0]["PatientName"].ToString();
-                        PatientRow["AgeGender"] = dsResult.Tables[0].Rows[0]["AgeGender"].ToString();
-                        PatientRow["OrderDate"] = dsResult.Tables[0].Rows[0]["OrderDate"].ToString();
-                        //CustomerRow["IPBillNoColName"] = "1";
-                        //ReportDate	Pr_FetchTestResults_MAPI[1].ResultEnteredAt	minimum value from the table	t
-                        PatientRow["PatientID"] = ParseToInt(dsResult.Tables[0].Rows[0]["PatientId"].ToString());
-                        PatientRow["PatPhone"] = dsResult.Tables[0].Rows[0]["PatPhone"].ToString();
-                        PatientRow["DocPhone"] = dsResult.Tables[0].Rows[0]["DocPhone"].ToString();
-                        PatientRow["Nationality"] = dsResult.Tables[0].Rows[0]["Nationality"].ToString();
-                        PatientRow["WardCaption"] = dsResult.Tables[0].Rows[0]["WardCaption"].ToString();
-                        PatientRow["Ward"] = dsResult.Tables[0].Rows[0]["Ward"].ToString();
+                    PatientRow["Department"] = Patient["Specialisation"].ToString(); // Pr_FetchTestOrderDetails_MAPI[0].
+                    PatientRow["OrderNo"] = Patient["OrderSlNo"].ToString();
+                    PatientRow["IPNo"] = Patient["IpNo"].ToString();
+                    PatientRow["UHID"] = Patient["RegCode"].ToString(); //CustomerRow["UHID"] = "1";
+                    PatientRow["BillNo"] = Patient["BillNo"].ToString();
+                    PatientRow["BillRemarks"] = Patient["BillRemarks"].ToString();
+                    PatientRow["Name"] = Patient["PatientName"].ToString();
+                    PatientRow["AgeGender"] = Patient["AgeGender"].ToString();
+                    PatientRow["OrderDate"] = Patient["OrderDate"].ToString();
+                    //CustomerRow["IPBillNoColName"] = "1";
+                    //ReportDate	Pr_FetchTestResults_MAPI[1].ResultEnteredAt	minimum value from the tablet
+                    PatientRow["PatientID"] = ParseToInt(Patient["PatientId"].ToString());
+                    PatientRow["PatPhone"] = Patient["PatPhone"].ToString();
+                    PatientRow["DocPhone"] = Patient["DocPhone"].ToString();
+                    PatientRow["Nationality"] = Patient["Nationality"].ToString();
+                    PatientRow["WardCaption"] = Patient["WardCaption"].ToString();
+                    PatientRow["Ward"] = Patient["Ward"].ToString();
+                    PatientRow["Doctor"] = Patient["DoctorName"].ToString();
+                    PatientRow["PayerName"] = Patient["Payername"].ToString();
+                    PatientRow["GradeName"] = Patient["GradeName"].ToString();
+                    PatientRow["MRNO"] = Patient["RegCode"].ToString();
+                    PatientRow["EmpID"] = Patient["EmpId"].ToString();
 
-                        PatientRow["PayerName"] = dsResult.Tables[0].Rows[0]["Payername"].ToString();
-                        PatientRow["GradeName"] = dsResult.Tables[0].Rows[0]["GradeName"].ToString();
-                        PatientRow["MRNO"] = dsResult.Tables[0].Rows[0]["RegCode"].ToString();
-                        PatientRow["EmpID"] = dsResult.Tables[0].Rows[0]["EmpId"].ToString();
-
-                        PatientRow["CompanyCode"] = dsResult.Tables[0].Rows[0]["CompanyCode"].ToString();
-                        PatientRow["CompanyType"] = dsResult.Tables[0].Rows[0]["CompanyType"].ToString();
-                        PatientRow["PatientType"] = 1;
-                        //CollectionDate Pr_FetchTestResults_MAPI[1].SampleCollectedAt
-                        //AcknowledgeDate Pr_FetchTestResults_MAPI[1].SampleAckAT
-
-
-                    }
-
-
-                    if (ds.Tables[1] != null && ds.Tables[1].Rows.Count >= 1)
-                    {
-                        PatientRow["ReportDate"] = ds.Tables[1].Rows[0]["ResultEnteredAt"].ToString();
-                        PatientRow["ResultEntryDate"] = ds.Tables[1].Rows[0]["ResultEnteredAt"].ToString();
-                        PatientRow["CollectionDate"] = ds.Tables[1].Rows[0]["SampleCollectedAt"].ToString();
-                        PatientRow["AcknowledgeDate"] = ds.Tables[1].Rows[0]["SampleAckAT"].ToString();
-                        PatientRow["Remarks"] = ds.Tables[1].Rows[0]["Remarks"].ToString();
-                        PatientRow["AccessionNumber"] = ds.Tables[1].Rows[0]["SampleNumber"].ToString();
-                        PatientRow["ResultEnteredByID"] = ds.Tables[1].Rows[0]["ResultEnteredbyEmpid"].ToString();
-                        PatientRow["ResultEnteredBy"] = ds.Tables[1].Rows[0]["ResultEnteredBy"].ToString();
-                        PatientRow["ResultVerifiedBy"] = ds.Tables[1].Rows[0]["ResultVerifyedBy"].ToString();
-                    }
-
-                    if (ds.Tables[2] != null && ds.Tables[2].Rows.Count >= 1)
-                    {
-                        PatientRow["Doctor"] = ds.Tables[2].Rows[0]["DoctorName"].ToString();
-                    }
-
-
-                    ds1.Tables[1].Rows.Add(PatientRow);
-
-
-
-                    foreach (DataRow IndivRow in ds.Tables[0].Rows)
-                    {
-                        DataRow ProcReport = ds1.Tables[2].NewRow();
-
-                        ProcReport["ProcID"] = ParseToInt(IndivRow["TestOrderItemID"].ToString());
-                        ProcReport["ProcName"] = IndivRow["TestName"].ToString();
-                        ProcReport["ParamID"] = ParseToInt(IndivRow["ParameterID"].ToString());
-                        ProcReport["ParamName"] = IndivRow["ParameterName"].ToString();
-                        ProcReport["F1Unit"] = IndivRow["UOM"].ToString();
-                       // ProcReport["F1ReferenceRange"] = IndivRow["ParameterName"].ToString();
-                        
-                        if (IndivRow["Value"].ToString().ToString().Trim().Length > 0)
-                        {
-                            ProcReport["F1Result"] = "htmlform"; //  IndivRow["Value"].ToString(); // "htmlform"; // IndivRow["Value"].ToString(); //htmlform
-                            ProcReport["F2ParamDesc"] = IndivRow["Value"].ToString();
-                            ProcReport["FormatType"] = "F2"; // IndivRow["ParameterName"].ToString();
-                        }
-
-                            //ProcReport["F3ImagePath"] = IndivRow["ParameterName"].ToString();
-
-
-
-                            ds1.Tables[2].Rows.Add(ProcReport);
-                    }
-
-
-                    ReportDocument cryRpt = new ReportDocument();
-                    cryRpt.Load(System.Configuration.ConfigurationManager.AppSettings["ReportPath"] + "ResultEntryView.rpt");
-                    cryRpt.SetDataSource(ds1);
-                    cryRpt.Refresh();
-                    cryRpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + TestOrderID.ToString() + ".pdf");
-
-
-                    //return System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + TestOrderID.ToString() + ".pdf";
-                    return "Success";
-
+                    PatientRow["CompanyCode"] = Patient["CompanyCode"].ToString();
+                    PatientRow["CompanyType"] = Patient["CompanyType"].ToString();
+                    PatientRow["PatientType"] = 1;
 
                 }
+
+
+
+                if (ds.Tables[1] != null && ds.Tables[1].Rows.Count >= 1)
+                {
+                    PatientRow["ReportDate"] = ds.Tables[1].Rows[0]["ResultEnteredAt"].ToString();
+                    PatientRow["ResultEntryDate"] = ds.Tables[1].Rows[0]["ResultEnteredAt"].ToString();
+                    PatientRow["CollectionDate"] = ds.Tables[1].Rows[0]["SampleCollectedAt"].ToString();
+                    PatientRow["AcknowledgeDate"] = ds.Tables[1].Rows[0]["SampleAckAT"].ToString();
+                    PatientRow["Remarks"] = ds.Tables[1].Rows[0]["Remarks"].ToString();
+                    PatientRow["AccessionNumber"] = ds.Tables[1].Rows[0]["SampleNumber"].ToString();
+                    PatientRow["ResultEnteredByID"] = ds.Tables[1].Rows[0]["ResultEnteredbyEmpid"].ToString();
+                    PatientRow["ResultEnteredBy"] = ds.Tables[1].Rows[0]["ResultEnteredBy"].ToString();
+                    PatientRow["ResultVerifiedBy"] = ds.Tables[1].Rows[0]["ResultVerifyedBy"].ToString();
+                }
+
+                //if (ds.Tables[2] != null && ds.Tables[2].Rows.Count >= 1)
+                //{
+                //    PatientRow["Doctor"] = ds.Tables[2].Rows[0]["DoctorName"].ToString();
+                //}
+
+
+                ds1.Tables[1].Rows.Add(PatientRow);
+
+
+
+                foreach (DataRow IndivRow in ds.Tables[0].Rows)
+                {
+                    DataRow ProcReport = ds1.Tables[2].NewRow();
+
+                    ProcReport["ProcID"] = ParseToInt(IndivRow["TestOrderItemID"].ToString());
+                    ProcReport["ProcName"] = IndivRow["TestName"].ToString();
+                    ProcReport["ParamID"] = ParseToInt(IndivRow["ParameterID"].ToString());
+                    ProcReport["ParamName"] = IndivRow["ParameterName"].ToString();
+                    ProcReport["F1Unit"] = IndivRow["UOM"].ToString();
+                    // ProcReport["F1ReferenceRange"] = IndivRow["ParameterName"].ToString();
+
+                    if (IndivRow["Value"].ToString().ToString().Trim().Length > 0)
+                    {
+                        ProcReport["F1Result"] = "htmlform"; //  IndivRow["Value"].ToString(); // "htmlform"; // IndivRow["Value"].ToString(); //htmlform
+                        ProcReport["F2ParamDesc"] = IndivRow["Value"].ToString();
+                        ProcReport["FormatType"] = "F2"; // IndivRow["ParameterName"].ToString();
+                    }
+
+                    //ProcReport["F3ImagePath"] = IndivRow["ParameterName"].ToString();
+
+
+
+                    ds1.Tables[2].Rows.Add(ProcReport);
+                }
+
+
+                ReportDocument cryRpt = new ReportDocument();
+                cryRpt.Load(System.Configuration.ConfigurationManager.AppSettings["ReportPath"] + "ResultEntryView.rpt");
+                cryRpt.SetDataSource(ds1);
+                cryRpt.Refresh();
+                cryRpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + TestOrderID.ToString() + ".pdf");
+                return "Success";
+
             }
             catch (Exception ex)
             {
@@ -660,8 +662,6 @@ namespace Reports.Controllers
                 return "Failure " + message;
                 //return "Failure";
             }
-
-            return strPath;
         }
 
         private string ReferenceRange(string strMinVal, string strMaxVal, bool blnUnits, string strUnit, bool blnPrefix, string strKeyword, string StrSIUnit)
