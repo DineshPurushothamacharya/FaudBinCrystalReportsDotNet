@@ -30,7 +30,9 @@ namespace Reports.Controllers
         //https://localhost:44351/api/reportapi?TestOrderID=test
         //https://localhost:44351/api/reportapi?TestOrderID=test&UHID=123
         //https://localhost:44351/api/reportapi?TestOrderID=1358599&UHID=PFBS.0000397737&isExternal=true
-        //https://localhost:44351/api/reportapi?TestOrderID=1426994&UHID=PFBS.0000397737&isExternal=true
+        //https://localhost:44351/api/reportapi?TestOrderID=1463197&UHID=PFBS.0000397737&isExternal=true
+        //https://localhost:44351/api/reportapi?TestOrderID=1447060&UHID=PFBS.0000397737&isExternal=true
+
         //http://172.16.16.53/api/reportapi?TestOrderID=1358599&UHID=PFBS.0000397737&isExternal=true
         // GET api/<controller>/5
         //[Route("api/reportapi/TestOrderID")]
@@ -39,6 +41,15 @@ namespace Reports.Controllers
             DataSet ds = new DataSet();
             DataSet dsResultNew = new DataSet();
             DataSet dsHeader = new DataSet();
+
+            //FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://172.16.16.40/PatientPhoto/93f95769-6c20-4686-a616-039f7a118052LabTemp_488-15.pdf");
+            //request.Method = WebRequestMethods.Ftp.DownloadFile;
+
+            //using (Stream ftpstream = request.GetResponse().GetResponseStream())
+            //using (Stream filestream = File.Create("C:\\Users\\Swathi\\Sangamesh\\Reports\\PDF\\FileFile.pdf"))
+            //{
+            //    ftpstream.CopyTo(filestream);
+            //}
 
             try
             {
@@ -59,7 +70,7 @@ namespace Reports.Controllers
 
                     if (dsResultNew.Tables[0].Rows.Count == 0)
                     {
-                        return "Failure";
+                       return "Failure";
                     }
 
                     using (SqlCommand cmd = new SqlCommand("Pr_FetchTestResults_MAPI", con))
@@ -95,6 +106,35 @@ namespace Reports.Controllers
                     }
 
                 }
+
+                
+
+                foreach (DataRow IndivRow in ds.Tables[0].Rows)
+                {
+                    if (IndivRow["IsExternal"].ToString() == "1")
+                    {
+                        string pdfFileName = IndivRow["Value"].ToString();
+                        if (!string.IsNullOrEmpty(pdfFileName))
+                        {
+                            try
+                            {
+                                string ftpserver = System.Configuration.ConfigurationManager.AppSettings["ftpserver"];
+                                string ftppath = System.Configuration.ConfigurationManager.AppSettings["ftppath"];
+                                string ReportLocation = System.Configuration.ConfigurationManager.AppSettings["ReportLocation"];
+                                GetFTPReport(ftpserver, ftppath, TestOrderID, ReportLocation, pdfFileName);
+                                return "Success";
+                            }
+                            catch (Exception ex)
+                            {
+                               return "Failure " + "Please check the report with the hospital";
+                            }
+                                
+                        }
+
+                    }
+                }
+                
+
                 DataSet ds1 = CreateDataSet();
 
                 if (dsHeader.Tables[0] != null && dsHeader.Tables[0].Rows.Count >= 1)
@@ -959,6 +999,21 @@ namespace Reports.Controllers
             return ds1;
         }
 
+
+        private string GetFTPReport(string FTPServer, string FTPFolder, string TestOrderId, string ReportLocation, string pdfName)
+        {
+            pdfName = pdfName.Substring(1, pdfName.Length - 1);
+           
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://" + FTPServer + "/" + FTPFolder + "/" + pdfName);
+            request.Method = WebRequestMethods.Ftp.DownloadFile;
+
+            using (Stream ftpstream = request.GetResponse().GetResponseStream())
+            using (Stream filestream = File.Create(ReportLocation + TestOrderId + ".pdf"))
+            {
+                ftpstream.CopyTo(filestream);
+            }
+            return "";
+        }
 
     }
 }

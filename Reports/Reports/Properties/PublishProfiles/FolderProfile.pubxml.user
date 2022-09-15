@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\Swathi\Sangamesh\Reports\OutputExe\</_PublishTargetUrl>
-    <History>True|2022-09-07T05:14:13.3667664Z;True|2022-09-01T10:47:40.9893953+05:30;True|2022-08-27T21:00:38.0829721+05:30;True|2022-08-25T09:05:36.0156955+05:30;True|2022-08-23T13:00:06.9521690+05:30;True|2022-08-23T12:52:44.3704291+05:30;True|2022-08-23T10:46:59.1132171+05:30;</History>
+    <History>True|2022-09-15T17:46:57.4448865Z;True|2022-09-07T12:42:50.3127863+05:30;True|2022-09-07T10:44:13.3667664+05:30;True|2022-09-01T10:47:40.9893953+05:30;True|2022-08-27T21:00:38.0829721+05:30;True|2022-08-25T09:05:36.0156955+05:30;True|2022-08-23T13:00:06.9521690+05:30;True|2022-08-23T12:52:44.3704291+05:30;True|2022-08-23T10:46:59.1132171+05:30;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/CrystalDecisions.CrystalReports.Design.dll">
@@ -114,10 +114,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/31/2021 06:20:04</publishTime>
     </File>
     <File Include="bin/Reports.dll">
-      <publishTime>09/07/2022 10:44:12</publishTime>
+      <publishTime>09/15/2022 23:16:56</publishTime>
     </File>
     <File Include="bin/Reports.pdb">
-      <publishTime>09/07/2022 10:44:12</publishTime>
+      <publishTime>09/15/2022 23:16:56</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>08/08/2018 05:38:48</publishTime>
@@ -303,7 +303,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/22/2022 11:21:57</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>01/09/2022 10:47:40</publishTime>
+      <publishTime>09/15/2022 23:16:56</publishTime>
     </File>
   </ItemGroup>
 </Project>
