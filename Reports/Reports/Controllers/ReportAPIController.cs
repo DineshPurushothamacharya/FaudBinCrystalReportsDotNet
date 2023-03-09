@@ -720,42 +720,49 @@ namespace Reports.Controllers
             
             }
 
-            DataRow AdviceRow = ds1.Tables[0].NewRow();
+            if (dsResultNew.Tables[12].Rows.Count >= 1)
+            {
+                foreach (DataRow dr in dsResultNew.Tables[12].Rows)
+                {
+                    DataRow AdviceRow = ds1.Tables[0].NewRow();
 
-            AdviceRow["TBL"] = "1";
-            AdviceRow["MonitorID"] = 1;
-            AdviceRow["MonitorDate"] = DateTime.Now;
-            AdviceRow["PatientType"] = 1;
-            AdviceRow["FollowUpType"] = 0;
-            AdviceRow["Advice"] = "clean your mouth using mouth wash 3 times in a day";
-            AdviceRow["ReferralOrderID"] = 1;
-            AdviceRow["FollowAfter"] = 0;
-            AdviceRow["FollowUpOn"] = DateTime.Now;
-            AdviceRow["IsInternalReferral"] = false;
-            AdviceRow["RefDoctorID"] = 1;
-            AdviceRow["PatientID"] = 1;
-            AdviceRow["AdmissionID"] = 1;
-            AdviceRow["AdmissionNumber"] = "1";
-            AdviceRow["RefDoctorName"] = "1";
-            AdviceRow["ReasonForAdm"] = "1";
-            AdviceRow["UserName"] = "1";
-            AdviceRow["CreateDate"] = DateTime.Now;
-            AdviceRow["MODDATE"] = DateTime.Now;
-            AdviceRow["ProcedureId"] = 1;
-            AdviceRow["ProcedureName"] = "1";
-            AdviceRow["USERID"] = 1;
-            AdviceRow["LengthOfStay"] = 1;
-            AdviceRow["Adviceid"] = 1;
-            AdviceRow["TreatmentPlanID"] = 1;
-            AdviceRow["TreatmentPlanName"] = "1";
-            AdviceRow["IsPfVisible"] = 1;
-            AdviceRow["DietTypeID"] = 1;
-            AdviceRow["DietType"] = "1";
-            AdviceRow["IPID"] = 1;
-            AdviceRow["DoctorID"] = 1;
-            AdviceRow["IsSpecialityTreatmentApplicable"] = false;
+                    AdviceRow["TBL"] = dr["TBL"];
+                    AdviceRow["MonitorID"] = 1;
+                    AdviceRow["MonitorDate"] = DateTime.Now;
+                    AdviceRow["PatientType"] = 1;
+                    AdviceRow["FollowUpType"] = 0;
+                    AdviceRow["Advice"] = "clean your mouth using mouth wash 3 times in a day";
+                    AdviceRow["ReferralOrderID"] = 1;
+                    AdviceRow["FollowAfter"] = 0;
+                    AdviceRow["FollowUpOn"] = DateTime.Now;
+                    AdviceRow["IsInternalReferral"] = false;
+                    AdviceRow["RefDoctorID"] = 1;
+                    AdviceRow["PatientID"] = 1;
+                    AdviceRow["AdmissionID"] = 1;
+                    AdviceRow["AdmissionNumber"] = "1";
+                    AdviceRow["RefDoctorName"] = "1";
+                    AdviceRow["ReasonForAdm"] = "1";
+                    AdviceRow["UserName"] = "1";
+                    AdviceRow["CreateDate"] = DateTime.Now;
+                    AdviceRow["MODDATE"] = DateTime.Now;
+                    AdviceRow["ProcedureId"] = 1;
+                    AdviceRow["ProcedureName"] = "1";
+                    AdviceRow["USERID"] = 1;
+                    AdviceRow["LengthOfStay"] = 1;
+                    AdviceRow["Adviceid"] = 1;
+                    AdviceRow["TreatmentPlanID"] = 1;
+                    AdviceRow["TreatmentPlanName"] = "1";
+                    AdviceRow["IsPfVisible"] = 1;
+                    AdviceRow["DietTypeID"] = 1;
+                    AdviceRow["DietType"] = "1";
+                    AdviceRow["IPID"] = 1;
+                    AdviceRow["DoctorID"] = 1;
+                    AdviceRow["IsSpecialityTreatmentApplicable"] = false;
 
-            ds1.Tables[0].Rows.Add(AdviceRow);
+                    ds1.Tables[0].Rows.Add(AdviceRow);
+                }
+            }
+
 
 
             DataRow DiagonsisRow = ds1.Tables[1].NewRow();
@@ -878,91 +885,91 @@ namespace Reports.Controllers
 
             ds1.Tables[4].Rows.Add(InvistigationRow);
 
-            DataRow MedicationDataRow = ds1.Tables[5].NewRow();
+            if (dsResultNew.Tables[1].Rows.Count >= 1)
+            {
+                foreach (DataRow dr in dsResultNew.Tables[1].Rows)
+                {
+                    DataRow MedicationDataRow = ds1.Tables[5].NewRow();
 
-            MedicationDataRow["TBL"] = "1";
-            MedicationDataRow["ServiceTypeID"] = 1;
-            MedicationDataRow["PrescriptionID"] = 1;
-            MedicationDataRow["MonitorID"] = 1;
-            MedicationDataRow["PrescriptionDate"] = DateTime.Now;
-            MedicationDataRow["DoctorID"] = 1;
-            MedicationDataRow["DoctorName"] = "1";
-            MedicationDataRow["ItemSequence"] = 1;
-            MedicationDataRow["ItemID"] = 1;
-            MedicationDataRow["ItemName"] = "1";
-            MedicationDataRow["Dose"] = 1.0;
-            MedicationDataRow["DoseID"] = 1;
-            MedicationDataRow["DoseUoM"] = "1";
-            MedicationDataRow["FrequencyID"] = 1;
-            MedicationDataRow["Frequency"] = "1";
-            MedicationDataRow["Duration"] = 1;
-            MedicationDataRow["DurationID"] = 1;
-            MedicationDataRow["DurationUOM"] = "1";
-            MedicationDataRow["StartFrom"] = DateTime.Now;
-            MedicationDataRow["Remarks"] = "1";
-            MedicationDataRow["SpecimenID"] = 1;
-            MedicationDataRow["SpecimenName"] = 1;
-            MedicationDataRow["Status"] = 1;
-            MedicationDataRow["AdmissionID"] = 1;
-            MedicationDataRow["AdmissionNumber"] = "1";
-            MedicationDataRow["AdmRouteID"] = 1;
-            MedicationDataRow["AdmRoute"] = "1";
-            MedicationDataRow["UserName"] = "1";
-            MedicationDataRow["CreateDate"] = DateTime.Now;
-            MedicationDataRow["ModDate"] = DateTime.Now;
-            MedicationDataRow["blocked"] = 1;
-            MedicationDataRow["CustomizedFlag"] = false;
-            MedicationDataRow["CustDrugDetails"] = "1";
-            MedicationDataRow["FrequencyQTY"] = 1.0;
-            MedicationDataRow["IssueUOMValue"] = 1;
-            MedicationDataRow["IsNarcotic"] = 1;
-            MedicationDataRow["IsAntibiotic"] = false;
-            MedicationDataRow["IsControledDrug"] = false;
-            MedicationDataRow["IsDisPrescription"] = false;
-            MedicationDataRow["UCAFApproval"] = false;
-            MedicationDataRow["GenericID"] = 1;
-            MedicationDataRow["GenericName"] = "1";
-            MedicationDataRow["Strength"] = 1.0;
-            MedicationDataRow["StrengthUOM"] = "1";
-            MedicationDataRow["ScheduleTime"] = "1";
-            MedicationDataRow["PrescriptionNo"] = "1";
-            MedicationDataRow["Remarks1"] = "1";
-            MedicationDataRow["StrengthUoMID"] = 1;
-            MedicationDataRow["ENDDatetime"] = DateTime.Now;
-            MedicationDataRow["DiscontinuingRemarks"] = "1";
-            MedicationDataRow["IsAdverseDrug"] = 1;
-            MedicationDataRow["AdverseDrugDescription"] = "1";
-            MedicationDataRow["ENDDate"] = DateTime.Now;
-            MedicationDataRow["MonitorDate"] = DateTime.Now;
-            MedicationDataRow["PatientInstructions"] = "1";
-            MedicationDataRow["IsPfvisible"] = false;
-            MedicationDataRow["OrderStatus"] = 1;
-            MedicationDataRow["PrescriptionStatusID"] = false;
-            MedicationDataRow["ItemCode"] = "1";
-            MedicationDataRow["PrescriptionStatus"] = 1;
+                    MedicationDataRow["TBL"] = dr["TBL"].ToString();
+                    MedicationDataRow["PrescriptionID"] = ParseToInt(dr["PrescriptionID"].ToString());
+                    MedicationDataRow["MonitorID"] = ParseToInt(dr["MonitorID"].ToString());
+                    MedicationDataRow["DoctorID"] = ParseToInt(dr["DoctorID"].ToString());
+                    MedicationDataRow["DoctorName"] = dr["DoctorName"].ToString();
+                    MedicationDataRow["ItemSequence"] = ParseToInt(dr["ItemSequence"].ToString());
+                    MedicationDataRow["ItemID"] = ParseToInt(dr["ItemID"].ToString());
+                    MedicationDataRow["ItemName"] = dr["ItemName"].ToString();
+                    MedicationDataRow["Dose"] = 1.0;
+                    MedicationDataRow["DoseID"] = ParseToInt(dr["DoseID"].ToString());
+                    MedicationDataRow["DoseUoM"] = dr["DoseUoM"].ToString();
+                    MedicationDataRow["FrequencyID"] = ParseToInt(dr["FrequencyID"].ToString());
+                    MedicationDataRow["Frequency"] = dr["Frequency"].ToString();
 
-            ds1.Tables[5].Rows.Add(MedicationDataRow);
+                    MedicationDataRow["Duration"] = ParseToInt(dr["Duration"].ToString());
+                    MedicationDataRow["DurationID"] = ParseToInt(dr["DurationID"].ToString());
+                    MedicationDataRow["DurationUOM"] = dr["DurationUOM"].ToString();
+                    MedicationDataRow["StartFrom"] = dr["StartFrom"].ToString();
+                    MedicationDataRow["Remarks"] = dr["Remarks"].ToString();
+                    MedicationDataRow["SpecimenID"] = ParseToInt(dr["FrequencyID"].ToString());
+                    MedicationDataRow["SpecimenName"] = dr["FrequencyID"].ToString();
+                    MedicationDataRow["Status"] = ParseToInt(dr["Status"].ToString());
+                    MedicationDataRow["AdmRouteID"] = ParseToInt(dr["AdmRouteID"].ToString());
+                    MedicationDataRow["AdmRoute"] = dr["AdmRoute"].ToString();
+                    MedicationDataRow["UserName"] = dr["UserName"].ToString();
+                    MedicationDataRow["CreateDate"] = dr["CreateDate"].ToString();
+                    MedicationDataRow["ModDate"] = dr["ModDate"].ToString();
+                    MedicationDataRow["blocked"] = ParseToInt(dr["blocked"].ToString());
+                    MedicationDataRow["CustomizedFlag"] = false;
+                    MedicationDataRow["CustDrugDetails"] = dr["CustDrugDetails"].ToString();
+                    MedicationDataRow["FrequencyQTY"] = 1.0;
+                    MedicationDataRow["IssueUOMValue"] = ParseToInt(dr["IssueUOMValue"].ToString());
+                    MedicationDataRow["IsNarcotic"] = ParseToInt(dr["IsNarcotic"].ToString());
+                    MedicationDataRow["IsAntibiotic"] = false;
+                    MedicationDataRow["IsControledDrug"] = false;
+                    MedicationDataRow["IsDisPrescription"] = false;
+                    MedicationDataRow["UCAFApproval"] = false;
+                    MedicationDataRow["PrescriptionNo"] = dr["PrescriptionNo"].ToString();
+                    MedicationDataRow["ENDDatetime"] = DateTime.Now;
+                    MedicationDataRow["ENDDate"] = DateTime.Now;
+                    MedicationDataRow["MonitorDate"] = DateTime.Now;
+                    MedicationDataRow["IsPfvisible"] = false;
+                    MedicationDataRow["OrderStatus"] = ParseToInt(dr["OrderStatus"].ToString());
+                    MedicationDataRow["PrescriptionStatusID"] = false;
 
-            DataRow PatientDataRow = ds1.Tables[6].NewRow();
+                    ds1.Tables[5].Rows.Add(MedicationDataRow);
+                }
+            }
 
-            PatientDataRow["RegCode"] = "1";
-            PatientDataRow["PatientName"] = "1";
-            PatientDataRow["Gender"] = "1";
-            PatientDataRow["MobileNo"] = "1";
-            PatientDataRow["HospitalName"] = "1";
-            PatientDataRow["FullAge"] = "1";
-            PatientDataRow["Nationality"] = "1";
-            PatientDataRow["FamilyHeadId"] = "1";
-            PatientDataRow["IsContrastAllergic"] = false;
-            PatientDataRow["DoctorName"] = "1";
-            PatientDataRow["Admitdate"] = "1";
-            PatientDataRow["CompanyName"] = "1";
-            PatientDataRow["DocSpecDepartment"] = "1";
-            PatientDataRow["DocSign"] = "1";
-            PatientDataRow["DocCode"] = "1";
+            
 
-            ds1.Tables[6].Rows.Add(PatientDataRow);
+            if (dsResultNew.Tables[0].Rows.Count >= 1)
+            {
+                foreach (DataRow dr in dsResultNew.Tables[0].Rows)
+                {
+                    DataRow PatientDataRow = ds1.Tables[6].NewRow();
 
+                    PatientDataRow["RegCode"] = dr["RegCode"].ToString();
+                    PatientDataRow["PatientName"] = dr["PatientName"].ToString();
+                    PatientDataRow["Gender"] = dr["Gender"].ToString();
+                    PatientDataRow["MobileNo"] = dr["MobileNo"].ToString();
+                    PatientDataRow["HospitalName"] = dr["HospitalName"].ToString();
+                    PatientDataRow["FullAge"] = dr["FullAge"].ToString();
+                    PatientDataRow["Nationality"] = dr["Nationality"].ToString();
+                    PatientDataRow["FamilyHeadId"] = dr["FamilyHeadId"].ToString();
+                    PatientDataRow["IsContrastAllergic"] = false;
+                    PatientDataRow["DoctorName"] = dr["DoctorName"].ToString();
+                    PatientDataRow["Admitdate"] = dr["Admitdate"].ToString(); 
+                    PatientDataRow["CompanyName"] = dr["CompanyName"].ToString();
+                    PatientDataRow["DocSpecDepartment"] = dr["DocSpecDepartment"].ToString();
+                    PatientDataRow["DocSign"] = dr["DocSign"].ToString();
+                    PatientDataRow["DocCode"] = dr["DoctorCode"].ToString();
+
+                    ds1.Tables[6].Rows.Add(PatientDataRow);
+
+                }
+            }
+
+            
 
             DataRow ProcedureRow = ds1.Tables[7].NewRow();
 
