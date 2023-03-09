@@ -30,7 +30,7 @@ namespace Reports.Controllers
         //https://localhost:44351/api/reportapi?TestOrderID=test
         //https://localhost:44351/api/reportapi?TestOrderID=test&UHID=123
         //https://localhost:44351/api/reportapi?TestOrderID=1358599&UHID=PFBS.0000397737&isExternal=true
-        //https://localhost:44351/api/reportapi?TestOrderID=1463197&UHID=PFBS.0000397737&isExternal=true
+        //https://localhost:44351/api/reportapi?TestOrderID=1463197&UHID=PFBS.0000070775&isExternal=true
         //https://localhost:44351/api/reportapi?TestOrderID=1447060&UHID=PFBS.0000397737&isExternal=true
 
         //http://172.16.16.53/api/reportapi?TestOrderID=1358599&UHID=PFBS.0000397737&isExternal=true
@@ -691,6 +691,444 @@ namespace Reports.Controllers
             }
         }
 
+        //https://localhost:44351/api/reportapi/PrescriptionNew?AdmissionId=2449626
+        [Route("api/reportapi/PrescriptionNew")]
+        public string GetPrescriptionNew(int AdmissionId)
+        {
+            DataSet ds1 = CreateDatasetForPrescriptionNew();
+
+            DataSet dsResultNew = new DataSet();
+
+            try
+            {
+                string connectionstring = System.Configuration.ConfigurationManager.AppSettings["ConnectionString"];
+                using (SqlConnection con = new SqlConnection(connectionstring))
+                {
+
+                    using (SqlCommand cmd = new SqlCommand("pr_FetchPatientDetailsForPrescription_MAPI", con))
+                    {
+                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
+                        sqlDataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@AdmissionId", AdmissionId);
+                        sqlDataAdapter.Fill(dsResultNew);
+                        con.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            { 
+            
+            }
+
+            DataRow AdviceRow = ds1.Tables[0].NewRow();
+
+            AdviceRow["TBL"] = "1";
+            AdviceRow["MonitorID"] = 1;
+            AdviceRow["MonitorDate"] = DateTime.Now;
+            AdviceRow["PatientType"] = 1;
+            AdviceRow["FollowUpType"] = 0;
+            AdviceRow["Advice"] = "clean your mouth using mouth wash 3 times in a day";
+            AdviceRow["ReferralOrderID"] = 1;
+            AdviceRow["FollowAfter"] = 0;
+            AdviceRow["FollowUpOn"] = DateTime.Now;
+            AdviceRow["IsInternalReferral"] = false;
+            AdviceRow["RefDoctorID"] = 1;
+            AdviceRow["PatientID"] = 1;
+            AdviceRow["AdmissionID"] = 1;
+            AdviceRow["AdmissionNumber"] = "1";
+            AdviceRow["RefDoctorName"] = "1";
+            AdviceRow["ReasonForAdm"] = "1";
+            AdviceRow["UserName"] = "1";
+            AdviceRow["CreateDate"] = DateTime.Now;
+            AdviceRow["MODDATE"] = DateTime.Now;
+            AdviceRow["ProcedureId"] = 1;
+            AdviceRow["ProcedureName"] = "1";
+            AdviceRow["USERID"] = 1;
+            AdviceRow["LengthOfStay"] = 1;
+            AdviceRow["Adviceid"] = 1;
+            AdviceRow["TreatmentPlanID"] = 1;
+            AdviceRow["TreatmentPlanName"] = "1";
+            AdviceRow["IsPfVisible"] = 1;
+            AdviceRow["DietTypeID"] = 1;
+            AdviceRow["DietType"] = "1";
+            AdviceRow["IPID"] = 1;
+            AdviceRow["DoctorID"] = 1;
+            AdviceRow["IsSpecialityTreatmentApplicable"] = false;
+
+            ds1.Tables[0].Rows.Add(AdviceRow);
+
+
+            DataRow DiagonsisRow = ds1.Tables[1].NewRow();
+
+            DiagonsisRow["TBL"] = "1";
+            DiagonsisRow["MonitorID"] = 1;
+            DiagonsisRow["MonitorDate"] = DateTime.Now;
+            DiagonsisRow["DiseaseID"] = 1;
+            DiagonsisRow["DiagnosisType"] = 1;
+            DiagonsisRow["DiseaseName"] = "1";
+            DiagonsisRow["Code"] = "1";
+            DiagonsisRow["PatientID"] = 1;
+            DiagonsisRow["AdmissionID"] = 1;
+            DiagonsisRow["CreateDate"] = DateTime.Now;
+            DiagonsisRow["MODDATE"] = DateTime.Now;
+            DiagonsisRow["ProblemPointID"] = 1;
+            DiagonsisRow["ProblemPointName"] = "1";
+            DiagonsisRow["PointValue"] = 1;
+            DiagonsisRow["Username"] = "1";
+            DiagonsisRow["AssessmentID"] = 1;
+            DiagonsisRow["userid"] = 1;
+            DiagonsisRow["DiagonosisTypeID"] = 1;
+            DiagonsisRow["IsPsd"] = 1;
+            DiagonsisRow["Blocked"] = 1;
+            DiagonsisRow["DiagonosisType"] = "1";
+            DiagonsisRow["IsPfVisible"] = 1;
+            DiagonsisRow["SignificantData"] = false;
+            DiagonsisRow["Remarks"] = "1";
+            DiagonsisRow["IsAdmitDisease"] = false;
+
+
+            ds1.Tables[1].Rows.Add(DiagonsisRow);
+
+            DataRow DrugAllergiesRow = ds1.Tables[2].NewRow();
+
+            DrugAllergiesRow["TBL"] = "1";
+            DrugAllergiesRow["GenericID"] = 1;
+            DrugAllergiesRow["Remark"] = "1";
+            DrugAllergiesRow["GenericName"] = "1";
+            DrugAllergiesRow["GenericName2L"] = "1";
+            DrugAllergiesRow["FROMdate"] = DateTime.Now;
+            DrugAllergiesRow["todate"] = DateTime.Now;
+            DrugAllergiesRow["Description"] = "1";
+            DrugAllergiesRow["IsNotActive"] = false;
+            DrugAllergiesRow["CreateDate"] = DateTime.Now;
+            DrugAllergiesRow["IPID"] = 1;
+            DrugAllergiesRow["AllergieTypes"] = "1";
+            DrugAllergiesRow["Doctorid"] = 1;
+            DrugAllergiesRow["IsPfVisible"] = false;
+            DrugAllergiesRow["Status"] = 1;
+
+
+            ds1.Tables[2].Rows.Add(DrugAllergiesRow);
+
+            DataRow DurationOfIllenessRow = ds1.Tables[3].NewRow();
+
+            DurationOfIllenessRow["TBL"] = "1";
+            DurationOfIllenessRow["EpisodeName"] = "1";
+            DurationOfIllenessRow["DurationOfIllness"] = "1";
+            DurationOfIllenessRow["Height"] = 1.0;
+            DurationOfIllenessRow["Weight"] = 1.0;
+            DurationOfIllenessRow["PainScoreID"] = 1;
+            DurationOfIllenessRow["IsEducated"] = false;
+            DurationOfIllenessRow["IsSmoke"] = false;
+            DurationOfIllenessRow["IsPregnent"] = false;
+            DurationOfIllenessRow["ExpectedDeliveryDate"] = DateTime.Now;
+            DurationOfIllenessRow["IsPatientDrugAlleric"] = false;
+            DurationOfIllenessRow["CreateDate"] = DateTime.Now;
+            DurationOfIllenessRow["BodyMassID"] = 1;
+            DurationOfIllenessRow["DoctorName"] = "1";
+            DurationOfIllenessRow["PainScore"] = "1";
+            DurationOfIllenessRow["HeadCircumference"] = 1.0;
+            DurationOfIllenessRow["IsoldVisit"] = false;
+
+            ds1.Tables[3].Rows.Add(DurationOfIllenessRow);
+
+
+            DataRow InvistigationRow = ds1.Tables[4].NewRow();
+
+            InvistigationRow["TBL"] = "1";
+            InvistigationRow["ServiceTypeID"] = 1;
+            InvistigationRow["PrescriptionID"] = 1;
+            InvistigationRow["MonitorID"] = 1;
+            InvistigationRow["PrescriptionDate"] = DateTime.Now;
+            InvistigationRow["DoctorID"] = 1;
+            InvistigationRow["Doctorname"] = "1";
+            InvistigationRow["ItemSequence"] = 1;
+            InvistigationRow["ItemID"] = 1;
+            InvistigationRow["ItemName"] = "1";
+            InvistigationRow["Dose"] = 1;
+            InvistigationRow["DoseID"] = 1;
+            InvistigationRow["DoseUoM"] = 1;
+            InvistigationRow["FrequencyID"] = 1;
+            InvistigationRow["Frequency"] = 1;
+            InvistigationRow["Duration"] = 1;
+            InvistigationRow["DurationID"] = 1;
+            InvistigationRow["DurationUOM"] = 1;
+            InvistigationRow["StartFrom"] = 1;
+            InvistigationRow["Remarks"] = "1";
+            InvistigationRow["SpecimenID"] = 1;
+            InvistigationRow["SpecimenName"] = "1";
+            InvistigationRow["Status"] = 1;
+            InvistigationRow["Quantity"] = 1;
+            InvistigationRow["UserName"] = "1";
+            InvistigationRow["CreateDate"] = DateTime.Now;
+            InvistigationRow["MODDATE"] = DateTime.Now;
+            InvistigationRow["UCAFApproval"] = false;
+            InvistigationRow["USERID"] = 1;
+            InvistigationRow["Itemstatus"] = 1;
+            InvistigationRow["admissionid"] = 1;
+            InvistigationRow["MonitorDate"] = DateTime.Now;
+            InvistigationRow["TestOrderItemID"] = 1;
+            InvistigationRow["TestOrderID"] = 1;
+            InvistigationRow["SpecialiseID"] = 1;
+            InvistigationRow["Specialisation"] = "1";
+            InvistigationRow["ResultStatus"] = 1;
+            InvistigationRow["ResultStatusName"] = "1";
+            InvistigationRow["IsPfVisible"] = false;
+            InvistigationRow["ItemCode"] = "1";
+
+            ds1.Tables[4].Rows.Add(InvistigationRow);
+
+            DataRow MedicationDataRow = ds1.Tables[5].NewRow();
+
+            MedicationDataRow["TBL"] = "1";
+            MedicationDataRow["ServiceTypeID"] = 1;
+            MedicationDataRow["PrescriptionID"] = 1;
+            MedicationDataRow["MonitorID"] = 1;
+            MedicationDataRow["PrescriptionDate"] = DateTime.Now;
+            MedicationDataRow["DoctorID"] = 1;
+            MedicationDataRow["DoctorName"] = "1";
+            MedicationDataRow["ItemSequence"] = 1;
+            MedicationDataRow["ItemID"] = 1;
+            MedicationDataRow["ItemName"] = "1";
+            MedicationDataRow["Dose"] = 1.0;
+            MedicationDataRow["DoseID"] = 1;
+            MedicationDataRow["DoseUoM"] = "1";
+            MedicationDataRow["FrequencyID"] = 1;
+            MedicationDataRow["Frequency"] = "1";
+            MedicationDataRow["Duration"] = 1;
+            MedicationDataRow["DurationID"] = 1;
+            MedicationDataRow["DurationUOM"] = "1";
+            MedicationDataRow["StartFrom"] = DateTime.Now;
+            MedicationDataRow["Remarks"] = "1";
+            MedicationDataRow["SpecimenID"] = 1;
+            MedicationDataRow["SpecimenName"] = 1;
+            MedicationDataRow["Status"] = 1;
+            MedicationDataRow["AdmissionID"] = 1;
+            MedicationDataRow["AdmissionNumber"] = "1";
+            MedicationDataRow["AdmRouteID"] = 1;
+            MedicationDataRow["AdmRoute"] = "1";
+            MedicationDataRow["UserName"] = "1";
+            MedicationDataRow["CreateDate"] = DateTime.Now;
+            MedicationDataRow["ModDate"] = DateTime.Now;
+            MedicationDataRow["blocked"] = 1;
+            MedicationDataRow["CustomizedFlag"] = false;
+            MedicationDataRow["CustDrugDetails"] = "1";
+            MedicationDataRow["FrequencyQTY"] = 1.0;
+            MedicationDataRow["IssueUOMValue"] = 1;
+            MedicationDataRow["IsNarcotic"] = 1;
+            MedicationDataRow["IsAntibiotic"] = false;
+            MedicationDataRow["IsControledDrug"] = false;
+            MedicationDataRow["IsDisPrescription"] = false;
+            MedicationDataRow["UCAFApproval"] = false;
+            MedicationDataRow["GenericID"] = 1;
+            MedicationDataRow["GenericName"] = "1";
+            MedicationDataRow["Strength"] = 1.0;
+            MedicationDataRow["StrengthUOM"] = "1";
+            MedicationDataRow["ScheduleTime"] = "1";
+            MedicationDataRow["PrescriptionNo"] = "1";
+            MedicationDataRow["Remarks1"] = "1";
+            MedicationDataRow["StrengthUoMID"] = 1;
+            MedicationDataRow["ENDDatetime"] = DateTime.Now;
+            MedicationDataRow["DiscontinuingRemarks"] = "1";
+            MedicationDataRow["IsAdverseDrug"] = 1;
+            MedicationDataRow["AdverseDrugDescription"] = "1";
+            MedicationDataRow["ENDDate"] = DateTime.Now;
+            MedicationDataRow["MonitorDate"] = DateTime.Now;
+            MedicationDataRow["PatientInstructions"] = "1";
+            MedicationDataRow["IsPfvisible"] = false;
+            MedicationDataRow["OrderStatus"] = 1;
+            MedicationDataRow["PrescriptionStatusID"] = false;
+            MedicationDataRow["ItemCode"] = "1";
+            MedicationDataRow["PrescriptionStatus"] = 1;
+
+            ds1.Tables[5].Rows.Add(MedicationDataRow);
+
+            DataRow PatientDataRow = ds1.Tables[6].NewRow();
+
+            PatientDataRow["RegCode"] = "1";
+            PatientDataRow["PatientName"] = "1";
+            PatientDataRow["Gender"] = "1";
+            PatientDataRow["MobileNo"] = "1";
+            PatientDataRow["HospitalName"] = "1";
+            PatientDataRow["FullAge"] = "1";
+            PatientDataRow["Nationality"] = "1";
+            PatientDataRow["FamilyHeadId"] = "1";
+            PatientDataRow["IsContrastAllergic"] = false;
+            PatientDataRow["DoctorName"] = "1";
+            PatientDataRow["Admitdate"] = "1";
+            PatientDataRow["CompanyName"] = "1";
+            PatientDataRow["DocSpecDepartment"] = "1";
+            PatientDataRow["DocSign"] = "1";
+            PatientDataRow["DocCode"] = "1";
+
+            ds1.Tables[6].Rows.Add(PatientDataRow);
+
+
+            DataRow ProcedureRow = ds1.Tables[7].NewRow();
+
+            ProcedureRow["Tbl"] = "1";
+            ProcedureRow["ServiceTypeID"] = 1;
+            ProcedureRow["PrescriptionID"] = 1;
+            ProcedureRow["MonitorID"] = 1;
+            ProcedureRow["PrescriptionDate"] = DateTime.Now;
+            ProcedureRow["DoctorID"] = 1;
+            ProcedureRow["Doctorname"] = "1";
+            ProcedureRow["ItemSequence"] = 1;
+            ProcedureRow["ItemID"] = 1;
+            ProcedureRow["ItemName"] = "1";
+            ProcedureRow["Dose"] = 1;
+            ProcedureRow["DoseID"] = 1;
+            ProcedureRow["DoseUoM"] = 1;
+            ProcedureRow["FrequencyID"] = 1;
+            ProcedureRow["Frequency"] = 1;
+            ProcedureRow["Duration"] = 1;
+            ProcedureRow["DurationID"] = 1;
+            ProcedureRow["DurationUOM"] = 1;
+            ProcedureRow["StartFrom"] = 1;
+            ProcedureRow["Remarks"] = "1";
+            ProcedureRow["SpecimenID"] = 1;
+            ProcedureRow["SpecimenName"] = "1";
+            ProcedureRow["Status"] = 1;
+            ProcedureRow["Quantity"] = 1;
+            ProcedureRow["UserName"] = "1";
+            ProcedureRow["CreateDate"] = DateTime.Now;
+            ProcedureRow["MODDATE"] = DateTime.Now;
+            ProcedureRow["UCAFApproval"] = false;
+            ProcedureRow["USERID"] = 1;
+            ProcedureRow["SpecialiseID"] = 1;
+            ProcedureRow["Specialisation"] = "1";
+            ProcedureRow["WorkstationName"] = "1";
+            ProcedureRow["MonitorDate"] = DateTime.Now;
+            ProcedureRow["ItemStatus"] = 1;
+            ProcedureRow["TestOrderItemID"] = 1;
+            ProcedureRow["TestOrderID"] = 1;
+            ProcedureRow["ResultStatus"] = 1;
+            ProcedureRow["ResultStatusName"] = "1";
+            ProcedureRow["IsPfVisible"] = false;
+            ProcedureRow["ItemCode"] = "1";
+
+            ds1.Tables[7].Rows.Add(ProcedureRow);
+
+            ds1.Tables[8].Rows.Add(ds1.Tables[8].NewRow());
+            ds1.Tables[9].Rows.Add(ds1.Tables[9].NewRow());
+
+            DataRow VitalsRow = ds1.Tables[10].NewRow();
+
+            VitalsRow["TBL"] = "1";
+            VitalsRow["Value"] = "1";
+            VitalsRow["Datetime"] = DateTime.Now;
+            VitalsRow["Vital"] = "1";
+            VitalsRow["UOM"] = "1";
+            VitalsRow["MINVALUE"] = 1.0;
+            VitalsRow["MAXVALUE"] = 1.0;
+            VitalsRow["AssessmentID"] = 1;
+            VitalsRow["UserName"] = "1";
+            VitalsRow["USERID"] = 1;
+            VitalsRow["IsPsd"] = 1;
+            VitalsRow["DoctorID"] = 1;
+            VitalsRow["MonitorID"] = 1;
+            VitalsRow["MonitorDate"] = DateTime.Now;
+            VitalsRow["Comments"] = "1";
+            VitalsRow["ArchiveModdate"] = DateTime.Now;
+            VitalsRow["Status"] = 1;
+            VitalsRow["IsPfVisible"] = 1;
+
+            ds1.Tables[10].Rows.Add(VitalsRow);
+
+            ds1.Tables[11].Rows.Add(ds1.Tables[11].NewRow());
+            ds1.Tables[12].Rows.Add(ds1.Tables[12].NewRow());
+            ds1.Tables[13].Rows.Add(ds1.Tables[13].NewRow());
+            ds1.Tables[14].Rows.Add(ds1.Tables[14].NewRow());
+
+            
+            ReportDocument cryRpt = new ReportDocument();
+            cryRpt.Load(System.Configuration.ConfigurationManager.AppSettings["ReportPath"] + "CaseRecord.rpt");
+            cryRpt.SetDataSource(ds1);
+            cryRpt.Refresh();
+            cryRpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + 1.ToString() + ".pdf");
+            return "Success";
+
+        }
+
+
+
+        //https://localhost:44351/api/reportapi/PrescriptionBegin?AdmissionId=2449626
+        [Route("api/reportapi/PrescriptionBegin")]
+        public string GetPrescriptionBegin(string AdmissionId)
+        {
+            DataSet ds1 = CreateDatasetForPrescriptionNew();
+
+
+            DataRow AdviceRow = ds1.Tables[0].NewRow();
+            ds1.Tables[0].Rows.Add(AdviceRow);
+
+            DataRow DiagnosisRow = ds1.Tables[1].NewRow();
+            ds1.Tables[1].Rows.Add(DiagnosisRow);
+
+            DataRow DrugAllergiesRow = ds1.Tables[2].NewRow();
+            ds1.Tables[2].Rows.Add(DrugAllergiesRow);
+
+            DataRow DurationOfIllenessRow = ds1.Tables[3].NewRow();
+            ds1.Tables[3].Rows.Add(DurationOfIllenessRow);
+
+            DataRow InvestigationsRow = ds1.Tables[4].NewRow();
+            ds1.Tables[4].Rows.Add(InvestigationsRow);
+
+            DataRow MedicationDataRow = ds1.Tables[5].NewRow();
+            ds1.Tables[5].Rows.Add(MedicationDataRow);
+
+            DataRow PatientDataRow = ds1.Tables[6].NewRow();
+
+            PatientDataRow["RegCode"] = "1";
+            PatientDataRow["PatientName"] = "1";
+            PatientDataRow["Gender"] = "1";
+            PatientDataRow["MobileNo"] = "1";
+            PatientDataRow["HospitalName"] = "1";
+            PatientDataRow["FullAge"] = "1";
+            PatientDataRow["Nationality"] = "1";
+            // PatientDataRow["FamilyHeadId"] = "1";
+            // PatientDataRow["IsContrastAllergic"] = false;
+            PatientDataRow["DoctorName"] = "1";
+            PatientDataRow["Admitdate"] = "1";
+            PatientDataRow["CompanyName"] = "1";
+            PatientDataRow["DocSpecDepartment"] = "1";
+            PatientDataRow["DocSign"] = "1";
+            PatientDataRow["DocCode"] = "1";
+
+            ds1.Tables[6].Rows.Add(PatientDataRow);
+
+            DataRow ProceduresRow = ds1.Tables[7].NewRow();
+            ds1.Tables[7].Rows.Add(ProceduresRow);
+
+            DataRow SurgeryRow = ds1.Tables[8].NewRow();
+            ds1.Tables[8].Rows.Add(SurgeryRow);
+
+            DataRow TemplateDataRow = ds1.Tables[9].NewRow();
+            ds1.Tables[9].Rows.Add(TemplateDataRow);
+
+            DataRow VitalsRow = ds1.Tables[10].NewRow();
+            ds1.Tables[10].Rows.Add(VitalsRow);
+
+            DataRow PateintBloodOrdersRow = ds1.Tables[11].NewRow();
+            ds1.Tables[11].Rows.Add(PateintBloodOrdersRow);
+
+            DataRow FoodAllergiesRow = ds1.Tables[12].NewRow();
+            ds1.Tables[12].Rows.Add(FoodAllergiesRow);
+
+            DataRow OtherAlleriesRow = ds1.Tables[13].NewRow();
+            ds1.Tables[13].Rows.Add(OtherAlleriesRow);
+
+            DataRow ReferalRow = ds1.Tables[14].NewRow();
+            ds1.Tables[14].Rows.Add(ReferalRow);
+
+            ReportDocument cryRpt = new ReportDocument();
+            cryRpt.Load(System.Configuration.ConfigurationManager.AppSettings["ReportPath"] + "CaseRecord.rpt");
+            cryRpt.SetDataSource(ds1);
+            cryRpt.Refresh();
+            cryRpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + 1.ToString() + ".pdf");
+            return "Success";
+        }
+
         private string ReferenceRange(string strMinVal, string strMaxVal, bool blnUnits, string strUnit, bool blnPrefix, string strKeyword, string StrSIUnit)
         {
             try
@@ -999,6 +1437,1011 @@ namespace Reports.Controllers
             return ds1;
         }
 
+
+        private DataSet CreateDataSetForPrescription()
+        {
+            DataSet ds1 = new DataSet();
+
+
+            ds1.Tables.Add("Advice");
+            ds1.Tables.Add("Diagnosis");
+            ds1.Tables.Add("DrugAllergies");
+            ds1.Tables.Add("DurationOfIllness");
+            ds1.Tables.Add("Investigations");
+            ds1.Tables.Add("MedicationData");
+            ds1.Tables.Add("PatientData");
+            ds1.Tables.Add("Procedures");
+            ds1.Tables.Add("Surgery");
+            ds1.Tables.Add("TemplateData");
+            ds1.Tables.Add("Vitals");
+            ds1.Tables.Add("PateintBloodOrders");
+            ds1.Tables.Add("FoodAllergies");
+            ds1.Tables.Add("OtherAllergies");
+            ds1.Tables.Add("Referal");
+
+
+            ds1.Tables[0].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[0].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("PatientType", typeof(int));
+            ds1.Tables[0].Columns.Add("FollowUpType", typeof(int));
+            ds1.Tables[0].Columns.Add("Advice", typeof(string));
+            ds1.Tables[0].Columns.Add("ReferralOrderID", typeof(int));
+            ds1.Tables[0].Columns.Add("FollowAfter", typeof(int));
+            ds1.Tables[0].Columns.Add("FollowUpOn", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("IsInternalReferral", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("RefDoctorID", typeof(int));
+            ds1.Tables[0].Columns.Add("PatientID", typeof(int));
+            ds1.Tables[0].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[0].Columns.Add("AdmissionNumber", typeof(string));
+            ds1.Tables[0].Columns.Add("RefDoctorName", typeof(string));
+            ds1.Tables[0].Columns.Add("ReasonForAdm", typeof(string));
+            ds1.Tables[0].Columns.Add("UserName", typeof(string));
+            ds1.Tables[0].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("MODDATE", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("ProcedureId", typeof(int));
+            ds1.Tables[0].Columns.Add("ProcedureName", typeof(string));
+            ds1.Tables[0].Columns.Add("USERID", typeof(int));
+            ds1.Tables[0].Columns.Add("LengthOfStay", typeof(int));
+            ds1.Tables[0].Columns.Add("Adviceid", typeof(int));
+            ds1.Tables[0].Columns.Add("TreatmentPlanID", typeof(int));
+            ds1.Tables[0].Columns.Add("TreatmentPlanName", typeof(string));
+            ds1.Tables[0].Columns.Add("IsPfVisible", typeof(int));
+            ds1.Tables[0].Columns.Add("DietTypeID", typeof(int));
+            ds1.Tables[0].Columns.Add("DietType", typeof(string));
+            ds1.Tables[0].Columns.Add("IPID", typeof(int));
+            ds1.Tables[0].Columns.Add("DoctorID", typeof(string));
+            ds1.Tables[0].Columns.Add("IsSpecialityTreatmentApplicable", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("FollowUpCount", typeof(int));
+            ds1.Tables[0].Columns.Add("Followupdays", typeof(int));
+            ds1.Tables[0].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[0].Columns.Add("PrimaryDocID", typeof(int));
+            ds1.Tables[0].Columns.Add("PrimaryDocName", typeof(string));
+            ds1.Tables[0].Columns.Add("PatientTemplateid", typeof(int));
+            ds1.Tables[0].Columns.Add("AdmissionTypeID", typeof(int));
+            ds1.Tables[0].Columns.Add("AdmissionType", typeof(string));
+            ds1.Tables[0].Columns.Add("IsVitual", typeof(int));
+
+
+            ds1.Tables[1].Columns.Add("TBL", typeof(string));
+            ds1.Tables[1].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[1].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[1].Columns.Add("DiseaseID", typeof(int));
+            ds1.Tables[1].Columns.Add("DiagnosisType", typeof(int));
+            ds1.Tables[1].Columns.Add("DiseaseName", typeof(string));
+            ds1.Tables[1].Columns.Add("Code", typeof(string));
+            ds1.Tables[1].Columns.Add("PatientID", typeof(int));
+            ds1.Tables[1].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[1].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[1].Columns.Add("MODDATE", typeof(DateTime));
+            ds1.Tables[1].Columns.Add("ProblemPointID", typeof(int));
+            ds1.Tables[1].Columns.Add("ProblemPointName", typeof(string));
+            ds1.Tables[1].Columns.Add("PointValue", typeof(int));
+            ds1.Tables[1].Columns.Add("Username", typeof(string));
+            ds1.Tables[1].Columns.Add("AssessmentID", typeof(int));
+            ds1.Tables[1].Columns.Add("userid", typeof(int));
+            ds1.Tables[1].Columns.Add("DiagonosisTypeID", typeof(int));
+            ds1.Tables[1].Columns.Add("IsPsd", typeof(int));
+            ds1.Tables[1].Columns.Add("Blocked", typeof(int));
+            ds1.Tables[1].Columns.Add("DiagonosisType", typeof(string));
+            ds1.Tables[1].Columns.Add("IsPfVisible", typeof(int));
+            ds1.Tables[1].Columns.Add("SignificantData", typeof(bool));
+            ds1.Tables[1].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[1].Columns.Add("IsAdmitDisease", typeof(bool));
+            ds1.Tables[1].Columns.Add("ExpectedLengthOfStay", typeof(int));
+            ds1.Tables[1].Columns.Add("DoctorId", typeof(int));
+            ds1.Tables[1].Columns.Add("DiagnosisStatus", typeof(string));
+
+
+            ds1.Tables[2].Columns.Add("TBL", typeof(string));
+            ds1.Tables[2].Columns.Add("GenericID", typeof(int));
+            ds1.Tables[2].Columns.Add("Remark", typeof(string));
+            ds1.Tables[2].Columns.Add("GenericName", typeof(string));
+            ds1.Tables[2].Columns.Add("GenericName2L", typeof(string));
+            ds1.Tables[2].Columns.Add("FROMdate", typeof(DateTime));
+            ds1.Tables[2].Columns.Add("todate", typeof(DateTime));
+            ds1.Tables[2].Columns.Add("Description", typeof(string));
+            ds1.Tables[2].Columns.Add("IsNotActive", typeof(bool));
+            ds1.Tables[2].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[2].Columns.Add("IPID", typeof(int));
+            ds1.Tables[2].Columns.Add("AllergieTypes", typeof(string));
+            ds1.Tables[2].Columns.Add("Doctorid", typeof(int));
+            ds1.Tables[2].Columns.Add("IsPfVisible", typeof(Boolean));
+            ds1.Tables[2].Columns.Add("Status", typeof(int));
+
+
+            ds1.Tables[3].Columns.Add("TBL", typeof(string));
+            ds1.Tables[3].Columns.Add("EpisodeName", typeof(string));
+            ds1.Tables[3].Columns.Add("DurationOfIllness", typeof(string));
+            ds1.Tables[3].Columns.Add("Height", typeof(Decimal));
+            ds1.Tables[3].Columns.Add("Weight", typeof(Decimal));
+            ds1.Tables[3].Columns.Add("PainScoreID", typeof(int));
+            ds1.Tables[3].Columns.Add("IsEducated", typeof(bool));
+            ds1.Tables[3].Columns.Add("IsSmoke", typeof(bool));
+            ds1.Tables[3].Columns.Add("IsPregnent", typeof(Boolean));
+            ds1.Tables[3].Columns.Add("ExpectedDeliveryDate", typeof(DateTime));
+            ds1.Tables[3].Columns.Add("IsPatientDrugAlleric", typeof(bool));
+            ds1.Tables[3].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[3].Columns.Add("BodyMassID", typeof(string));
+            ds1.Tables[3].Columns.Add("DoctorName", typeof(string));
+            ds1.Tables[3].Columns.Add("PainScore", typeof(string));
+            ds1.Tables[3].Columns.Add("HeadCircumference", typeof(Decimal));
+            ds1.Tables[3].Columns.Add("IsoldVisit", typeof(Boolean));
+            ds1.Tables[3].Columns.Add("Pregnancy", typeof(Boolean));
+            ds1.Tables[3].Columns.Add("Lactation", typeof(Boolean));
+            ds1.Tables[3].Columns.Add("TriSemester", typeof(Boolean));
+            ds1.Tables[3].Columns.Add("PlannedDischargeDate", typeof(DateTime));
+            ds1.Tables[3].Columns.Add("LMP", typeof(DateTime));
+            ds1.Tables[3].Columns.Add("CTASScoreColorID", typeof(int));
+            ds1.Tables[3].Columns.Add("Score", typeof(string));
+            ds1.Tables[3].Columns.Add("Color", typeof(string));
+            ds1.Tables[3].Columns.Add("CTASDescription", typeof(string));
+
+            ds1.Tables[4].Columns.Add("TBL", typeof(string));
+            ds1.Tables[4].Columns.Add("ServiceTypeID", typeof(int));
+            ds1.Tables[4].Columns.Add("PrescriptionID", typeof(int));
+            ds1.Tables[4].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[4].Columns.Add("PrescriptionDate", typeof(DateTime));
+            ds1.Tables[4].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[4].Columns.Add("Doctorname", typeof(string));
+            ds1.Tables[4].Columns.Add("ItemSequence", typeof(int));
+            ds1.Tables[4].Columns.Add("ItemID", typeof(int));
+            ds1.Tables[4].Columns.Add("ItemName", typeof(string));
+            ds1.Tables[4].Columns.Add("Dose", typeof(int));
+            ds1.Tables[4].Columns.Add("DoseID", typeof(int));
+            ds1.Tables[4].Columns.Add("DoseUoM", typeof(int));
+            ds1.Tables[4].Columns.Add("FrequencyID", typeof(int));
+            ds1.Tables[4].Columns.Add("Frequency", typeof(int));
+            ds1.Tables[4].Columns.Add("Duration", typeof(int));
+            ds1.Tables[4].Columns.Add("DurationID", typeof(int));
+            ds1.Tables[4].Columns.Add("DurationUOM", typeof(int));
+            ds1.Tables[4].Columns.Add("StartFrom", typeof(int));
+            ds1.Tables[4].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[4].Columns.Add("SpecimenID", typeof(int));
+            ds1.Tables[4].Columns.Add("SpecimenName", typeof(string));
+            ds1.Tables[4].Columns.Add("Status", typeof(int));
+            ds1.Tables[4].Columns.Add("Quantity", typeof(int));
+            ds1.Tables[4].Columns.Add("UserName", typeof(string));
+            ds1.Tables[4].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[4].Columns.Add("MODDATE", typeof(DateTime));
+            ds1.Tables[4].Columns.Add("UCAFApproval", typeof(Boolean));
+            ds1.Tables[4].Columns.Add("USERID", typeof(int));
+            ds1.Tables[4].Columns.Add("Itemstatus", typeof(int));
+            ds1.Tables[4].Columns.Add("admissionid", typeof(int));
+            ds1.Tables[4].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[4].Columns.Add("TestOrderItemID", typeof(int));
+            ds1.Tables[4].Columns.Add("TestOrderID", typeof(int));
+            ds1.Tables[4].Columns.Add("SpecialiseID", typeof(int));
+            ds1.Tables[4].Columns.Add("Specialisation", typeof(string));
+            ds1.Tables[4].Columns.Add("ResultStatus", typeof(int));
+            ds1.Tables[4].Columns.Add("ResultStatusName", typeof(string));
+            ds1.Tables[4].Columns.Add("IsPfVisible", typeof(Boolean));
+            ds1.Tables[4].Columns.Add("ItemCode", typeof(string));
+            ds1.Tables[4].Columns.Add("Isresult", typeof(bool));
+            ds1.Tables[4].Columns.Add("OrderType", typeof(string));
+
+
+            ds1.Tables[5].Columns.Add("TBL", typeof(string));
+            ds1.Tables[5].Columns.Add("ServiceTypeID", typeof(int));
+            ds1.Tables[5].Columns.Add("PrescriptionID", typeof(int));
+            ds1.Tables[5].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[5].Columns.Add("PrescriptionDate", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[5].Columns.Add("DoctorName", typeof(string));
+            ds1.Tables[5].Columns.Add("ItemSequence", typeof(int));
+            ds1.Tables[5].Columns.Add("ItemID", typeof(int));
+            ds1.Tables[5].Columns.Add("ItemName", typeof(string));
+            ds1.Tables[5].Columns.Add("Dose", typeof(Decimal));
+            ds1.Tables[5].Columns.Add("DoseID", typeof(int));
+            ds1.Tables[5].Columns.Add("DoseUoM", typeof(string));
+            ds1.Tables[5].Columns.Add("FrequencyID", typeof(int));
+            ds1.Tables[5].Columns.Add("Frequency", typeof(string));
+            ds1.Tables[5].Columns.Add("Duration", typeof(int));
+            ds1.Tables[5].Columns.Add("DurationID", typeof(int));
+            ds1.Tables[5].Columns.Add("DurationUOM", typeof(string));
+            ds1.Tables[5].Columns.Add("StartFrom", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[5].Columns.Add("SpecimenID", typeof(int));
+            ds1.Tables[5].Columns.Add("SpecimenName", typeof(int));
+            ds1.Tables[5].Columns.Add("Status", typeof(int));
+            ds1.Tables[5].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[5].Columns.Add("AdmissionNumber", typeof(string));
+            ds1.Tables[5].Columns.Add("AdmRouteID", typeof(int));
+            ds1.Tables[5].Columns.Add("AdmRoute", typeof(string));
+            ds1.Tables[5].Columns.Add("UserName", typeof(string));
+            ds1.Tables[5].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("ModDate", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("blocked", typeof(int));
+            ds1.Tables[5].Columns.Add("CustomizedFlag", typeof(Boolean));
+            ds1.Tables[5].Columns.Add("CustDrugDetails", typeof(string));
+            ds1.Tables[5].Columns.Add("FrequencyQTY", typeof(Decimal));
+            ds1.Tables[5].Columns.Add("IssueUOMValue", typeof(int));
+            ds1.Tables[5].Columns.Add("IsNarcotic", typeof(int));
+            ds1.Tables[5].Columns.Add("IsAntibiotic", typeof(int));
+            ds1.Tables[5].Columns.Add("IsControledDrug", typeof(int));
+            ds1.Tables[5].Columns.Add("IsDisPrescription", typeof(Boolean));
+            ds1.Tables[5].Columns.Add("UCAFApproval", typeof(Boolean));
+            ds1.Tables[5].Columns.Add("GenericID", typeof(int));
+            ds1.Tables[5].Columns.Add("GenericName", typeof(string));
+            ds1.Tables[5].Columns.Add("Strength", typeof(Decimal));
+            ds1.Tables[5].Columns.Add("StrengthUOM", typeof(string));
+            ds1.Tables[5].Columns.Add("ScheduleTime", typeof(string));
+            ds1.Tables[5].Columns.Add("PrescriptionNo", typeof(string));
+            ds1.Tables[5].Columns.Add("Remarks1", typeof(string));
+            ds1.Tables[5].Columns.Add("StrengthUoMID", typeof(int));
+            ds1.Tables[5].Columns.Add("ENDDatetime", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("DiscontinuingRemarks", typeof(string));
+            ds1.Tables[5].Columns.Add("IsAdverseDrug", typeof(int));
+            ds1.Tables[5].Columns.Add("AdverseDrugDescription", typeof(string));
+            ds1.Tables[5].Columns.Add("ENDDate", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("PatientInstructions", typeof(string));
+            ds1.Tables[5].Columns.Add("IsPfvisible", typeof(Boolean));
+            ds1.Tables[5].Columns.Add("OrderStatus", typeof(int));
+            ds1.Tables[5].Columns.Add("PrescriptionStatusID", typeof(int));
+            ds1.Tables[5].Columns.Add("ItemCode", typeof(string));
+            ds1.Tables[5].Columns.Add("PrescriptionStatus", typeof(int));
+            ds1.Tables[5].Columns.Add("PrescriptionModDate", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("TOTIssuingQty", typeof(int));
+            ds1.Tables[5].Columns.Add("TotIssuingQtyUOM", typeof(string));
+
+            ds1.Tables[6].Columns.Add("RegCode", typeof(string));
+            ds1.Tables[6].Columns.Add("PatientName", typeof(string));
+            ds1.Tables[6].Columns.Add("Gender", typeof(string));
+            ds1.Tables[6].Columns.Add("MobileNo", typeof(string));
+            ds1.Tables[6].Columns.Add("HospitalName", typeof(string));
+            ds1.Tables[6].Columns.Add("FullAge", typeof(string));
+            ds1.Tables[6].Columns.Add("Nationality", typeof(string));
+            ds1.Tables[6].Columns.Add("FamilyHeadId", typeof(string));
+            ds1.Tables[6].Columns.Add("IsContrastAllergic", typeof(Boolean));
+            ds1.Tables[6].Columns.Add("DoctorName", typeof(string));
+            ds1.Tables[6].Columns.Add("Admitdate", typeof(string));
+            ds1.Tables[6].Columns.Add("CompanyName", typeof(string));
+            ds1.Tables[6].Columns.Add("DocSpecDepartment", typeof(string));
+            ds1.Tables[6].Columns.Add("DocSign", typeof(string));
+            ds1.Tables[6].Columns.Add("DocCode", typeof(string));
+
+            ds1.Tables[7].Columns.Add("TBL", typeof(string));
+            ds1.Tables[7].Columns.Add("ServiceTypeID", typeof(int));
+            ds1.Tables[7].Columns.Add("PrescriptionID", typeof(int));
+            ds1.Tables[7].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[7].Columns.Add("PrescriptionDate", typeof(DateTime));
+            ds1.Tables[7].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[7].Columns.Add("Doctorname", typeof(string));
+            ds1.Tables[7].Columns.Add("ItemSequence", typeof(int));
+            ds1.Tables[7].Columns.Add("ItemID", typeof(int));
+            ds1.Tables[7].Columns.Add("ItemName", typeof(string));
+            ds1.Tables[7].Columns.Add("Dose", typeof(int));
+            ds1.Tables[7].Columns.Add("DoseID", typeof(int));
+            ds1.Tables[7].Columns.Add("DoseUoM", typeof(int));
+            ds1.Tables[7].Columns.Add("FrequencyID", typeof(int));
+            ds1.Tables[7].Columns.Add("Frequency", typeof(int));
+            ds1.Tables[7].Columns.Add("Duration", typeof(int));
+            ds1.Tables[7].Columns.Add("DurationID", typeof(int));
+            ds1.Tables[7].Columns.Add("DurationUOM", typeof(int));
+            ds1.Tables[7].Columns.Add("StartFrom", typeof(int));
+            ds1.Tables[7].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[7].Columns.Add("SpecimenID", typeof(int));
+            ds1.Tables[7].Columns.Add("SpecimenName", typeof(string));
+            ds1.Tables[7].Columns.Add("Status", typeof(int));
+            ds1.Tables[7].Columns.Add("Quantity", typeof(int));
+            ds1.Tables[7].Columns.Add("UserName", typeof(string));
+            ds1.Tables[7].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[7].Columns.Add("MODDATE", typeof(DateTime));
+            ds1.Tables[7].Columns.Add("UCAFApproval", typeof(bool));
+            ds1.Tables[7].Columns.Add("USERID", typeof(int));
+            ds1.Tables[7].Columns.Add("SpecialiseID", typeof(int));
+            ds1.Tables[7].Columns.Add("Specialisation", typeof(string));
+            ds1.Tables[7].Columns.Add("WorkstationName", typeof(string));
+            ds1.Tables[7].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[7].Columns.Add("ItemStatus", typeof(int));
+            ds1.Tables[7].Columns.Add("TestOrderItemID", typeof(int));
+            ds1.Tables[7].Columns.Add("TestOrderID", typeof(int));
+            ds1.Tables[7].Columns.Add("ResultStatus", typeof(int));
+            ds1.Tables[7].Columns.Add("ResultStatusName", typeof(string));
+            ds1.Tables[7].Columns.Add("IsPfVisible", typeof(bool));
+            ds1.Tables[7].Columns.Add("ItemCode", typeof(string));
+            ds1.Tables[7].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[7].Columns.Add("IsTreatmentplanApplicable", typeof(bool));
+            ds1.Tables[7].Columns.Add("OrderType", typeof(string));
+
+            ds1.Tables[8].Columns.Add("TBL", typeof(string));
+            ds1.Tables[8].Columns.Add("SurgeryRequestId", typeof(int));
+            ds1.Tables[8].Columns.Add("PatientId", typeof(int));
+            ds1.Tables[8].Columns.Add("PatientName", typeof(string));
+            ds1.Tables[8].Columns.Add("RegCode", typeof(string));
+            ds1.Tables[8].Columns.Add("Age", typeof(string));
+            ds1.Tables[8].Columns.Add("Gender", typeof(string));
+            ds1.Tables[8].Columns.Add("Age_x002F_Gender", typeof(string));
+            ds1.Tables[8].Columns.Add("SurgeryRequesteDby", typeof(int));
+            ds1.Tables[8].Columns.Add("ProcedureID", typeof(int));
+            ds1.Tables[8].Columns.Add("ProcedureName", typeof(string));
+            ds1.Tables[8].Columns.Add("payerid", typeof(int));
+            ds1.Tables[8].Columns.Add("ReceiverID", typeof(int));
+            ds1.Tables[8].Columns.Add("GradeID", typeof(int));
+            ds1.Tables[8].Columns.Add("GradeName", typeof(string));
+            ds1.Tables[8].Columns.Add("TaskStatus", typeof(int));
+            ds1.Tables[8].Columns.Add("StatusName", typeof(string));
+            ds1.Tables[8].Columns.Add("StatusColor", typeof(int));
+            ds1.Tables[8].Columns.Add("MonitorId", typeof(int));
+            ds1.Tables[8].Columns.Add("VisitId", typeof(int));
+            ds1.Tables[8].Columns.Add("IpId", typeof(int));
+            ds1.Tables[8].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[8].Columns.Add("ScheduleId", typeof(int));
+            ds1.Tables[8].Columns.Add("OrderId", typeof(int));
+            ds1.Tables[8].Columns.Add("ServiceId", typeof(int));
+            ds1.Tables[8].Columns.Add("Reqconsentteken", typeof(Boolean));
+            ds1.Tables[8].Columns.Add("InstructionType", typeof(int));
+            ds1.Tables[8].Columns.Add("ProcedureTypeid", typeof(int));
+            ds1.Tables[8].Columns.Add("ReqconsenttekEndate", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("Consenttaken", typeof(Boolean));
+            ds1.Tables[8].Columns.Add("ConsenttakEndate", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("SurgeryType", typeof(int));
+            ds1.Tables[8].Columns.Add("Tentativesurgeryplaned", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("TentavtiveStartTime", typeof(string));
+            ds1.Tables[8].Columns.Add("Estimatedtimeduration", typeof(string));
+            ds1.Tables[8].Columns.Add("Anesthesiologistinstructions", typeof(string));
+            ds1.Tables[8].Columns.Add("Otinstructions", typeof(string));
+            ds1.Tables[8].Columns.Add("WardsInstructions", typeof(string));
+            ds1.Tables[8].Columns.Add("Anesthesiologist", typeof(int));
+            ds1.Tables[8].Columns.Add("EquipmentsurgerYId", typeof(int));
+            ds1.Tables[8].Columns.Add("Implantsurgeryid", typeof(int));
+            ds1.Tables[8].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("ModDate", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("EndDate", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("Blocked", typeof(int));
+            ds1.Tables[8].Columns.Add("Routid", typeof(int));
+            ds1.Tables[8].Columns.Add("Userid", typeof(int));
+            ds1.Tables[8].Columns.Add("Workstationid", typeof(int));
+            ds1.Tables[8].Columns.Add("Status", typeof(int));
+            ds1.Tables[8].Columns.Add("Rowseq", typeof(string));
+            ds1.Tables[8].Columns.Add("Isprimary", typeof(int));
+            ds1.Tables[8].Columns.Add("Priority", typeof(int));
+            ds1.Tables[8].Columns.Add("Doctorname", typeof(string));
+            ds1.Tables[8].Columns.Add("DoctorQualification", typeof(string));
+            ds1.Tables[8].Columns.Add("DoctorDesignation", typeof(string));
+            ds1.Tables[8].Columns.Add("Surgeon", typeof(string));
+            ds1.Tables[8].Columns.Add("SurgeonQualification", typeof(string));
+            ds1.Tables[8].Columns.Add("SurgeonSignature", typeof(string));
+            ds1.Tables[8].Columns.Add("SurgeonDesignation", typeof(string));
+            ds1.Tables[8].Columns.Add("Anestheologistname", typeof(string));
+            ds1.Tables[8].Columns.Add("AnestheologistQualification", typeof(string));
+            ds1.Tables[8].Columns.Add("AnestheologistSignature", typeof(string));
+            ds1.Tables[8].Columns.Add("AnestheologistDesignation", typeof(string));
+            ds1.Tables[8].Columns.Add("PACDateTime", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("Facilityid", typeof(int));
+            ds1.Tables[8].Columns.Add("ScheduleDate", typeof(string));
+            ds1.Tables[8].Columns.Add("IsInfected", typeof(Boolean));
+            ds1.Tables[8].Columns.Add("InfectionDetails", typeof(string));
+            ds1.Tables[8].Columns.Add("CancelRemarks", typeof(string));
+            ds1.Tables[8].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[8].Columns.Add("ISPatientFit", typeof(Boolean));
+            ds1.Tables[8].Columns.Add("SurgeonID", typeof(int));
+            ds1.Tables[8].Columns.Add("IsApprovedByBilling", typeof(Boolean));
+            ds1.Tables[8].Columns.Add("BillingRemarks", typeof(string));
+            ds1.Tables[8].Columns.Add("BillingRemarksEnteredDate", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("StartTime", typeof(string));
+            ds1.Tables[8].Columns.Add("ENDTime", typeof(string));
+            ds1.Tables[8].Columns.Add("FROMSlot", typeof(int));
+            ds1.Tables[8].Columns.Add("ToSlot", typeof(int));
+            ds1.Tables[8].Columns.Add("Primarydoctorname", typeof(string));
+            ds1.Tables[8].Columns.Add("OTReceptionFacilityId", typeof(int));
+            ds1.Tables[8].Columns.Add("OTReceptionFacility", typeof(string));
+            ds1.Tables[8].Columns.Add("ProcedureCode", typeof(string));
+
+
+            ds1.Tables[9].Columns.Add("TBL", typeof(string));
+            ds1.Tables[9].Columns.Add("ComponentID", typeof(int));
+            ds1.Tables[9].Columns.Add("Value", typeof(string));
+            ds1.Tables[9].Columns.Add("ComponentName", typeof(string));
+            ds1.Tables[9].Columns.Add("AssessmentID", typeof(int));
+            ds1.Tables[9].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[9].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[9].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[9].Columns.Add("PreviewHTML", typeof(string));
+            ds1.Tables[9].Columns.Add("CSTemplateID", typeof(int));
+
+            ds1.Tables[10].Columns.Add("TBL", typeof(string));
+            ds1.Tables[10].Columns.Add("Value", typeof(string));
+            ds1.Tables[10].Columns.Add("Datetime", typeof(DateTime));
+            ds1.Tables[10].Columns.Add("Vital", typeof(string));
+            ds1.Tables[10].Columns.Add("UOM", typeof(string));
+            ds1.Tables[10].Columns.Add("MINVALUE", typeof(Decimal));
+            ds1.Tables[10].Columns.Add("MAXVALUE", typeof(Decimal));
+            ds1.Tables[10].Columns.Add("AssessmentID", typeof(int));
+            ds1.Tables[10].Columns.Add("UserName", typeof(string));
+            ds1.Tables[10].Columns.Add("USERID", typeof(int));
+            ds1.Tables[10].Columns.Add("IsPsd", typeof(int));
+            ds1.Tables[10].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[10].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[10].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[10].Columns.Add("Comments", typeof(string));
+            ds1.Tables[10].Columns.Add("ArchiveModdate", typeof(DateTime));
+            ds1.Tables[10].Columns.Add("Status", typeof(int));
+            ds1.Tables[10].Columns.Add("IsPfVisible", typeof(int));
+            ds1.Tables[10].Columns.Add("VITALSIGNID", typeof(int));
+            ds1.Tables[10].Columns.Add("Sequence", typeof(bool));
+            ds1.Tables[10].Columns.Add("VitalSignDate", typeof(DateTime));
+
+            ds1.Tables[11].Columns.Add("PatientID", typeof(int));
+            ds1.Tables[11].Columns.Add("IPID", typeof(int));
+            ds1.Tables[11].Columns.Add("PatientName", typeof(string));
+            ds1.Tables[11].Columns.Add("AdmissionNumber", typeof(string));
+            ds1.Tables[11].Columns.Add("BloodorderID", typeof(int));
+            ds1.Tables[11].Columns.Add("ComponentID", typeof(int));
+            ds1.Tables[11].Columns.Add("Component", typeof(string));
+            ds1.Tables[11].Columns.Add("Quantity", typeof(int));
+            ds1.Tables[11].Columns.Add("RequiredDate", typeof(DateTime));
+            ds1.Tables[11].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[11].Columns.Add("Volume", typeof(int));
+            ds1.Tables[11].Columns.Add("Type", typeof(int));
+            ds1.Tables[11].Columns.Add("Componentcode", typeof(string));
+
+            ds1.Tables[12].Columns.Add("TBL", typeof(string));
+            ds1.Tables[12].Columns.Add("FoodID", typeof(int));
+            ds1.Tables[12].Columns.Add("Remark", typeof(string));
+            ds1.Tables[12].Columns.Add("FdIngrName", typeof(string));
+            ds1.Tables[12].Columns.Add("FdIngrName2L", typeof(string));
+            ds1.Tables[12].Columns.Add("FROMdate", typeof(DateTime));
+            ds1.Tables[12].Columns.Add("todate", typeof(DateTime));
+            ds1.Tables[12].Columns.Add("Description", typeof(string));
+            ds1.Tables[12].Columns.Add("IsNotActive", typeof(bool));
+            ds1.Tables[12].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[12].Columns.Add("IPID", typeof(int));
+            ds1.Tables[12].Columns.Add("IsPfVisible", typeof(Boolean));
+            ds1.Tables[12].Columns.Add("AllergieTypes", typeof(string));
+            ds1.Tables[12].Columns.Add("Doctorid", typeof(int));
+            ds1.Tables[12].Columns.Add("Status", typeof(int));
+
+
+            ds1.Tables[13].Columns.Add("TBL", typeof(string));
+            ds1.Tables[13].Columns.Add("ID", typeof(int));
+            ds1.Tables[13].Columns.Add("Allergy", typeof(string));
+            ds1.Tables[13].Columns.Add("Allergy2L", typeof(string));
+            ds1.Tables[13].Columns.Add("FROMdate", typeof(DateTime));
+            ds1.Tables[13].Columns.Add("todate", typeof(DateTime));
+            ds1.Tables[13].Columns.Add("Description", typeof(string));
+            ds1.Tables[13].Columns.Add("IsNotActive", typeof(Boolean));
+            ds1.Tables[13].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[13].Columns.Add("IPID", typeof(int));
+            ds1.Tables[13].Columns.Add("AllergieTypes", typeof(string));
+            ds1.Tables[13].Columns.Add("Doctorid", typeof(int));
+            ds1.Tables[13].Columns.Add("IsPfVisible", typeof(Boolean));
+            ds1.Tables[13].Columns.Add("Status", typeof(int));
+
+            ds1.Tables[14].Columns.Add("TBL", typeof(string));
+            ds1.Tables[14].Columns.Add("ReferralOrderID", typeof(int));
+            ds1.Tables[14].Columns.Add("ReferralTypeID", typeof(int));
+            ds1.Tables[14].Columns.Add("ReferralType", typeof(string));
+            ds1.Tables[14].Columns.Add("SpecialiseID", typeof(int));
+            ds1.Tables[14].Columns.Add("Specialisation", typeof(string));
+            ds1.Tables[14].Columns.Add("FromDoctorID", typeof(int));
+            ds1.Tables[14].Columns.Add("Priority", typeof(int));
+            ds1.Tables[14].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[14].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[14].Columns.Add("DoctornameName", typeof(string));
+            ds1.Tables[14].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[14].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[14].Columns.Add("HospitalID", typeof(int));
+            ds1.Tables[14].Columns.Add("IsDirect", typeof(Boolean));
+            ds1.Tables[14].Columns.Add("ExReferDoctorID", typeof(int));
+            ds1.Tables[14].Columns.Add("ExReferDoctor", typeof(string));
+            ds1.Tables[14].Columns.Add("adviceid", typeof(int));
+            ds1.Tables[14].Columns.Add("Feedback", typeof(string));
+            ds1.Tables[14].Columns.Add("refusalremarks", typeof(string));
+            ds1.Tables[14].Columns.Add("Reasonid", typeof(int));
+            ds1.Tables[14].Columns.Add("Reason", typeof(string));
+            ds1.Tables[14].Columns.Add("duration", typeof(int));
+            ds1.Tables[14].Columns.Add("IsInternalReferral", typeof(Boolean));
+            ds1.Tables[14].Columns.Add("Blocked", typeof(int));
+            ds1.Tables[14].Columns.Add("Status", typeof(int));
+            ds1.Tables[14].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[14].Columns.Add("IPID", typeof(int));
+            ds1.Tables[14].Columns.Add("DoctorID1", typeof(int));
+
+            
+            return ds1;
+        }
+
+
+        private DataSet CreateDatasetForPrescriptionNew()
+        {
+            DataSet ds1 = new DataSet();
+
+            ds1.Tables.Add("Advice");
+            ds1.Tables.Add("Diagnosis");
+            ds1.Tables.Add("DrugAllergies");
+            ds1.Tables.Add("DurationOfIllness");
+            ds1.Tables.Add("Investigations");
+            ds1.Tables.Add("MedicationData");
+            ds1.Tables.Add("PatientData");
+            ds1.Tables.Add("Procedures");
+            ds1.Tables.Add("Surgery");
+            ds1.Tables.Add("TemplateData");
+            ds1.Tables.Add("Vitals");
+            ds1.Tables.Add("PateintBloodOrders");
+            ds1.Tables.Add("FoodAllergies");
+            ds1.Tables.Add("OtherAllergies");
+            ds1.Tables.Add("Referal");
+            ds1.Tables.Add("Table8");
+
+            ds1.Tables[0].Columns.Add("TBL", typeof(string));
+            ds1.Tables[0].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[0].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("PatientType", typeof(int));
+            ds1.Tables[0].Columns.Add("FollowUpType", typeof(int));
+            ds1.Tables[0].Columns.Add("Advice", typeof(string));
+            ds1.Tables[0].Columns.Add("ReferralOrderID", typeof(int));
+            ds1.Tables[0].Columns.Add("FollowAfter", typeof(int));
+            ds1.Tables[0].Columns.Add("FollowUpOn", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("IsInternalReferral", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("RefDoctorID", typeof(int));
+            ds1.Tables[0].Columns.Add("PatientID", typeof(int));
+            ds1.Tables[0].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[0].Columns.Add("AdmissionNumber", typeof(string));
+            ds1.Tables[0].Columns.Add("RefDoctorName", typeof(string));
+            ds1.Tables[0].Columns.Add("ReasonForAdm", typeof(string));
+            ds1.Tables[0].Columns.Add("UserName", typeof(string));
+            ds1.Tables[0].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("MODDATE", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("ProcedureId", typeof(int));
+            ds1.Tables[0].Columns.Add("ProcedureName", typeof(string));
+            ds1.Tables[0].Columns.Add("USERID", typeof(int));
+            ds1.Tables[0].Columns.Add("LengthOfStay", typeof(int));
+            ds1.Tables[0].Columns.Add("Adviceid", typeof(int));
+            ds1.Tables[0].Columns.Add("TreatmentPlanID", typeof(int));
+            ds1.Tables[0].Columns.Add("TreatmentPlanName", typeof(string));
+            ds1.Tables[0].Columns.Add("IsPfVisible", typeof(int));
+            ds1.Tables[0].Columns.Add("DietTypeID", typeof(int));
+            ds1.Tables[0].Columns.Add("DietType", typeof(string));
+            ds1.Tables[0].Columns.Add("IPID", typeof(int));
+            ds1.Tables[0].Columns.Add("DoctorID", typeof(string));
+            ds1.Tables[0].Columns.Add("IsSpecialityTreatmentApplicable", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("FollowUpCount", typeof(int));
+            ds1.Tables[0].Columns.Add("Followupdays", typeof(int));
+            ds1.Tables[0].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[0].Columns.Add("PrimaryDocID", typeof(int));
+            ds1.Tables[0].Columns.Add("PrimaryDocName", typeof(string));
+            ds1.Tables[0].Columns.Add("PatientTemplateid", typeof(int));
+            ds1.Tables[0].Columns.Add("AdmissionTypeID", typeof(int));
+            ds1.Tables[0].Columns.Add("AdmissionType", typeof(string));
+            ds1.Tables[0].Columns.Add("IsVitual", typeof(int));
+
+            ds1.Tables[1].Columns.Add("TBL", typeof(string));
+            ds1.Tables[1].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[1].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[1].Columns.Add("DiseaseID", typeof(int));
+            ds1.Tables[1].Columns.Add("DiagnosisType", typeof(int));
+            ds1.Tables[1].Columns.Add("DiseaseName", typeof(string));
+            ds1.Tables[1].Columns.Add("Code", typeof(string));
+            ds1.Tables[1].Columns.Add("PatientID", typeof(int));
+            ds1.Tables[1].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[1].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[1].Columns.Add("MODDATE", typeof(DateTime));
+            ds1.Tables[1].Columns.Add("ProblemPointID", typeof(int));
+            ds1.Tables[1].Columns.Add("ProblemPointName", typeof(string));
+            ds1.Tables[1].Columns.Add("PointValue", typeof(int));
+            ds1.Tables[1].Columns.Add("Username", typeof(string));
+            ds1.Tables[1].Columns.Add("AssessmentID", typeof(int));
+            ds1.Tables[1].Columns.Add("userid", typeof(int));
+            ds1.Tables[1].Columns.Add("DiagonosisTypeID", typeof(int));
+            ds1.Tables[1].Columns.Add("IsPsd", typeof(int));
+            ds1.Tables[1].Columns.Add("Blocked", typeof(int));
+            ds1.Tables[1].Columns.Add("DiagonosisType", typeof(string));
+            ds1.Tables[1].Columns.Add("IsPfVisible", typeof(int));
+            ds1.Tables[1].Columns.Add("SignificantData", typeof(bool));
+            ds1.Tables[1].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[1].Columns.Add("IsAdmitDisease", typeof(bool));
+            ds1.Tables[1].Columns.Add("ExpectedLengthOfStay", typeof(int));
+            ds1.Tables[1].Columns.Add("DoctorId", typeof(int));
+            ds1.Tables[1].Columns.Add("DiagnosisStatus", typeof(string));
+
+            ds1.Tables[2].Columns.Add("TBL", typeof(string));
+            ds1.Tables[2].Columns.Add("GenericID", typeof(int));
+            ds1.Tables[2].Columns.Add("Remark", typeof(string));
+            ds1.Tables[2].Columns.Add("GenericName", typeof(string));
+            ds1.Tables[2].Columns.Add("GenericName2L", typeof(string));
+            ds1.Tables[2].Columns.Add("FROMdate", typeof(DateTime));
+            ds1.Tables[2].Columns.Add("todate", typeof(DateTime));
+            ds1.Tables[2].Columns.Add("Description", typeof(string));
+            ds1.Tables[2].Columns.Add("IsNotActive", typeof(bool));
+            ds1.Tables[2].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[2].Columns.Add("IPID", typeof(int));
+            ds1.Tables[2].Columns.Add("AllergieTypes", typeof(string));
+            ds1.Tables[2].Columns.Add("Doctorid", typeof(int));
+            ds1.Tables[2].Columns.Add("IsPfVisible", typeof(Boolean));
+            ds1.Tables[2].Columns.Add("Status", typeof(int));
+
+
+            ds1.Tables[3].Columns.Add("TBL", typeof(string));
+            ds1.Tables[3].Columns.Add("EpisodeName", typeof(string));
+            ds1.Tables[3].Columns.Add("DurationOfIllness", typeof(string));
+            ds1.Tables[3].Columns.Add("Height", typeof(Decimal));
+            ds1.Tables[3].Columns.Add("Weight", typeof(Decimal));
+            ds1.Tables[3].Columns.Add("PainScoreID", typeof(int));
+            ds1.Tables[3].Columns.Add("IsEducated", typeof(bool));
+            ds1.Tables[3].Columns.Add("IsSmoke", typeof(bool));
+            ds1.Tables[3].Columns.Add("IsPregnent", typeof(Boolean));
+            ds1.Tables[3].Columns.Add("ExpectedDeliveryDate", typeof(DateTime));
+            ds1.Tables[3].Columns.Add("IsPatientDrugAlleric", typeof(bool));
+            ds1.Tables[3].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[3].Columns.Add("BodyMassID", typeof(string));
+            ds1.Tables[3].Columns.Add("DoctorName", typeof(string));
+            ds1.Tables[3].Columns.Add("PainScore", typeof(string));
+            ds1.Tables[3].Columns.Add("HeadCircumference", typeof(Decimal));
+            ds1.Tables[3].Columns.Add("IsoldVisit", typeof(Boolean));
+            ds1.Tables[3].Columns.Add("Pregnancy", typeof(Boolean));
+            ds1.Tables[3].Columns.Add("Lactation", typeof(Boolean));
+            ds1.Tables[3].Columns.Add("TriSemester", typeof(Boolean));
+            ds1.Tables[3].Columns.Add("PlannedDischargeDate", typeof(DateTime));
+            ds1.Tables[3].Columns.Add("LMP", typeof(DateTime));
+            ds1.Tables[3].Columns.Add("CTASScoreColorID", typeof(int));
+            ds1.Tables[3].Columns.Add("Score", typeof(string));
+            ds1.Tables[3].Columns.Add("Color", typeof(string));
+            ds1.Tables[3].Columns.Add("CTASDescription", typeof(string));
+
+            ds1.Tables[4].Columns.Add("TBL", typeof(string));
+            ds1.Tables[4].Columns.Add("ServiceTypeID", typeof(int));
+            ds1.Tables[4].Columns.Add("PrescriptionID", typeof(int));
+            ds1.Tables[4].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[4].Columns.Add("PrescriptionDate", typeof(DateTime));
+            ds1.Tables[4].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[4].Columns.Add("Doctorname", typeof(string));
+            ds1.Tables[4].Columns.Add("ItemSequence", typeof(int));
+            ds1.Tables[4].Columns.Add("ItemID", typeof(int));
+            ds1.Tables[4].Columns.Add("ItemName", typeof(string));
+            ds1.Tables[4].Columns.Add("Dose", typeof(int));
+            ds1.Tables[4].Columns.Add("DoseID", typeof(int));
+            ds1.Tables[4].Columns.Add("DoseUoM", typeof(int));
+            ds1.Tables[4].Columns.Add("FrequencyID", typeof(int));
+            ds1.Tables[4].Columns.Add("Frequency", typeof(int));
+            ds1.Tables[4].Columns.Add("Duration", typeof(int));
+            ds1.Tables[4].Columns.Add("DurationID", typeof(int));
+            ds1.Tables[4].Columns.Add("DurationUOM", typeof(int));
+            ds1.Tables[4].Columns.Add("StartFrom", typeof(int));
+            ds1.Tables[4].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[4].Columns.Add("SpecimenID", typeof(int));
+            ds1.Tables[4].Columns.Add("SpecimenName", typeof(string));
+            ds1.Tables[4].Columns.Add("Status", typeof(int));
+            ds1.Tables[4].Columns.Add("Quantity", typeof(int));
+            ds1.Tables[4].Columns.Add("UserName", typeof(string));
+            ds1.Tables[4].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[4].Columns.Add("MODDATE", typeof(DateTime));
+            ds1.Tables[4].Columns.Add("UCAFApproval", typeof(Boolean));
+            ds1.Tables[4].Columns.Add("USERID", typeof(int));
+            ds1.Tables[4].Columns.Add("Itemstatus", typeof(int));
+            ds1.Tables[4].Columns.Add("admissionid", typeof(int));
+            ds1.Tables[4].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[4].Columns.Add("TestOrderItemID", typeof(int));
+            ds1.Tables[4].Columns.Add("TestOrderID", typeof(int));
+            ds1.Tables[4].Columns.Add("SpecialiseID", typeof(int));
+            ds1.Tables[4].Columns.Add("Specialisation", typeof(string));
+            ds1.Tables[4].Columns.Add("ResultStatus", typeof(int));
+            ds1.Tables[4].Columns.Add("ResultStatusName", typeof(string));
+            ds1.Tables[4].Columns.Add("IsPfVisible", typeof(Boolean));
+            ds1.Tables[4].Columns.Add("ItemCode", typeof(string));
+            ds1.Tables[4].Columns.Add("Isresult", typeof(bool));
+            ds1.Tables[4].Columns.Add("OrderType", typeof(string));
+
+            ds1.Tables[5].Columns.Add("TBL", typeof(string));
+            ds1.Tables[5].Columns.Add("ServiceTypeID", typeof(int));
+            ds1.Tables[5].Columns.Add("PrescriptionID", typeof(int));
+            ds1.Tables[5].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[5].Columns.Add("PrescriptionDate", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[5].Columns.Add("DoctorName", typeof(string));
+            ds1.Tables[5].Columns.Add("ItemSequence", typeof(int));
+            ds1.Tables[5].Columns.Add("ItemID", typeof(int));
+            ds1.Tables[5].Columns.Add("ItemName", typeof(string));
+            ds1.Tables[5].Columns.Add("Dose", typeof(Decimal));
+            ds1.Tables[5].Columns.Add("DoseID", typeof(int));
+            ds1.Tables[5].Columns.Add("DoseUoM", typeof(string));
+            ds1.Tables[5].Columns.Add("FrequencyID", typeof(int));
+            ds1.Tables[5].Columns.Add("Frequency", typeof(string));
+            ds1.Tables[5].Columns.Add("Duration", typeof(int));
+            ds1.Tables[5].Columns.Add("DurationID", typeof(int));
+            ds1.Tables[5].Columns.Add("DurationUOM", typeof(string));
+            ds1.Tables[5].Columns.Add("StartFrom", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[5].Columns.Add("SpecimenID", typeof(int));
+            ds1.Tables[5].Columns.Add("SpecimenName", typeof(int));
+            ds1.Tables[5].Columns.Add("Status", typeof(int));
+            ds1.Tables[5].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[5].Columns.Add("AdmissionNumber", typeof(string));
+            ds1.Tables[5].Columns.Add("AdmRouteID", typeof(int));
+            ds1.Tables[5].Columns.Add("AdmRoute", typeof(string));
+            ds1.Tables[5].Columns.Add("UserName", typeof(string));
+            ds1.Tables[5].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("ModDate", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("blocked", typeof(int));
+            ds1.Tables[5].Columns.Add("CustomizedFlag", typeof(Boolean));
+            ds1.Tables[5].Columns.Add("CustDrugDetails", typeof(string));
+            ds1.Tables[5].Columns.Add("FrequencyQTY", typeof(Decimal));
+            ds1.Tables[5].Columns.Add("IssueUOMValue", typeof(int));
+            ds1.Tables[5].Columns.Add("IsNarcotic", typeof(int));
+            ds1.Tables[5].Columns.Add("IsAntibiotic", typeof(int));
+            ds1.Tables[5].Columns.Add("IsControledDrug", typeof(int));
+            ds1.Tables[5].Columns.Add("IsDisPrescription", typeof(Boolean));
+            ds1.Tables[5].Columns.Add("UCAFApproval", typeof(Boolean));
+            ds1.Tables[5].Columns.Add("GenericID", typeof(int));
+            ds1.Tables[5].Columns.Add("GenericName", typeof(string));
+            ds1.Tables[5].Columns.Add("Strength", typeof(Decimal));
+            ds1.Tables[5].Columns.Add("StrengthUOM", typeof(string));
+            ds1.Tables[5].Columns.Add("ScheduleTime", typeof(string));
+            ds1.Tables[5].Columns.Add("PrescriptionNo", typeof(string));
+            ds1.Tables[5].Columns.Add("Remarks1", typeof(string));
+            ds1.Tables[5].Columns.Add("StrengthUoMID", typeof(int));
+            ds1.Tables[5].Columns.Add("ENDDatetime", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("DiscontinuingRemarks", typeof(string));
+            ds1.Tables[5].Columns.Add("IsAdverseDrug", typeof(int));
+            ds1.Tables[5].Columns.Add("AdverseDrugDescription", typeof(string));
+            ds1.Tables[5].Columns.Add("ENDDate", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("PatientInstructions", typeof(string));
+            ds1.Tables[5].Columns.Add("IsPfvisible", typeof(Boolean));
+            ds1.Tables[5].Columns.Add("OrderStatus", typeof(int));
+            ds1.Tables[5].Columns.Add("PrescriptionStatusID", typeof(int));
+            ds1.Tables[5].Columns.Add("ItemCode", typeof(string));
+            ds1.Tables[5].Columns.Add("PrescriptionStatus", typeof(int));
+            ds1.Tables[5].Columns.Add("PrescriptionModDate", typeof(DateTime));
+            ds1.Tables[5].Columns.Add("TOTIssuingQty", typeof(int));
+            ds1.Tables[5].Columns.Add("TotIssuingQtyUOM", typeof(string));
+
+            ds1.Tables[6].Columns.Add("RegCode", typeof(string));
+            ds1.Tables[6].Columns.Add("PatientName", typeof(string));
+            ds1.Tables[6].Columns.Add("Gender", typeof(string));
+            ds1.Tables[6].Columns.Add("MobileNo", typeof(string));
+            ds1.Tables[6].Columns.Add("HospitalName", typeof(string));
+            ds1.Tables[6].Columns.Add("FullAge", typeof(string));
+            ds1.Tables[6].Columns.Add("Nationality", typeof(string));
+            ds1.Tables[6].Columns.Add("FamilyHeadId", typeof(string));
+            ds1.Tables[6].Columns.Add("IsContrastAllergic", typeof(Boolean));
+            ds1.Tables[6].Columns.Add("DoctorName", typeof(string));
+            ds1.Tables[6].Columns.Add("Admitdate", typeof(string));
+            ds1.Tables[6].Columns.Add("CompanyName", typeof(string));
+            ds1.Tables[6].Columns.Add("DocSpecDepartment", typeof(string));
+            ds1.Tables[6].Columns.Add("DocSign", typeof(string));
+            ds1.Tables[6].Columns.Add("DocCode", typeof(string));
+
+
+            ds1.Tables[7].Columns.Add("TBL", typeof(string));
+            ds1.Tables[7].Columns.Add("ServiceTypeID", typeof(int));
+            ds1.Tables[7].Columns.Add("PrescriptionID", typeof(int));
+            ds1.Tables[7].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[7].Columns.Add("PrescriptionDate", typeof(DateTime));
+            ds1.Tables[7].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[7].Columns.Add("Doctorname", typeof(string));
+            ds1.Tables[7].Columns.Add("ItemSequence", typeof(int));
+            ds1.Tables[7].Columns.Add("ItemID", typeof(int));
+            ds1.Tables[7].Columns.Add("ItemName", typeof(string));
+            ds1.Tables[7].Columns.Add("Dose", typeof(int));
+            ds1.Tables[7].Columns.Add("DoseID", typeof(int));
+            ds1.Tables[7].Columns.Add("DoseUoM", typeof(int));
+            ds1.Tables[7].Columns.Add("FrequencyID", typeof(int));
+            ds1.Tables[7].Columns.Add("Frequency", typeof(int));
+            ds1.Tables[7].Columns.Add("Duration", typeof(int));
+            ds1.Tables[7].Columns.Add("DurationID", typeof(int));
+            ds1.Tables[7].Columns.Add("DurationUOM", typeof(int));
+            ds1.Tables[7].Columns.Add("StartFrom", typeof(int));
+            ds1.Tables[7].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[7].Columns.Add("SpecimenID", typeof(int));
+            ds1.Tables[7].Columns.Add("SpecimenName", typeof(string));
+            ds1.Tables[7].Columns.Add("Status", typeof(int));
+            ds1.Tables[7].Columns.Add("Quantity", typeof(int));
+            ds1.Tables[7].Columns.Add("UserName", typeof(string));
+            ds1.Tables[7].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[7].Columns.Add("MODDATE", typeof(DateTime));
+            ds1.Tables[7].Columns.Add("UCAFApproval", typeof(bool));
+            ds1.Tables[7].Columns.Add("USERID", typeof(int));
+            ds1.Tables[7].Columns.Add("SpecialiseID", typeof(int));
+            ds1.Tables[7].Columns.Add("Specialisation", typeof(string));
+            ds1.Tables[7].Columns.Add("WorkstationName", typeof(string));
+            ds1.Tables[7].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[7].Columns.Add("ItemStatus", typeof(int));
+            ds1.Tables[7].Columns.Add("TestOrderItemID", typeof(int));
+            ds1.Tables[7].Columns.Add("TestOrderID", typeof(int));
+            ds1.Tables[7].Columns.Add("ResultStatus", typeof(int));
+            ds1.Tables[7].Columns.Add("ResultStatusName", typeof(string));
+            ds1.Tables[7].Columns.Add("IsPfVisible", typeof(bool));
+            ds1.Tables[7].Columns.Add("ItemCode", typeof(string));
+            ds1.Tables[7].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[7].Columns.Add("IsTreatmentplanApplicable", typeof(bool));
+            ds1.Tables[7].Columns.Add("OrderType", typeof(string));
+
+            ds1.Tables[8].Columns.Add("TBL", typeof(string));
+            ds1.Tables[8].Columns.Add("SurgeryRequestId", typeof(int));
+            ds1.Tables[8].Columns.Add("PatientId", typeof(int));
+            ds1.Tables[8].Columns.Add("PatientName", typeof(string));
+            ds1.Tables[8].Columns.Add("RegCode", typeof(string));
+            ds1.Tables[8].Columns.Add("Age", typeof(string));
+            ds1.Tables[8].Columns.Add("Gender", typeof(string));
+            ds1.Tables[8].Columns.Add("Age_x002F_Gender", typeof(string));
+            ds1.Tables[8].Columns.Add("SurgeryRequesteDby", typeof(int));
+            ds1.Tables[8].Columns.Add("ProcedureID", typeof(int));
+            ds1.Tables[8].Columns.Add("ProcedureName", typeof(string));
+            ds1.Tables[8].Columns.Add("payerid", typeof(int));
+            ds1.Tables[8].Columns.Add("ReceiverID", typeof(int));
+            ds1.Tables[8].Columns.Add("GradeID", typeof(int));
+            ds1.Tables[8].Columns.Add("GradeName", typeof(string));
+            ds1.Tables[8].Columns.Add("TaskStatus", typeof(int));
+            ds1.Tables[8].Columns.Add("StatusName", typeof(string));
+            ds1.Tables[8].Columns.Add("StatusColor", typeof(int));
+            ds1.Tables[8].Columns.Add("MonitorId", typeof(int));
+            ds1.Tables[8].Columns.Add("VisitId", typeof(int));
+            ds1.Tables[8].Columns.Add("IpId", typeof(int));
+            ds1.Tables[8].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[8].Columns.Add("ScheduleId", typeof(int));
+            ds1.Tables[8].Columns.Add("OrderId", typeof(int));
+            ds1.Tables[8].Columns.Add("ServiceId", typeof(int));
+            ds1.Tables[8].Columns.Add("Reqconsentteken", typeof(Boolean));
+            ds1.Tables[8].Columns.Add("InstructionType", typeof(int));
+            ds1.Tables[8].Columns.Add("ProcedureTypeid", typeof(int));
+            ds1.Tables[8].Columns.Add("ReqconsenttekEndate", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("Consenttaken", typeof(Boolean));
+            ds1.Tables[8].Columns.Add("ConsenttakEndate", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("SurgeryType", typeof(int));
+            ds1.Tables[8].Columns.Add("Tentativesurgeryplaned", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("TentavtiveStartTime", typeof(string));
+            ds1.Tables[8].Columns.Add("Estimatedtimeduration", typeof(string));
+            ds1.Tables[8].Columns.Add("Anesthesiologistinstructions", typeof(string));
+            ds1.Tables[8].Columns.Add("Otinstructions", typeof(string));
+            ds1.Tables[8].Columns.Add("WardsInstructions", typeof(string));
+            ds1.Tables[8].Columns.Add("Anesthesiologist", typeof(int));
+            ds1.Tables[8].Columns.Add("EquipmentsurgerYId", typeof(int));
+            ds1.Tables[8].Columns.Add("Implantsurgeryid", typeof(int));
+            ds1.Tables[8].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("ModDate", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("EndDate", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("Blocked", typeof(int));
+            ds1.Tables[8].Columns.Add("Routid", typeof(int));
+            ds1.Tables[8].Columns.Add("Userid", typeof(int));
+            ds1.Tables[8].Columns.Add("Workstationid", typeof(int));
+            ds1.Tables[8].Columns.Add("Status", typeof(int));
+            ds1.Tables[8].Columns.Add("Rowseq", typeof(string));
+            ds1.Tables[8].Columns.Add("Isprimary", typeof(int));
+            ds1.Tables[8].Columns.Add("Priority", typeof(int));
+            ds1.Tables[8].Columns.Add("Doctorname", typeof(string));
+            ds1.Tables[8].Columns.Add("DoctorQualification", typeof(string));
+            ds1.Tables[8].Columns.Add("DoctorDesignation", typeof(string));
+            ds1.Tables[8].Columns.Add("Surgeon", typeof(string));
+            ds1.Tables[8].Columns.Add("SurgeonQualification", typeof(string));
+            ds1.Tables[8].Columns.Add("SurgeonSignature", typeof(string));
+            ds1.Tables[8].Columns.Add("SurgeonDesignation", typeof(string));
+            ds1.Tables[8].Columns.Add("Anestheologistname", typeof(string));
+            ds1.Tables[8].Columns.Add("AnestheologistQualification", typeof(string));
+            ds1.Tables[8].Columns.Add("AnestheologistSignature", typeof(string));
+            ds1.Tables[8].Columns.Add("AnestheologistDesignation", typeof(string));
+            ds1.Tables[8].Columns.Add("PACDateTime", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("Facilityid", typeof(int));
+            ds1.Tables[8].Columns.Add("ScheduleDate", typeof(string));
+            ds1.Tables[8].Columns.Add("IsInfected", typeof(Boolean));
+            ds1.Tables[8].Columns.Add("InfectionDetails", typeof(string));
+            ds1.Tables[8].Columns.Add("CancelRemarks", typeof(string));
+            ds1.Tables[8].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[8].Columns.Add("ISPatientFit", typeof(Boolean));
+            ds1.Tables[8].Columns.Add("SurgeonID", typeof(int));
+            ds1.Tables[8].Columns.Add("IsApprovedByBilling", typeof(Boolean));
+            ds1.Tables[8].Columns.Add("BillingRemarks", typeof(string));
+            ds1.Tables[8].Columns.Add("BillingRemarksEnteredDate", typeof(DateTime));
+            ds1.Tables[8].Columns.Add("StartTime", typeof(string));
+            ds1.Tables[8].Columns.Add("ENDTime", typeof(string));
+            ds1.Tables[8].Columns.Add("FROMSlot", typeof(int));
+            ds1.Tables[8].Columns.Add("ToSlot", typeof(int));
+            ds1.Tables[8].Columns.Add("Primarydoctorname", typeof(string));
+            ds1.Tables[8].Columns.Add("OTReceptionFacilityId", typeof(int));
+            ds1.Tables[8].Columns.Add("OTReceptionFacility", typeof(string));
+            ds1.Tables[8].Columns.Add("ProcedureCode", typeof(string));
+
+            ds1.Tables[9].Columns.Add("TBL", typeof(string));
+            ds1.Tables[9].Columns.Add("ComponentID", typeof(int));
+            ds1.Tables[9].Columns.Add("Value", typeof(string));
+            ds1.Tables[9].Columns.Add("ComponentName", typeof(string));
+            ds1.Tables[9].Columns.Add("AssessmentID", typeof(int));
+            ds1.Tables[9].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[9].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[9].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[9].Columns.Add("PreviewHTML", typeof(string));
+            ds1.Tables[9].Columns.Add("CSTemplateID", typeof(int));
+
+            ds1.Tables[10].Columns.Add("TBL", typeof(string));
+            ds1.Tables[10].Columns.Add("Value", typeof(string));
+            ds1.Tables[10].Columns.Add("Datetime", typeof(DateTime));
+            ds1.Tables[10].Columns.Add("Vital", typeof(string));
+            ds1.Tables[10].Columns.Add("UOM", typeof(string));
+            ds1.Tables[10].Columns.Add("MINVALUE", typeof(Decimal));
+            ds1.Tables[10].Columns.Add("MAXVALUE", typeof(Decimal));
+            ds1.Tables[10].Columns.Add("AssessmentID", typeof(int));
+            ds1.Tables[10].Columns.Add("UserName", typeof(string));
+            ds1.Tables[10].Columns.Add("USERID", typeof(int));
+            ds1.Tables[10].Columns.Add("IsPsd", typeof(int));
+            ds1.Tables[10].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[10].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[10].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[10].Columns.Add("Comments", typeof(string));
+            ds1.Tables[10].Columns.Add("ArchiveModdate", typeof(DateTime));
+            ds1.Tables[10].Columns.Add("Status", typeof(int));
+            ds1.Tables[10].Columns.Add("IsPfVisible", typeof(int));
+            ds1.Tables[10].Columns.Add("VITALSIGNID", typeof(int));
+            ds1.Tables[10].Columns.Add("Sequence", typeof(bool));
+            ds1.Tables[10].Columns.Add("VitalSignDate", typeof(DateTime));
+
+            ds1.Tables[11].Columns.Add("PatientID", typeof(int));
+            ds1.Tables[11].Columns.Add("IPID", typeof(int));
+            ds1.Tables[11].Columns.Add("PatientName", typeof(string));
+            ds1.Tables[11].Columns.Add("AdmissionNumber", typeof(string));
+            ds1.Tables[11].Columns.Add("BloodorderID", typeof(int));
+            ds1.Tables[11].Columns.Add("ComponentID", typeof(int));
+            ds1.Tables[11].Columns.Add("Component", typeof(string));
+            ds1.Tables[11].Columns.Add("Quantity", typeof(int));
+            ds1.Tables[11].Columns.Add("RequiredDate", typeof(DateTime));
+            ds1.Tables[11].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[11].Columns.Add("Volume", typeof(int));
+            ds1.Tables[11].Columns.Add("Type", typeof(int));
+            ds1.Tables[11].Columns.Add("Componentcode", typeof(string));
+
+
+            ds1.Tables[12].Columns.Add("TBL", typeof(string));
+            ds1.Tables[12].Columns.Add("FoodID", typeof(int));
+            ds1.Tables[12].Columns.Add("Remark", typeof(string));
+            ds1.Tables[12].Columns.Add("FdIngrName", typeof(string));
+            ds1.Tables[12].Columns.Add("FdIngrName2L", typeof(string));
+            ds1.Tables[12].Columns.Add("FROMdate", typeof(DateTime));
+            ds1.Tables[12].Columns.Add("todate", typeof(DateTime));
+            ds1.Tables[12].Columns.Add("Description", typeof(string));
+            ds1.Tables[12].Columns.Add("IsNotActive", typeof(bool));
+            ds1.Tables[12].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[12].Columns.Add("IPID", typeof(int));
+            ds1.Tables[12].Columns.Add("IsPfVisible", typeof(Boolean));
+            ds1.Tables[12].Columns.Add("AllergieTypes", typeof(string));
+            ds1.Tables[12].Columns.Add("Doctorid", typeof(int));
+            ds1.Tables[12].Columns.Add("Status", typeof(int));
+
+            ds1.Tables[13].Columns.Add("TBL", typeof(string));
+            ds1.Tables[13].Columns.Add("ID", typeof(int));
+            ds1.Tables[13].Columns.Add("Allergy", typeof(string));
+            ds1.Tables[13].Columns.Add("Allergy2L", typeof(string));
+            ds1.Tables[13].Columns.Add("FROMdate", typeof(DateTime));
+            ds1.Tables[13].Columns.Add("todate", typeof(DateTime));
+            ds1.Tables[13].Columns.Add("Description", typeof(string));
+            ds1.Tables[13].Columns.Add("IsNotActive", typeof(Boolean));
+            ds1.Tables[13].Columns.Add("CreateDate", typeof(DateTime));
+            ds1.Tables[13].Columns.Add("IPID", typeof(int));
+            ds1.Tables[13].Columns.Add("AllergieTypes", typeof(string));
+            ds1.Tables[13].Columns.Add("Doctorid", typeof(int));
+            ds1.Tables[13].Columns.Add("IsPfVisible", typeof(Boolean));
+            ds1.Tables[13].Columns.Add("Status", typeof(int));
+
+            ds1.Tables[14].Columns.Add("TBL", typeof(string));
+            ds1.Tables[14].Columns.Add("ReferralOrderID", typeof(int));
+            ds1.Tables[14].Columns.Add("ReferralTypeID", typeof(int));
+            ds1.Tables[14].Columns.Add("ReferralType", typeof(string));
+            ds1.Tables[14].Columns.Add("SpecialiseID", typeof(int));
+            ds1.Tables[14].Columns.Add("Specialisation", typeof(string));
+            ds1.Tables[14].Columns.Add("FromDoctorID", typeof(int));
+            ds1.Tables[14].Columns.Add("Priority", typeof(int));
+            ds1.Tables[14].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[14].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[14].Columns.Add("DoctornameName", typeof(string));
+            ds1.Tables[14].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[14].Columns.Add("MonitorID", typeof(int));
+            ds1.Tables[14].Columns.Add("HospitalID", typeof(int));
+            ds1.Tables[14].Columns.Add("IsDirect", typeof(Boolean));
+            ds1.Tables[14].Columns.Add("ExReferDoctorID", typeof(int));
+            ds1.Tables[14].Columns.Add("ExReferDoctor", typeof(string));
+            ds1.Tables[14].Columns.Add("adviceid", typeof(int));
+            ds1.Tables[14].Columns.Add("Feedback", typeof(string));
+            ds1.Tables[14].Columns.Add("refusalremarks", typeof(string));
+            ds1.Tables[14].Columns.Add("Reasonid", typeof(int));
+            ds1.Tables[14].Columns.Add("Reason", typeof(string));
+            ds1.Tables[14].Columns.Add("duration", typeof(int));
+            ds1.Tables[14].Columns.Add("IsInternalReferral", typeof(Boolean));
+            ds1.Tables[14].Columns.Add("Blocked", typeof(int));
+            ds1.Tables[14].Columns.Add("Status", typeof(int));
+            ds1.Tables[14].Columns.Add("MonitorDate", typeof(DateTime));
+            ds1.Tables[14].Columns.Add("IPID", typeof(int));
+            ds1.Tables[14].Columns.Add("DoctorID1", typeof(int));
+
+            return ds1;
+        }
 
         private string GetFTPReport(string FTPServer, string FTPFolder, string TestOrderId, string ReportLocation, string pdfName)
         {
