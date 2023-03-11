@@ -716,8 +716,8 @@ namespace Reports.Controllers
                 }
             }
             catch (Exception ex)
-            { 
-            
+            {
+                return "Failure :" + ex.Message;
             }
 
             if (dsResultNew.Tables[12].Rows.Count >= 1)
@@ -727,36 +727,36 @@ namespace Reports.Controllers
                     DataRow AdviceRow = ds1.Tables[0].NewRow();
 
                     AdviceRow["TBL"] = dr["TBL"].ToString();
-                    AdviceRow["MonitorID"] = 1;
-                    AdviceRow["MonitorDate"] = DateTime.Now;
-                    AdviceRow["PatientType"] = 1;
-                    AdviceRow["FollowUpType"] = 0;
+                    AdviceRow["MonitorID"] = ParseToInt(dr["MonitorID"].ToString());
+                    AdviceRow["MonitorDate"] = ParseToDate(dr["MonitorDate"].ToString());
+                    AdviceRow["PatientType"] = ParseToInt(dr["PatientType"].ToString());
+                    AdviceRow["FollowUpType"] = ParseToInt(dr["FollowUpType"].ToString());
                     AdviceRow["Advice"] = dr["Advice"].ToString();
-                    AdviceRow["ReferralOrderID"] = 1;
-                    AdviceRow["FollowAfter"] = 0;
-                    AdviceRow["FollowUpOn"] = DateTime.Now;
+                    AdviceRow["ReferralOrderID"] = ParseToInt(dr["ReferralOrderID"].ToString());
+                    AdviceRow["FollowAfter"] = ParseToInt(dr["FollowAfter"].ToString());
+                    AdviceRow["FollowUpOn"] = ParseToDate(dr["FollowUpOn"].ToString());
                     AdviceRow["IsInternalReferral"] = false;
-                    AdviceRow["RefDoctorID"] = 1;
-                    AdviceRow["PatientID"] = 1;
-                    AdviceRow["AdmissionID"] = 1;
+                    AdviceRow["RefDoctorID"] = ParseToInt(dr["RefDoctorID"].ToString());
+                    AdviceRow["PatientID"] = ParseToInt(dr["PatientID"].ToString());
+                    AdviceRow["AdmissionID"] = ParseToInt(dr["AdmissionID"].ToString());
                     AdviceRow["AdmissionNumber"] = dr["AdmissionNumber"].ToString();
                     AdviceRow["RefDoctorName"] = dr["RefDoctorName"].ToString();
                     AdviceRow["ReasonForAdm"] = dr["ReasonForAdm"].ToString();
                     AdviceRow["UserName"] = dr["UserName"].ToString();
-                    AdviceRow["CreateDate"] = DateTime.Now;
-                    AdviceRow["MODDATE"] = DateTime.Now;
-                    AdviceRow["ProcedureId"] = 1;
+                    AdviceRow["CreateDate"] = ParseToDate(dr["CreateDate"].ToString());
+                    AdviceRow["MODDATE"] = ParseToDate(dr["MODDATE"].ToString());
+                    AdviceRow["ProcedureId"] = ParseToInt(dr["ProcedureId"].ToString());
                     AdviceRow["ProcedureName"] = dr["ProcedureName"].ToString();
-                    AdviceRow["USERID"] = 1;
-                    AdviceRow["LengthOfStay"] = 1;
-                    AdviceRow["Adviceid"] = 1;
-                    AdviceRow["TreatmentPlanID"] = 1;
+                    AdviceRow["USERID"] = ParseToInt(dr["USERID"].ToString());
+                    AdviceRow["LengthOfStay"] = ParseToInt(dr["LengthOfStay"].ToString());
+                    AdviceRow["Adviceid"] = ParseToInt(dr["Adviceid"].ToString());
+                    AdviceRow["TreatmentPlanID"] = ParseToInt(dr["TreatmentPlanID"].ToString());
                     AdviceRow["TreatmentPlanName"] = dr["TreatmentPlanName"].ToString();
-                    AdviceRow["IsPfVisible"] = 1;
-                    AdviceRow["DietTypeID"] = 1;
+                    AdviceRow["IsPfVisible"] = ParseToInt(dr["IsPfVisible"].ToString());
+                    AdviceRow["DietTypeID"] = ParseToInt(dr["DietTypeID"].ToString());
                     AdviceRow["DietType"] = dr["DietType"].ToString();
-                    AdviceRow["IPID"] = 1;
-                    AdviceRow["DoctorID"] = 1;
+                    AdviceRow["IPID"] = ParseToInt(dr["IPID"].ToString());
+                    AdviceRow["DoctorID"] = ParseToInt(dr["DoctorID"].ToString());
                     AdviceRow["IsSpecialityTreatmentApplicable"] = false;
 
                     ds1.Tables[0].Rows.Add(AdviceRow);
@@ -798,27 +798,32 @@ namespace Reports.Controllers
                     ds1.Tables[1].Rows.Add(DiagonsisRow);
                 }
             }
-            DataRow DrugAllergiesRow = ds1.Tables[2].NewRow();
 
-            DrugAllergiesRow["TBL"] = "1";
-            DrugAllergiesRow["GenericID"] = 1;
-            DrugAllergiesRow["Remark"] = "1";
-            DrugAllergiesRow["GenericName"] = "1";
-            DrugAllergiesRow["GenericName2L"] = "1";
-            DrugAllergiesRow["FROMdate"] = DateTime.Now;
-            DrugAllergiesRow["todate"] = DateTime.Now;
-            DrugAllergiesRow["Description"] = "1";
-            DrugAllergiesRow["IsNotActive"] = false;
-            DrugAllergiesRow["CreateDate"] = DateTime.Now;
-            DrugAllergiesRow["IPID"] = 1;
-            DrugAllergiesRow["AllergieTypes"] = "1";
-            DrugAllergiesRow["Doctorid"] = 1;
-            DrugAllergiesRow["IsPfVisible"] = false;
-            DrugAllergiesRow["Status"] = 1;
+            if (dsResultNew.Tables[9].Rows.Count >= 1)
+            {
+                foreach (DataRow dr in dsResultNew.Tables[9].Rows)
+                {
+                    DataRow DrugAllergiesRow = ds1.Tables[2].NewRow();
 
+                    DrugAllergiesRow["TBL"] = dr["TBL"].ToString();
+                    DrugAllergiesRow["GenericID"] = ParseToInt(dr["GenericID"].ToString());
+                    DrugAllergiesRow["Remark"] = dr["Remark"].ToString();
+                    DrugAllergiesRow["GenericName"] = dr["GenericName"].ToString();
+                    DrugAllergiesRow["GenericName2L"] = dr["GenericName2L"].ToString();
+                    DrugAllergiesRow["FROMdate"] = ParseToDate(dr["FROMdate"].ToString());
+                    DrugAllergiesRow["todate"] = ParseToDate(dr["todate"].ToString());
+                    DrugAllergiesRow["Description"] = dr["Description"].ToString();
+                    DrugAllergiesRow["IsNotActive"] = false;
+                    DrugAllergiesRow["CreateDate"] = ParseToDate(dr["CreateDate"].ToString());
+                    DrugAllergiesRow["IPID"] = ParseToInt(dr["IPID"].ToString());
+                    DrugAllergiesRow["AllergieTypes"] = dr["AllergieTypes"].ToString();
+                    DrugAllergiesRow["Doctorid"] = ParseToInt(dr["Doctorid"].ToString());
+                    DrugAllergiesRow["IsPfVisible"] = false;
+                    DrugAllergiesRow["Status"] = ParseToInt(dr["Status"].ToString());
 
-            ds1.Tables[2].Rows.Add(DrugAllergiesRow);
-
+                    ds1.Tables[2].Rows.Add(DrugAllergiesRow);
+                }
+            }
             if (dsResultNew.Tables[6].Rows.Count >= 1)
             {
                 foreach (DataRow dr in dsResultNew.Tables[6].Rows)
@@ -1037,7 +1042,22 @@ namespace Reports.Controllers
                     ds1.Tables[7].Rows.Add(ProcedureRow);
                 }
             }
-            ds1.Tables[8].Rows.Add(ds1.Tables[8].NewRow());
+
+            if (dsResultNew.Tables[10].Rows.Count >= 1)
+            {
+                foreach (DataRow dr in dsResultNew.Tables[10].Rows)
+                {
+                    DataRow SurgeryRow = ds1.Tables[8].NewRow();
+
+                    SurgeryRow["TBL"] = dr["TBL"].ToString();
+                    SurgeryRow["ProcedureID"] = ParseToInt(dr["ProcedureID"].ToString());
+                    SurgeryRow["ProcedureName"] = dr["ProcedureName"].ToString();
+
+                    ds1.Tables[8].Rows.Add(SurgeryRow);
+                }
+            }
+
+            
             ds1.Tables[9].Rows.Add(ds1.Tables[9].NewRow());
 
             if (dsResultNew.Tables[5].Rows.Count >= 1)
@@ -1071,7 +1091,34 @@ namespace Reports.Controllers
                 }
             }
             ds1.Tables[11].Rows.Add(ds1.Tables[11].NewRow());
-            ds1.Tables[12].Rows.Add(ds1.Tables[12].NewRow());
+            if (dsResultNew.Tables[8].Rows.Count >= 1)
+            {
+                foreach (DataRow dr in dsResultNew.Tables[8].Rows)
+                {
+                    DataRow FoodAllergiesRow = ds1.Tables[12].NewRow();
+
+                    FoodAllergiesRow["TBL"] = dr["TBL"].ToString();
+                    FoodAllergiesRow["FoodID"] = ParseToInt(dr["IsPsd"].ToString());
+                    FoodAllergiesRow["Remark"] = dr["Remark"].ToString();
+                    FoodAllergiesRow["FdIngrName"] = dr["Remark"].ToString();
+                    FoodAllergiesRow["FdIngrName2L"] = dr["Remark"].ToString();
+                    FoodAllergiesRow["FROMdate"] = ParseToDate(dr["FROMdate"].ToString());
+                    FoodAllergiesRow["todate"] = ParseToDate(dr["todate"].ToString());
+                    FoodAllergiesRow["Description"] = dr["Description"].ToString();
+                    FoodAllergiesRow["IsNotActive"] = false;
+                    FoodAllergiesRow["CreateDate"] = ParseToDate(dr["CreateDate"].ToString());
+                    FoodAllergiesRow["IPID"] = ParseToInt(dr["IPID"].ToString());
+                    FoodAllergiesRow["IsPfVisible"] = false;
+                    FoodAllergiesRow["AllergieTypes"] = dr["AllergieTypes"].ToString();
+                    FoodAllergiesRow["Doctorid"] = ParseToInt(dr["Doctorid"].ToString());
+                    FoodAllergiesRow["Status"] = ParseToInt(dr["Status"].ToString());
+
+                    ds1.Tables[12].Rows.Add(FoodAllergiesRow);
+                }
+            }
+
+
+            
 
             if (dsResultNew.Tables[7].Rows.Count >= 1)
             {
@@ -1097,9 +1144,47 @@ namespace Reports.Controllers
                     ds1.Tables[13].Rows.Add(OtherAllergiesRow);
                 }
             }
-            ds1.Tables[14].Rows.Add(ds1.Tables[14].NewRow());
 
-            
+            if (dsResultNew.Tables[11].Rows.Count >= 1)
+            {
+                foreach (DataRow dr in dsResultNew.Tables[11].Rows)
+                {
+                    DataRow ReferralRow = ds1.Tables[14].NewRow();
+
+                    ReferralRow["TBL"] = dr["TBL"].ToString();
+                    ReferralRow["ReferralOrderID"] = ParseToInt(dr["ReferralOrderID"].ToString());
+                    ReferralRow["ReferralTypeID"] = ParseToInt(dr["ReferralTypeID"].ToString());
+                    ReferralRow["ReferralType"] = dr["ReferralType"].ToString();
+                    ReferralRow["SpecialiseID"] = ParseToInt(dr["SpecialiseID"].ToString());
+                    ReferralRow["Specialisation"] = dr["Specialisation"].ToString();
+                    ReferralRow["FromDoctorID"] = ParseToInt(dr["FromDoctorID"].ToString());
+                    ReferralRow["Priority"] = ParseToInt(dr["Priority"].ToString());
+                    ReferralRow["Remarks"] = dr["Remarks"].ToString();
+                    ReferralRow["DoctorID"] = ParseToInt(dr["DoctorID"].ToString());
+                    ReferralRow["DoctornameName"] = dr["DoctornameName"].ToString();
+                    ReferralRow["AdmissionID"] = ParseToInt(dr["AdmissionID"].ToString());
+                    ReferralRow["MonitorID"] = ParseToInt(dr["MonitorID"].ToString());
+                    ReferralRow["HospitalID"] = ParseToInt(dr["HospitalID"].ToString());
+                    ReferralRow["IsDirect"] = false;
+                    ReferralRow["ExReferDoctorID"] = ParseToInt(dr["ExReferDoctorID"].ToString());
+                    ReferralRow["ExReferDoctor"] = dr["ExReferDoctor"].ToString();
+                    ReferralRow["adviceid"] = ParseToInt(dr["adviceid"].ToString());
+                    ReferralRow["Feedback"] = dr["Feedback"].ToString();
+                    ReferralRow["refusalremarks"] = dr["refusalremarks"].ToString();
+                    ReferralRow["Reasonid"] = ParseToInt(dr["Reasonid"].ToString());
+                    ReferralRow["Reason"] = dr["Reason"].ToString();
+                    ReferralRow["duration"] = ParseToInt(dr["duration"].ToString());
+                    ReferralRow["IsInternalReferral"] = false;
+                    ReferralRow["Blocked"] = ParseToInt(dr["Blocked"].ToString());
+                    ReferralRow["Status"] = ParseToInt(dr["Status"].ToString());
+                    ReferralRow["MonitorDate"] = ParseToDate(dr["Status"].ToString());
+                    ReferralRow["IPID"] = ParseToInt(dr["IPID"].ToString());
+                    ReferralRow["DoctorID1"] = ParseToInt(dr["DoctorID1"].ToString());
+
+                    ds1.Tables[14].Rows.Add(ReferralRow);
+                }
+            }
+
             ReportDocument cryRpt = new ReportDocument();
             cryRpt.Load(System.Configuration.ConfigurationManager.AppSettings["ReportPath"] + "CaseRecord.rpt");
             cryRpt.SetDataSource(ds1);
