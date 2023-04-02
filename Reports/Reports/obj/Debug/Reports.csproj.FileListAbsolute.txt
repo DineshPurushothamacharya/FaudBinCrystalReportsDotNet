@@ -195,3 +195,4 @@ C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecision
 C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
 C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
 C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+C:\Users\Swathi\Sangamesh\Reports\GitHUBCode\Reports\Reports\obj\Debug\Reports.csproj.AssemblyReference.cache

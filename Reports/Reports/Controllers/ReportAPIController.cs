@@ -1273,6 +1273,418 @@ namespace Reports.Controllers
             return "Success";
         }
 
+
+        //https://localhost:44351/api/reportapi/SickLeave?AdmissionId=2843951
+
+        [Route("api/reportapi/SickLeave")]
+        public string GetSickLeave(string AdmissionID)
+        {
+            string strPath = String.Empty;
+
+
+            DataSet ds = new DataSet();
+            DataSet dsResult = new DataSet();
+            DataSet dsResultNew = new DataSet();
+            DataSet dsHeader = new DataSet();
+            DataSet ds1 = CreateSickLeveDataset();
+
+
+            try
+            {
+                string connectionstring = System.Configuration.ConfigurationManager.AppSettings["ConnectionString"];
+                using (SqlConnection con = new SqlConnection(connectionstring))
+                {
+
+                    using (SqlCommand cmd = new SqlCommand("Pr_FetchPatientSickLeave_MAPI", con))
+                    {
+                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
+                        sqlDataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                        sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@AdmissionId", AdmissionID);
+                        SqlParameter @out = cmd.Parameters.AddWithValue("@ErrorNo", String.Empty);
+                        @out.Direction = ParameterDirection.Output;
+
+                        SqlParameter @out1 = cmd.Parameters.AddWithValue("@ErrorDesc", String.Empty);
+                        @out1.Direction = ParameterDirection.Output;
+
+                        SqlParameter @out2 = cmd.Parameters.AddWithValue("@ErrorDesc2l", String.Empty);
+                        @out2.Direction = ParameterDirection.Output;
+
+                        sqlDataAdapter.Fill(dsResultNew);
+                        con.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Failure :" + ex.Message;
+            }
+
+            if (dsResultNew.Tables[0].Rows.Count >= 1)
+            {
+                foreach (DataRow dr in dsResultNew.Tables[0].Rows)
+                {
+                    DataRow newSickLeave = ds1.Tables[0].NewRow();
+                    newSickLeave["SickLeaveID"] = ParseToInt(dr["SickLeaveID"].ToString());
+                    newSickLeave["AdmissionID"] = ParseToInt(dr["AdmissionID"].ToString());
+                    newSickLeave["VisitID"] = ParseToInt(dr["VisitID"].ToString());
+                    newSickLeave["FromDate"] = ParseToDate(dr["FromDate"].ToString());
+                    newSickLeave["Todate"] = ParseToDate(dr["Todate"].ToString());
+                    newSickLeave["DoctorID"] = ParseToInt(dr["DoctorID"].ToString());
+                    newSickLeave["Remarks"] = dr["Remarks"].ToString();
+                    newSickLeave["PatientName"] = dr["PatientName"].ToString();
+                    newSickLeave["Age"] = ParseToInt(dr["Age"].ToString());
+                    newSickLeave["Gender"] = dr["Gender"].ToString();
+                    newSickLeave["CompanyId"] = ParseToInt(dr["CompanyId"].ToString());
+                    newSickLeave["CompanyName"] = dr["CompanyName"].ToString();
+                    newSickLeave["CompanyCode"] = dr["CompanyCode"].ToString();
+                    newSickLeave["Specialisation"] = dr["Specialisation"].ToString();
+                    newSickLeave["PatientID"] = ParseToInt(dr["PatientID"].ToString());
+                    newSickLeave["Regcode"] = dr["Regcode"].ToString();
+                    newSickLeave["AdmissionNumber"] = dr["AdmissionNumber"].ToString();
+                    newSickLeave["Admitdate"] = ParseToDate(dr["Admitdate"].ToString());
+                    newSickLeave["Sufferreason"] = dr["Sufferreason"].ToString();
+                    newSickLeave["DoctorName"] = dr["DoctorName"].ToString();
+                    newSickLeave["Diagnosis"] = dr["Diagnosis"].ToString();
+                    newSickLeave["Diagnosis2L"] = dr["Diagnosis2L"].ToString();
+                    newSickLeave["Treatment"] = dr["Treatment"].ToString();
+                    newSickLeave["Treatment2l"] = dr["Treatment2l"].ToString();
+                    newSickLeave["Advice"] = dr["Advice"].ToString();
+                    newSickLeave["Advice2l"] = dr["Advice2l"].ToString();
+                    newSickLeave["BadgeNumber"] = dr["BadgeNumber"].ToString();
+                    newSickLeave["BadgeNumber2l"] = dr["BadgeNumber2l"].ToString();
+                    newSickLeave["PlaceOfWork"] = dr["PlaceOfWork"].ToString();
+                    newSickLeave["PlaceOfWork2l"] = dr["PlaceOfWork2l"].ToString();
+                    newSickLeave["Approvalbydirector"] = dr["Approvalbydirector"].ToString();
+                    newSickLeave["Approvalbydirector2L"] = dr["Approvalbydirector2L"].ToString();
+                    newSickLeave["CREATEDATE"] = ParseToDate(dr["CREATEDATE"].ToString());
+                    newSickLeave["DischargeDate"] = ParseToDate(dr["DischargeDate"].ToString());
+                    newSickLeave["NationalityID"] = ParseToInt(dr["NationalityID"].ToString());
+                    newSickLeave["Nationality"] = dr["Nationality"].ToString();
+                    newSickLeave["OccupationID"] = ParseToInt(dr["OccupationID"].ToString());
+                    newSickLeave["Occupation"] = dr["Occupation"].ToString();
+                    newSickLeave["VisitDate"] = ParseToDate(dr["VisitDate"].ToString());
+                    newSickLeave["DOB"] = ParseToDate(dr["DOB"].ToString());
+                    newSickLeave["SpecialiseID"] = ParseToInt(dr["SpecialiseID"].ToString());
+                    newSickLeave["PatientVisitID"] = ParseToInt(dr["PatientVisitID"].ToString());
+                    newSickLeave["WORKSTATIONID"] = ParseToInt(dr["WORKSTATIONID"].ToString());
+                    newSickLeave["WORKSTATION"] = dr["WORKSTATION"].ToString();
+                    newSickLeave["statusid"] = ParseToInt(dr["statusid"].ToString());
+                    newSickLeave["StatusName"] = dr["StatusName"].ToString();
+                    newSickLeave["FollowUp"] = ParseToBool(dr["FollowUp"].ToString());
+                    newSickLeave["ReferralToMC"] = ParseToBool(dr["ReferralToMC"].ToString());
+                    newSickLeave["Disability"] = ParseToBool(dr["Disability"].ToString());
+                    newSickLeave["CannotTreated"] = ParseToBool(dr["CannotTreated"].ToString());
+                    newSickLeave["ApprovalOfSickLeave"] = ParseToBool(dr["ApprovalOfSickLeave"].ToString());
+                    newSickLeave["SecondApprovedBy"] = ParseToInt(dr["SecondApprovedBy"].ToString());
+                    newSickLeave["SecondApprovedByName"] = dr["SecondApprovedByName"].ToString();
+                    newSickLeave["SecondApprovedDate"] = ParseToDate(dr["SecondApprovedDate"].ToString());
+                    newSickLeave["SecondApproversSpecialiseID"] = ParseToInt(dr["SecondApproversSpecialiseID"].ToString());
+                    newSickLeave["SecondApproversSpecialisation"] = dr["SecondApproversSpecialisation"].ToString();
+                    newSickLeave["BoardAprrovalEmpId"] = ParseToInt(dr["BoardAprrovalEmpId"].ToString());
+                    newSickLeave["BoardAprrovalEmpName"] = dr["BoardAprrovalEmpName"].ToString();
+                    newSickLeave["BoardApprovedDate"] = ParseToDate(dr["BoardApprovedDate"].ToString());
+                    newSickLeave["DirectorApprovedDate"] = ParseToDate(dr["DirectorApprovedDate"].ToString());
+                    newSickLeave["PatientType"] = ParseToBool(dr["PatientType"].ToString());
+                    newSickLeave["LeaveType"] = ParseToBool(dr["LeaveType"].ToString());
+                    newSickLeave["Others"] = ParseToBool(dr["Others"].ToString());
+                    newSickLeave["HospitalID"] = ParseToInt(dr["HospitalID"].ToString());
+                    newSickLeave["HospitalName"] = dr["HospitalName"].ToString();
+                    newSickLeave["CreatedUserID"] = ParseToInt(dr["CreatedUserID"].ToString());
+                    newSickLeave["CreatedUser"] = dr["CreatedUser"].ToString();
+                    newSickLeave["ModifiedbyUserID"] = ParseToInt(dr["ModifiedbyUserID"].ToString());
+                    newSickLeave["ModifiedbyUser"] = dr["ModifiedbyUser"].ToString();
+                    newSickLeave["CreateDateinHijri"] = dr["CreateDateinHijri"].ToString();
+                    newSickLeave["Occupation2L"] = dr["Occupation2L"].ToString();
+                    newSickLeave["MilitaryUnit"] = dr["MilitaryUnit"].ToString();
+                    newSickLeave["DoctorBleep"] = dr["DoctorBleep"].ToString();
+                    newSickLeave["DoctorCode"] = dr["DoctorCode"].ToString();
+                    newSickLeave["DoctorEmpNo"] = dr["DoctorEmpNo"].ToString();
+                    newSickLeave["Familyname"] = dr["Familyname"].ToString();
+                    newSickLeave["PatientName2l"] = dr["PatientName2l"].ToString();
+                    newSickLeave["FamilyName2l"] = dr["FamilyName2l"].ToString();
+                    newSickLeave["DateOfExamination"] = ParseToDate(dr["DateOfExamination"].ToString());
+                    newSickLeave["ReportingDate"] = ParseToDate(dr["ReportingDate"].ToString());
+                    newSickLeave["Physician1"] = dr["Physician1"].ToString();
+                    newSickLeave["Physician2"] = dr["Physician2"].ToString();
+                    newSickLeave["AttendingPhysician"] = dr["AttendingPhysician"].ToString();
+                    newSickLeave["Sufferreason2l"] = dr["Sufferreason2l"].ToString();
+                    newSickLeave["LeaveIssuedby"] = dr["LeaveIssuedby"].ToString();
+                    newSickLeave["LeaveIssuedby2l"] = dr["LeaveIssuedby2l"].ToString();
+                    newSickLeave["AttendingPhysician2l"] = dr["AttendingPhysician2l"].ToString();
+                    newSickLeave["Physician12l"] = dr["Physician12l"].ToString();
+                    newSickLeave["Physician22l"] = dr["Physician22l"].ToString();
+                    newSickLeave["Blocked"] = ParseToInt(dr["Blocked"].ToString());
+                    newSickLeave["Nationality2l"] = dr["Nationality2l"].ToString();
+                    newSickLeave["Gender2l"] = dr["Gender2l"].ToString();
+                    newSickLeave["CompanyName2l"] = dr["CompanyName2l"].ToString();
+                    newSickLeave["SickLeaveOccupation"] = dr["SickLeaveOccupation"].ToString();
+                    newSickLeave["ReferenceNumber"] = dr["ReferenceNumber"].ToString();
+                    newSickLeave["ApplicationDate"] = dr["ApplicationDate"].ToString();
+                    newSickLeave["DoctorName2l"] = dr["DoctorName2l"].ToString();
+                    newSickLeave["PatientEmployer"] = dr["PatientEmployer"].ToString();
+                    newSickLeave["PatientEmployer2l"] = dr["PatientEmployer2l"].ToString();
+                    newSickLeave["SSN"] = dr["SSN"].ToString();
+                    newSickLeave["UserEmployeeName"] = dr["UserEmployeeName"].ToString();
+                    newSickLeave["FirstName"] = dr["FirstName"].ToString();
+                    newSickLeave["FirstName2L"] = dr["FirstName2L"].ToString();
+                    newSickLeave["GrandFatherName"] = dr["GrandFatherName"].ToString();
+                    newSickLeave["GrandFatherName2L"] = dr["GrandFatherName2L"].ToString();
+                    newSickLeave["FatherName"] = dr["FatherName"].ToString();
+                    newSickLeave["FatherName2l"] = dr["FatherName2l"].ToString();
+                    newSickLeave["PatientFullName"] = dr["PatientFullName"].ToString();
+                    newSickLeave["PatientFullName2L"] = dr["PatientFullName2L"].ToString();
+                    newSickLeave["FileTransfer"] = ParseToBool(dr["FileTransfer"].ToString());
+                    newSickLeave["GobacktoWork"] = ParseToBool(dr["GobacktoWork"].ToString());
+                    newSickLeave["ExemptionDays"] = ParseToInt(dr["ExemptionDays"].ToString());
+                    newSickLeave["ExemptionReason"] = dr["ExemptionReason"].ToString();
+                    newSickLeave["RegRank"] = dr["RegRank"].ToString();
+                    newSickLeave["RegRank2l"] = dr["RegRank2l"].ToString();
+
+                    newSickLeave["AttendingDoctorCode"] = dr["AttendingDoctorCode"].ToString();
+                    newSickLeave["FirstLevelDoctorCode"] = dr["FirstLevelDoctorCode"].ToString();
+                    newSickLeave["FirstLevelDoctorSign"] = dr["FirstLevelDoctorSign"].ToString();
+                    newSickLeave["SecondLevelDoctorCode"] = dr["SecondLevelDoctorCode"].ToString();
+                    newSickLeave["SecondLevelDoctorSign"] = dr["SecondLevelDoctorSign"].ToString();
+                    newSickLeave["FirstLevelDoctorBleep"] = dr["FirstLevelDoctorBleep"].ToString();
+                    newSickLeave["SecondLevelDoctorBleep"] = dr["SecondLevelDoctorBleep"].ToString();
+                    newSickLeave["FirstLevelDoctorEmpNo"] = dr["FirstLevelDoctorEmpNo"].ToString();
+                    newSickLeave["SecondLevelDoctorEmpNo"] = dr["SecondLevelDoctorEmpNo"].ToString();
+                    newSickLeave["SickLeaveNo"] = dr["SickLeaveNo"].ToString();
+                    newSickLeave["IsPorted"] = ParseToInt(dr["IsPorted"].ToString());
+                    newSickLeave["Exception"] = dr["Exception"].ToString();
+                    newSickLeave["ExceptionFromDate"] = ParseToDate(dr["ExceptionFromDate"].ToString());
+                    newSickLeave["ExceptionToDate"] = ParseToDate(dr["ExceptionToDate"].ToString());
+                    newSickLeave["MobileNo"] = dr["MobileNo"].ToString();
+                    newSickLeave["PhoneNo"] = dr["PhoneNo"].ToString();
+                    newSickLeave["ScanDocumentPath"] = dr["ScanDocumentPath"].ToString();
+                    newSickLeave["SickLeaveTypeID"] = ParseToInt(dr["SickLeaveTypeID"].ToString());
+                    newSickLeave["SickLeaveType"] = dr["SickLeaveType"].ToString();
+                    newSickLeave["MilitaryID"] = dr["MilitaryID"].ToString();
+                    newSickLeave["MiddleLvlApprovedBy"] = ParseToInt(dr["MiddleLvlApprovedBy"].ToString());
+                    newSickLeave["MiddleLvlApprovedByName"] = dr["MiddleLvlApprovedByName"].ToString();
+
+                    newSickLeave["MiddleLvlApprovedDate"] = ParseToDate(dr["MiddleLvlApprovedDate"].ToString());
+                    newSickLeave["MiddleLvlApproversSpecialiseID"] = ParseToInt(dr["MiddleLvlApproversSpecialiseID"].ToString());
+                    newSickLeave["MiddleLvlApproversSpecialisation"] = dr["MiddleLvlApproversSpecialisation"].ToString();
+                    newSickLeave["DirectorEmpId"] = ParseToInt(dr["DirectorEmpId"].ToString());
+                    newSickLeave["DirectorName"] = dr["DirectorName"].ToString();
+                    newSickLeave["DirectorSignaturePath"] = dr["DirectorSignaturePath"].ToString();
+                    newSickLeave["MiddleLevelDoctorBleep"] = dr["MiddleLevelDoctorBleep"].ToString();
+                    newSickLeave["MiddleLevelDoctorCode"] = dr["MiddleLevelDoctorCode"].ToString();
+                    newSickLeave["SickLeaveWorkTypeID"] = ParseToInt(dr["SickLeaveWorkTypeID"].ToString());
+                    newSickLeave["SickLeaveWorkTypeDate"] = ParseToDate(dr["SickLeaveWorkTypeDate"].ToString());
+                    newSickLeave["SickLeaveWorkTypeHijriDate"] = dr["SickLeaveWorkTypeHijriDate"].ToString();
+                    newSickLeave["AppointmentDocID"] = ParseToInt(dr["AppointmentDocID"].ToString());
+                    newSickLeave["AppointmentDirectorName"] = dr["AppointmentDirectorName"].ToString();
+                    newSickLeave["Fitness"] = ParseToInt(dr["Fitness"].ToString());
+                    newSickLeave["JoiningDate"] = ParseToDate(dr["JoiningDate"].ToString());
+                    newSickLeave["HijriJoiningDate"] = dr["HijriJoiningDate"].ToString();
+                    newSickLeave["ThirdApprovedBy"] = ParseToInt(dr["ThirdApprovedBy"].ToString());
+                    newSickLeave["ThirdApprovedByName"] = dr["ThirdApprovedByName"].ToString();
+                    newSickLeave["ThirdApprovedDate"] = ParseToDate(dr["ThirdApprovedDate"].ToString());
+                    newSickLeave["ThirdApprovedCODE"] = dr["ThirdApprovedCODE"].ToString();
+                    newSickLeave["ThirdApprovedSignaturePath"] = dr["ThirdApprovedSignaturePath"].ToString();
+                    newSickLeave["ThirdApprovedBleep"] = dr["ThirdApprovedBleep"].ToString();
+                    newSickLeave["PatientEmpid"] = dr["PatientEmpid"].ToString();
+                    newSickLeave["ConsultationID"] = ParseToInt(dr["ConsultationID"].ToString());
+                    newSickLeave["AgeType"] = dr["AgeType"].ToString();
+                    newSickLeave["AgeType2l"] = dr["AgeType2l"].ToString();
+                    newSickLeave["FirstLevelDoctorDesignation"] = dr["FirstLevelDoctorDesignation"].ToString();
+                    ds1.Tables[0].Rows.Add(newSickLeave);
+                }
+            }
+            
+
+            
+
+            ReportDocument cryRpt = new ReportDocument();
+            cryRpt.Load(System.Configuration.ConfigurationManager.AppSettings["ReportPath"] + "ArabicFormat1.rpt");
+            cryRpt.SetDataSource(ds1);
+            cryRpt.Refresh();
+            cryRpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + AdmissionID.ToString() + ".pdf");
+            return "Success";
+
+        }
+
+        private DataSet CreateSickLeveDataset()
+        {
+            DataSet ds1 = new DataSet();
+            ds1.Tables.Add("Table");
+
+            ds1.Tables[0].Columns.Add("SickLeaveID", typeof(int));
+            ds1.Tables[0].Columns.Add("AdmissionID", typeof(int));
+            ds1.Tables[0].Columns.Add("VisitID", typeof(int));
+            ds1.Tables[0].Columns.Add("FromDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("Todate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("DoctorID", typeof(int));
+            ds1.Tables[0].Columns.Add("Remarks", typeof(string));
+            ds1.Tables[0].Columns.Add("PatientName", typeof(string));
+            ds1.Tables[0].Columns.Add("Age", typeof(int));
+            ds1.Tables[0].Columns.Add("Gender", typeof(string));
+            ds1.Tables[0].Columns.Add("CompanyId", typeof(int));
+            ds1.Tables[0].Columns.Add("CompanyName", typeof(string));
+            ds1.Tables[0].Columns.Add("CompanyCode", typeof(string));
+            ds1.Tables[0].Columns.Add("Specialisation", typeof(string));
+            ds1.Tables[0].Columns.Add("PatientID", typeof(int));
+            ds1.Tables[0].Columns.Add("Regcode", typeof(string));
+            ds1.Tables[0].Columns.Add("AdmissionNumber", typeof(string));
+            ds1.Tables[0].Columns.Add("Admitdate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("Sufferreason", typeof(string));
+            ds1.Tables[0].Columns.Add("DoctorName", typeof(string));
+            ds1.Tables[0].Columns.Add("Diagnosis", typeof(string));
+            ds1.Tables[0].Columns.Add("Diagnosis2L", typeof(string));
+            ds1.Tables[0].Columns.Add("Treatment", typeof(string));
+            ds1.Tables[0].Columns.Add("Treatment2l", typeof(string));
+            ds1.Tables[0].Columns.Add("Advice", typeof(string));
+            ds1.Tables[0].Columns.Add("Advice2l", typeof(string));
+            ds1.Tables[0].Columns.Add("BadgeNumber", typeof(string));
+            ds1.Tables[0].Columns.Add("BadgeNumber2l", typeof(string));
+            ds1.Tables[0].Columns.Add("PlaceOfWork", typeof(string));
+            ds1.Tables[0].Columns.Add("PlaceOfWork2l", typeof(string));
+            ds1.Tables[0].Columns.Add("Approvalbydirector", typeof(string));
+            ds1.Tables[0].Columns.Add("Approvalbydirector2L", typeof(string));
+            ds1.Tables[0].Columns.Add("CREATEDATE", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("DischargeDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("NationalityID", typeof(int));
+            ds1.Tables[0].Columns.Add("Nationality", typeof(string));
+            ds1.Tables[0].Columns.Add("OccupationID", typeof(int));
+            ds1.Tables[0].Columns.Add("Occupation", typeof(string));
+            ds1.Tables[0].Columns.Add("VisitDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("DOB", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("SpecialiseID", typeof(int));
+            ds1.Tables[0].Columns.Add("PatientVisitID", typeof(int));
+            ds1.Tables[0].Columns.Add("WORKSTATIONID", typeof(int));
+            ds1.Tables[0].Columns.Add("WORKSTATION", typeof(string));
+            ds1.Tables[0].Columns.Add("statusid", typeof(int));
+            ds1.Tables[0].Columns.Add("StatusName", typeof(string));
+            ds1.Tables[0].Columns.Add("FollowUp", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("ReferralToMC", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("Disability", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("CannotTreated", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("ApprovalOfSickLeave", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("SecondApprovedBy", typeof(int));
+            ds1.Tables[0].Columns.Add("SecondApprovedByName", typeof(string));
+            ds1.Tables[0].Columns.Add("SecondApprovedDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("SecondApproversSpecialiseID", typeof(int));
+            ds1.Tables[0].Columns.Add("SecondApproversSpecialisation", typeof(string));
+            ds1.Tables[0].Columns.Add("BoardAprrovalEmpId", typeof(int));
+            ds1.Tables[0].Columns.Add("BoardAprrovalEmpName", typeof(string));
+            ds1.Tables[0].Columns.Add("BoardApprovedDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("DirectorApprovedDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("PatientType", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("LeaveType", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("Others", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("HospitalID", typeof(int));
+            ds1.Tables[0].Columns.Add("HospitalName", typeof(string));
+            ds1.Tables[0].Columns.Add("CreatedUserID", typeof(int));
+            ds1.Tables[0].Columns.Add("CreatedUser", typeof(string));
+            ds1.Tables[0].Columns.Add("ModifiedbyUserID", typeof(int));
+            ds1.Tables[0].Columns.Add("ModifiedbyUser", typeof(string));
+            ds1.Tables[0].Columns.Add("CreateDateinHijri", typeof(string));
+            ds1.Tables[0].Columns.Add("Occupation2L", typeof(string));
+            ds1.Tables[0].Columns.Add("MilitaryUnit", typeof(string));
+            ds1.Tables[0].Columns.Add("DoctorBleep", typeof(string));
+            ds1.Tables[0].Columns.Add("DoctorCode", typeof(string));
+            ds1.Tables[0].Columns.Add("DoctorEmpNo", typeof(string));
+            ds1.Tables[0].Columns.Add("Familyname", typeof(string));
+            ds1.Tables[0].Columns.Add("PatientName2l", typeof(string));
+            ds1.Tables[0].Columns.Add("FamilyName2l", typeof(string));
+            ds1.Tables[0].Columns.Add("DateOfExamination", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("ReportingDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("Physician1", typeof(string));
+            ds1.Tables[0].Columns.Add("Physician2", typeof(string));
+            ds1.Tables[0].Columns.Add("AttendingPhysician", typeof(string));
+            ds1.Tables[0].Columns.Add("Sufferreason2l", typeof(string));
+            ds1.Tables[0].Columns.Add("LeaveIssuedby", typeof(string));
+            ds1.Tables[0].Columns.Add("LeaveIssuedby2l", typeof(string));
+            ds1.Tables[0].Columns.Add("AttendingPhysician2l", typeof(string));
+            ds1.Tables[0].Columns.Add("Physician12l", typeof(string));
+            ds1.Tables[0].Columns.Add("Physician22l", typeof(string));
+            ds1.Tables[0].Columns.Add("Blocked", typeof(int));
+            ds1.Tables[0].Columns.Add("Nationality2l", typeof(string));
+            ds1.Tables[0].Columns.Add("Gender2l", typeof(string));
+            ds1.Tables[0].Columns.Add("CompanyName2l", typeof(string));
+            ds1.Tables[0].Columns.Add("SickLeaveOccupation", typeof(string));
+            ds1.Tables[0].Columns.Add("ReferenceNumber", typeof(string));
+            ds1.Tables[0].Columns.Add("ApplicationDate", typeof(string));
+            ds1.Tables[0].Columns.Add("DoctorName2l", typeof(string));
+            ds1.Tables[0].Columns.Add("PatientEmployer", typeof(string));
+            ds1.Tables[0].Columns.Add("PatientEmployer2l", typeof(string));
+            ds1.Tables[0].Columns.Add("SSN", typeof(string));
+            ds1.Tables[0].Columns.Add("UserEmployeeName", typeof(string));
+            ds1.Tables[0].Columns.Add("FirstName", typeof(string));
+            ds1.Tables[0].Columns.Add("FirstName2L", typeof(string));
+            ds1.Tables[0].Columns.Add("GrandFatherName", typeof(string));
+            ds1.Tables[0].Columns.Add("GrandFatherName2L", typeof(string));
+            ds1.Tables[0].Columns.Add("FatherName", typeof(string));
+
+            ds1.Tables[0].Columns.Add("FatherName2l", typeof(string));
+
+            ds1.Tables[0].Columns.Add("PatientFullName", typeof(string));
+            ds1.Tables[0].Columns.Add("PatientFullName2L", typeof(string));
+            ds1.Tables[0].Columns.Add("FileTransfer", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("GobacktoWork", typeof(Boolean));
+            ds1.Tables[0].Columns.Add("ExemptionDays", typeof(int));
+            ds1.Tables[0].Columns.Add("ExemptionReason", typeof(string));
+
+            ds1.Tables[0].Columns.Add("RegRank", typeof(string));
+            ds1.Tables[0].Columns.Add("RegRank2l", typeof(string));
+            ds1.Tables[0].Columns.Add("AttendingDoctorCode", typeof(string));
+            ds1.Tables[0].Columns.Add("FirstLevelDoctorCode", typeof(string));
+            ds1.Tables[0].Columns.Add("FirstLevelDoctorSign", typeof(string));
+            ds1.Tables[0].Columns.Add("SecondLevelDoctorCode", typeof(string));
+            ds1.Tables[0].Columns.Add("SecondLevelDoctorSign", typeof(string));
+            ds1.Tables[0].Columns.Add("FirstLevelDoctorBleep", typeof(string));
+            ds1.Tables[0].Columns.Add("SecondLevelDoctorBleep", typeof(string));
+            ds1.Tables[0].Columns.Add("FirstLevelDoctorEmpNo", typeof(string));
+            ds1.Tables[0].Columns.Add("SecondLevelDoctorEmpNo", typeof(string));
+            ds1.Tables[0].Columns.Add("SickLeaveNo", typeof(string));
+
+            ds1.Tables[0].Columns.Add("IsPorted", typeof(int));
+            ds1.Tables[0].Columns.Add("Exception", typeof(string));
+            ds1.Tables[0].Columns.Add("ExceptionFromDate", typeof(DateTime));
+            
+            ds1.Tables[0].Columns.Add("ExceptionToDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("MobileNo", typeof(string));
+            ds1.Tables[0].Columns.Add("PhoneNo", typeof(string));
+            ds1.Tables[0].Columns.Add("ScanDocumentPath", typeof(string));
+            ds1.Tables[0].Columns.Add("SickLeaveTypeID", typeof(int));
+            ds1.Tables[0].Columns.Add("SickLeaveType", typeof(string));
+            ds1.Tables[0].Columns.Add("MilitaryID", typeof(string));
+            ds1.Tables[0].Columns.Add("MiddleLvlApprovedBy", typeof(int));
+            ds1.Tables[0].Columns.Add("MiddleLvlApprovedByName", typeof(string));
+            ds1.Tables[0].Columns.Add("MiddleLvlApprovedDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("MiddleLvlApproversSpecialiseID", typeof(int));
+            ds1.Tables[0].Columns.Add("MiddleLvlApproversSpecialisation", typeof(string));
+            ds1.Tables[0].Columns.Add("DirectorEmpId", typeof(int));
+            ds1.Tables[0].Columns.Add("DirectorName", typeof(string));
+            ds1.Tables[0].Columns.Add("DirectorSignaturePath", typeof(string));
+            ds1.Tables[0].Columns.Add("MiddleLevelDoctorBleep", typeof(string));
+            ds1.Tables[0].Columns.Add("MiddleLevelDoctorCode", typeof(string));
+            ds1.Tables[0].Columns.Add("SickLeaveWorkTypeID", typeof(int));
+            ds1.Tables[0].Columns.Add("SickLeaveWorkTypeDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("SickLeaveWorkTypeHijriDate", typeof(string));
+            ds1.Tables[0].Columns.Add("AppointmentDocID", typeof(int));
+            ds1.Tables[0].Columns.Add("AppointmentDirectorName", typeof(string));
+            ds1.Tables[0].Columns.Add("Fitness", typeof(int));
+            ds1.Tables[0].Columns.Add("JoiningDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("HijriJoiningDate", typeof(string));
+            ds1.Tables[0].Columns.Add("ThirdApprovedBy", typeof(int));
+            ds1.Tables[0].Columns.Add("ThirdApprovedByName", typeof(string));
+            ds1.Tables[0].Columns.Add("ThirdApprovedDate", typeof(DateTime));
+            ds1.Tables[0].Columns.Add("ThirdApprovedCODE", typeof(string));
+            ds1.Tables[0].Columns.Add("ThirdApprovedSignaturePath", typeof(string));
+            ds1.Tables[0].Columns.Add("ThirdApprovedBleep", typeof(string));
+            ds1.Tables[0].Columns.Add("PatientEmpid", typeof(string));
+            ds1.Tables[0].Columns.Add("ConsultationID", typeof(int));
+            ds1.Tables[0].Columns.Add("AgeType", typeof(string));
+            ds1.Tables[0].Columns.Add("AgeType2l", typeof(string));
+            ds1.Tables[0].Columns.Add("FirstLevelDoctorDesignation", typeof(string));
+
+
+            return ds1;
+        }
+
         private string ReferenceRange(string strMinVal, string strMaxVal, bool blnUnits, string strUnit, bool blnPrefix, string strKeyword, string StrSIUnit)
         {
             try
