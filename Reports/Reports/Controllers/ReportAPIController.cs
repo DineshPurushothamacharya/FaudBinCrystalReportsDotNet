@@ -1189,7 +1189,7 @@ namespace Reports.Controllers
             cryRpt.Load(System.Configuration.ConfigurationManager.AppSettings["ReportPath"] + "CaseRecord.rpt");
             cryRpt.SetDataSource(ds1);
             cryRpt.Refresh();
-            cryRpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + AdmissionId.ToString() + ".pdf");
+            cryRpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, System.Configuration.ConfigurationManager.AppSettings["PrescriptionLocation"] + AdmissionId.ToString() + ".pdf");
             return "Success";
 
         }
@@ -1287,7 +1287,7 @@ namespace Reports.Controllers
             DataSet dsResultNew = new DataSet();
             DataSet dsHeader = new DataSet();
             DataSet ds1 = CreateSickLeveDataset();
-
+            String sickLeaveID = string.Empty;
 
             try
             {
@@ -1325,6 +1325,7 @@ namespace Reports.Controllers
                 {
                     DataRow newSickLeave = ds1.Tables[0].NewRow();
                     newSickLeave["SickLeaveID"] = ParseToInt(dr["SickLeaveID"].ToString());
+                    sickLeaveID = dr["SickLeaveID"].ToString();
                     newSickLeave["AdmissionID"] = ParseToInt(dr["AdmissionID"].ToString());
                     newSickLeave["VisitID"] = ParseToInt(dr["VisitID"].ToString());
                     newSickLeave["FromDate"] = ParseToDate(dr["FromDate"].ToString());
@@ -1493,16 +1494,27 @@ namespace Reports.Controllers
                     ds1.Tables[0].Rows.Add(newSickLeave);
                 }
             }
-            
 
-            
+            try
+            {
+                string ftpserver = System.Configuration.ConfigurationManager.AppSettings["ftpserver"];
+                string ftppath = System.Configuration.ConfigurationManager.AppSettings["ftppath_SickLeave"];
+                string ReportLocation = System.Configuration.ConfigurationManager.AppSettings["SickLeaveLocation"];
+                CheckIfPDFExists(ftpserver, ftppath, AdmissionID, ReportLocation, sickLeaveID + ".pdf");
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                ReportDocument cryRpt = new ReportDocument();
+                cryRpt.Load(System.Configuration.ConfigurationManager.AppSettings["ReportPath"] + "ArabicFormat1.rpt");
+                cryRpt.SetDataSource(ds1);
+                cryRpt.Refresh();
+                cryRpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, System.Configuration.ConfigurationManager.AppSettings["SickLeaveLocation"] + AdmissionID.ToString() + ".pdf");
+                return "Success";
+            }
 
-            ReportDocument cryRpt = new ReportDocument();
-            cryRpt.Load(System.Configuration.ConfigurationManager.AppSettings["ReportPath"] + "ArabicFormat1.rpt");
-            cryRpt.SetDataSource(ds1);
-            cryRpt.Refresh();
-            cryRpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + AdmissionID.ToString() + ".pdf");
-            return "Success";
+
+
 
         }
 
@@ -3020,6 +3032,23 @@ namespace Reports.Controllers
             }
             return "";
         }
+
+        private string CheckIfPDFExists(string FTPServer, string FTPFolder, string TestOrderId, string ReportLocation, string pdfName)
+        {
+            //pdfName = pdfName.Substring(1, pdfName.Length - 1);
+
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://" + FTPServer + "/" + FTPFolder + "/" + pdfName);
+            request.Method = WebRequestMethods.Ftp.DownloadFile;
+
+            using (Stream ftpstream = request.GetResponse().GetResponseStream())
+            using (Stream filestream = File.Create(ReportLocation + TestOrderId + ".pdf"))
+            {
+                ftpstream.CopyTo(filestream);
+            }
+            return "";
+        }
+
+
 
     }
 }
