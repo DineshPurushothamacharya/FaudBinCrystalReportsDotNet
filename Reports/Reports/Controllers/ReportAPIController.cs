@@ -32,6 +32,7 @@ namespace Reports.Controllers
         //https://localhost:44351/api/reportapi?TestOrderID=1358599&UHID=PFBS.0000397737&isExternal=true
         //https://localhost:44351/api/reportapi?TestOrderID=1463197&UHID=PFBS.0000070775&isExternal=true
         //https://localhost:44351/api/reportapi?TestOrderID=1447060&UHID=PFBS.0000397737&isExternal=true
+        //https://localhost:44351/api/reportapi?TestOrderID=1459099&UHID=PFBS.0000437093&isExternal=true
 
         //http://172.16.16.53/api/reportapi?TestOrderID=1358599&UHID=PFBS.0000397737&isExternal=true
         // GET api/<controller>/5
@@ -1275,6 +1276,7 @@ namespace Reports.Controllers
 
 
         //https://localhost:44351/api/reportapi/SickLeave?AdmissionId=2843951
+        //https://localhost:44351/api/reportapi/SickLeave?AdmissionId=2844695
 
         [Route("api/reportapi/SickLeave")]
         public string GetSickLeave(string AdmissionID)

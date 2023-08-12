@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="67bc10a5-b9b1-40f5-bdc5-ac1abfe3afb1" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/Wipro.NxG.BillCalculation/BillingCalculationServiceReference.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="BillingCalculationServiceReference.xsd" MetadataType="Schema" ID="807c8c20-2ae1-42e6-8ceb-622d1bd757c6" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.BillCalculation/BillingCalculationServiceReference.svc?xsd=xsd3" />
+    <MetadataFile FileName="BillingCalculationServiceReference1.xsd" MetadataType="Schema" ID="9348c932-6f64-4f41-9d17-c6d4627fd159" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.BillCalculation/BillingCalculationServiceReference.svc?xsd=xsd0" />
+    <MetadataFile FileName="BillingCalculationServiceReference2.xsd" MetadataType="Schema" ID="2ba7a438-3a51-47a6-a7f5-952c75fb99b9" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.BillCalculation/BillingCalculationServiceReference.svc?xsd=xsd1" />
+    <MetadataFile FileName="BillingCalculationServiceReference3.xsd" MetadataType="Schema" ID="762f18d9-9646-48b2-80ad-34ff9ee131ac" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.BillCalculation/BillingCalculationServiceReference.svc?xsd=xsd2" />
+    <MetadataFile FileName="BillingCalculationService.wsdl" MetadataType="Wsdl" ID="86819038-6237-48e0-8798-102efbdc8761" SourceId="1" SourceUrl="http://localhost/Wipro.NxG.BillCalculation/BillingCalculationServiceReference.svc?wsdl" />
+    <MetadataFile FileName="BillingCalculationServiceReference4.xsd" MetadataType="Schema" ID="6d19db2a-25ed-4220-b88d-351735bcac62" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.BillCalculation/BillingCalculationServiceReference.svc?xsd=xsd4" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

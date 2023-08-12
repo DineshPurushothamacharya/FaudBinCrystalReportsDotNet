@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="707d5f9e-1428-4870-bf71-35c865a45a7c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/Wipro.NxG.IPBilling/IPBillingServiceReference.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="IPBillingService.wsdl" MetadataType="Wsdl" ID="9632b02b-1f7b-42c3-b099-559537779ee7" SourceId="1" SourceUrl="http://localhost/Wipro.NxG.IPBilling/IPBillingServiceReference.svc?wsdl" />
+    <MetadataFile FileName="IPBillingServiceReference.xsd" MetadataType="Schema" ID="c16ae8c5-a0c9-4ce2-a82e-7a2aaf507fba" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.IPBilling/IPBillingServiceReference.svc?xsd=xsd0" />
+    <MetadataFile FileName="IPBillingServiceReference1.xsd" MetadataType="Schema" ID="ad8388f6-0577-4562-a87f-67588235c824" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.IPBilling/IPBillingServiceReference.svc?xsd=xsd1" />
+    <MetadataFile FileName="IPBillingServiceReference2.xsd" MetadataType="Schema" ID="e55c0220-0495-42a7-ac30-5976d2030207" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.IPBilling/IPBillingServiceReference.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

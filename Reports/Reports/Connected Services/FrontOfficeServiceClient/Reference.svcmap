@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="3b51c8e3-cdcc-4c3e-a5b6-4b14dc0fbf58" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://agphsrv-his06.pfbsh.com.sa/Wipro.NXG.FrontOffice/FrontOfficeServiceReference.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="FrontOfficeServiceReference.xsd" MetadataType="Schema" ID="0f5345df-36f4-4e1a-a6ba-76264b294639" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NXG.FrontOffice/FrontOfficeServiceReference.svc?xsd=xsd0" />
+    <MetadataFile FileName="FrontOfficeServiceReference1.xsd" MetadataType="Schema" ID="1056b1c0-5727-4755-a276-82ed79113684" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NXG.FrontOffice/FrontOfficeServiceReference.svc?xsd=xsd3" />
+    <MetadataFile FileName="FrontOfficeServiceReference2.xsd" MetadataType="Schema" ID="f2335b53-e931-4cab-9ed0-a00d6f9d784a" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NXG.FrontOffice/FrontOfficeServiceReference.svc?xsd=xsd5" />
+    <MetadataFile FileName="FrontOfficeServiceReference3.xsd" MetadataType="Schema" ID="eec39ef3-072e-4168-9117-e126ab4c3fea" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NXG.FrontOffice/FrontOfficeServiceReference.svc?xsd=xsd2" />
+    <MetadataFile FileName="FrontOfficeServiceReference4.xsd" MetadataType="Schema" ID="5be0799b-0d41-4fb6-a285-7d0ed485858d" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NXG.FrontOffice/FrontOfficeServiceReference.svc?xsd=xsd4" />
+    <MetadataFile FileName="FrontOfficeServiceReference5.xsd" MetadataType="Schema" ID="c7ca978e-621d-4cde-b8b1-399abff287b6" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NXG.FrontOffice/FrontOfficeServiceReference.svc?xsd=xsd1" />
+    <MetadataFile FileName="FrontOfficeService.wsdl" MetadataType="Wsdl" ID="bb41d4c0-c211-44ee-8615-b9392b16b9f0" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NXG.FrontOffice/FrontOfficeServiceReference.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

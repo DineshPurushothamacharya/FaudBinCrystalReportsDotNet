@@ -79,6 +79,8 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -114,11 +116,191 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\AdminServiceClient\Admin.wsdl" />
+    <None Include="Connected Services\AdminServiceClient\AdminServiceRef.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AdminServiceClient\AdminServiceRef1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AdminServiceClient\AdminServiceRef2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\ARService.wsdl" />
+    <None Include="Connected Services\ARServiceReferenceClient\ARServiceReference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\ARServiceReference1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\ARServiceReference2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\ARServiceReference3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\ARServiceReference4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\ARServiceReference5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingCalculationServiceClient\BillingCalculationService.wsdl" />
+    <None Include="Connected Services\BillingCalculationServiceClient\BillingCalculationServiceReference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingCalculationServiceClient\BillingCalculationServiceReference1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingCalculationServiceClient\BillingCalculationServiceReference2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingCalculationServiceClient\BillingCalculationServiceReference3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingCalculationServiceClient\BillingCalculationServiceReference4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingFacadeServiceClient\BillingFacadeService.wsdl" />
+    <None Include="Connected Services\BillingFacadeServiceClient\BillingFacadeServiceReference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingFacadeServiceClient\BillingFacadeServiceReference1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingFacadeServiceClient\BillingFacadeServiceReference2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\BillingFacadeServiceClient\Reports.BillingFacadeServiceClient.CalucalteOPBillNewResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\CommonSearchServiceClient\CommonSearchService.wsdl" />
+    <None Include="Connected Services\CommonSearchServiceClient\CommonSearchService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommonSearchServiceClient\CommonSearchService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommonSearchServiceClient\CommonSearchService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommonSearchServiceClient\CommonSearchService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommonSearchServiceClient\CommonSearchService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ContractMgmtServiceClient\ContractMgmtService.wsdl" />
+    <None Include="Connected Services\ContractMgmtServiceClient\ContractMgmtServiceReference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ContractMgmtServiceClient\ContractMgmtServiceReference1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ContractMgmtServiceClient\ContractMgmtServiceReference2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ContractMgmtServiceClient\ContractMgmtServiceReference3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ContractMgmtServiceClient\ContractMgmtServiceReference4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrontOfficeServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\FrontOfficeServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\FrontOfficeServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\AdminServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\AdminServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\AdminServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\ARServiceReferenceClient\configuration.svcinfo" />
+    <None Include="Connected Services\ARServiceReferenceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\BillingCalculationServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\BillingCalculationServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\BillingCalculationServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\BillingFacadeServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\BillingFacadeServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\BillingFacadeServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\CommonSearchServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\CommonSearchServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\CommonSearchServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\ContractMgmtServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\ContractMgmtServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\ContractMgmtServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\IPBillingServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\IPBillingServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\IPBillingServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Common\Utilities.cs" />
+    <Compile Include="Connected Services\AdminServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\ARServiceReferenceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\BillingCalculationServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\BillingFacadeServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\CommonSearchServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\ContractMgmtServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\FrontOfficeServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\IPBillingServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\PaymentAPIController.cs" />
     <Compile Include="Controllers\ReportAPIController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -126,7 +308,47 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeService.wsdl" />
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeServiceReference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeServiceReference1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeServiceReference2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeServiceReference3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeServiceReference4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeServiceReference5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\FrontOfficeServiceClient\Reports.FrontOfficeServiceClient.SetBillDetailsNewResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\IPBillingServiceClient\IPBillingService.wsdl" />
+    <None Include="Connected Services\IPBillingServiceClient\IPBillingServiceReference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\IPBillingServiceClient\IPBillingServiceReference1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\IPBillingServiceClient\IPBillingServiceReference2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\IPBillingServiceClient\Reports.IPBillingServiceClient.ApplyAgreementRuleResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\IPBillingServiceClient\Reports.IPBillingServiceClient.ModifyPatientAdmitDateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="packages.config" />
+    <Content Include="Properties\DataSources\System.Data.DataSet.datasource" />
+    <Content Include="Properties\DataSources\System.Data.DataTable.datasource" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -136,7 +358,21 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="BusinessLogic\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\AdminServiceClient\" />
+    <WCFMetadataStorage Include="Connected Services\ARServiceReferenceClient\" />
+    <WCFMetadataStorage Include="Connected Services\BillingCalculationServiceClient\" />
+    <WCFMetadataStorage Include="Connected Services\BillingFacadeServiceClient\" />
+    <WCFMetadataStorage Include="Connected Services\CommonSearchServiceClient\" />
+    <WCFMetadataStorage Include="Connected Services\ContractMgmtServiceClient\" />
+    <WCFMetadataStorage Include="Connected Services\FrontOfficeServiceClient\" />
+    <WCFMetadataStorage Include="Connected Services\IPBillingServiceClient\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
