@@ -1,5 +1,6 @@
 ﻿using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
+using Reports.BusinessLogic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,7 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
-
+using static Reports.BusinessLogic.PaymentsClass;
 
 namespace Reports.Controllers
 {
@@ -1272,6 +1273,22 @@ namespace Reports.Controllers
             cryRpt.Refresh();
             cryRpt.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, System.Configuration.ConfigurationManager.AppSettings["ReportLocation"] + 1.ToString() + ".pdf");
             return "Success";
+        }
+
+        [HttpGet]
+        [Route("api/reportapi/payment")]
+        public string Payment(String Test)
+        {
+            PaymentsClass objPayment = new PaymentsClass();
+
+            PatientBillList objRequest = new PatientBillList();
+            objRequest.HospitalId = 1;
+            objRequest.RegCode = "PFBS.0000363921";
+            objRequest.ScheduleID = "5891";
+
+            objPayment.GettingPatientList(objRequest);
+
+            return string.Empty;
         }
 
 

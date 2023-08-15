@@ -259,6 +259,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BusinessLogic\Payments.cs" />
     <Compile Include="Common\Utilities.cs" />
     <Compile Include="Connected Services\AdminServiceClient\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -302,6 +303,10 @@
     </Compile>
     <Compile Include="Controllers\PaymentAPIController.cs" />
     <Compile Include="Controllers\ReportAPIController.cs" />
+    <Compile Include="Data\CustomeException.cs" />
+    <Compile Include="Data\ExceptionManager.cs" />
+    <Compile Include="Data\HISDataAccess.cs" />
+    <Compile Include="Data\HISResource.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -346,6 +351,7 @@
     <Content Include="Connected Services\IPBillingServiceClient\Reports.IPBillingServiceClient.ModifyPatientAdmitDateResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Compile Include="Data\CodeBasedException.cs" />
     <None Include="packages.config" />
     <Content Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="Properties\DataSources\System.Data.DataTable.datasource" />
@@ -358,7 +364,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="BusinessLogic\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
