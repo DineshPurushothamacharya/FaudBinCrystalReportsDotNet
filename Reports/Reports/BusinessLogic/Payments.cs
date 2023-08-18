@@ -15,12 +15,17 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Reflection;
+using System.Resources;
+using Reports.ARServiceReferenceClient;
+using System.Globalization;
 
 namespace Reports.BusinessLogic
 {
     public class PaymentsClass
     {
         #region Variables Defined
+        ResourceManager rm = new ResourceManager("DateStrings", Assembly.GetExecutingAssembly());
 
         static string MODULE_NAME = "PatientBillPayment";
         const int DEFAULTWORKSTATION = 0;
@@ -274,16 +279,20 @@ namespace Reports.BusinessLogic
                     {
                         objPatientList.Code = (int)ProcessStatus.Success;
                         objPatientList.Status = ProcessStatus.Success.ToString();
-                        objPatientList.Message = Resources.English.ResourceManager.GetString("PatientcurrentlyIP");
-                        objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("PatientcurrentlyIP");
+                        objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["PatientcurrentlyIP"].ToString();
+                        //objPatientList.Message = Resources.English.ResourceManager.GetString("PatientcurrentlyIP");
+                        objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["PatientcurrentlyIP"].ToString();
+                        //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("PatientcurrentlyIP");
                         return objPatientList;
                     }
                     if (dsUhidSearchResults.Tables[0].Rows[0]["PatienttypeID"].ToString() == "3")
                     {
                         objPatientList.Code = (int)ProcessStatus.Success;
                         objPatientList.Status = ProcessStatus.Success.ToString();
-                        objPatientList.Message = Resources.English.ResourceManager.GetString("PatientcurrentlyEMR");
-                        objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("PatientcurrentlyEMR");
+                        //objPatientList.Message = Resources.English.ResourceManager.GetString("PatientcurrentlyEMR");
+                        objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["PatientcurrentlyEMR"].ToString();
+                        //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("PatientcurrentlyEMR");
+                        objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["PatientcurrentlyEMR"].ToString();
                         return objPatientList;
                     }
                 }
@@ -301,9 +310,10 @@ namespace Reports.BusinessLogic
                     {
                         objPatientList.Code = (int)ProcessStatus.Success;
                         objPatientList.Status = ProcessStatus.Success.ToString();
-                        //objPatientList.Message = "Patient is having Outstanding Amount:" + Convert.ToDecimal(intprev.ToString()) + "";
-                        objPatientList.Message = Resources.English.ResourceManager.GetString("PatientOutstandingAmount") + Convert.ToDecimal(intprev.ToString()) + "";
-                        objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("PatientOutstandingAmount") + Convert.ToDecimal(intprev.ToString()) + "";
+                        //objPatientList.Message = Resources.English.ResourceManager.GetString("PatientOutstandingAmount") + Convert.ToDecimal(intprev.ToString()) + "";
+                        objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["PatientOutstandingAmount"].ToString() + Convert.ToDecimal(intprev.ToString()) + "";
+                        //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("PatientOutstandingAmount") + Convert.ToDecimal(intprev.ToString()) + "";
+                        objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["PatientOutstandingAmount"].ToString() + Convert.ToDecimal(intprev.ToString()) + "";
                         return objPatientList;
                     }
                 }
@@ -341,8 +351,11 @@ namespace Reports.BusinessLogic
                                 }
                                 objPatientList.Code = (int)ProcessStatus.Success;
                                 objPatientList.Status = ProcessStatus.Success.ToString();
-                                objPatientList.Message = Resources.English.ResourceManager.GetString("GradeBlocked");
-                                objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("GradeBlocked");
+
+                                //objPatientList.Message = Resources.English.ResourceManager.GetString("GradeBlocked");
+                                //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("GradeBlocked");
+                                objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["GradeBlocked"].ToString();
+                                objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["GradeBlocked"].ToString();
                                 return objPatientList;
                             }
                         }
@@ -529,8 +542,12 @@ namespace Reports.BusinessLogic
                         if (Convert.ToString(drrblock[0]["Blocked"]) == "1")
                         {
                             hdnblnCOmpanyBlocked = "true";
-                            blockedMessage = Resources.English.ResourceManager.GetString("CompanyPatientBlocked") + "< br/>";
-                            blockedMessage2L = Resources.Arabic.ResourceManager.GetString("CompanyPatientBlocked") + "< br/>";
+                            
+
+                            //blockedMessage = Resources.English.ResourceManager.GetString("CompanyPatientBlocked") + "< br/>";
+                            //blockedMessage2L = Resources.Arabic.ResourceManager.GetString("CompanyPatientBlocked") + "< br/>";
+                            blockedMessage = System.Configuration.ConfigurationManager.AppSettings["CompanyPatientBlocked"].ToString() + "< br/>";
+                            blockedMessage2L = System.Configuration.ConfigurationManager.AppSettings["CompanyPatientBlocked"].ToString() + "< br/>";
                             if (dtCompanyblock.Rows.Count > 0 && dtCompanyblock.Rows[0]["BlockedReason"] != DBNull.Value)
                             {
                                 hdnblnCOmpanyBlockedReason = dtCompanyblock.Rows[0]["BlockedReason"].ToString();
@@ -542,17 +559,23 @@ namespace Reports.BusinessLogic
                         {
                             hdnblnCompanyExpired = "true";
                             hdnblnCOmpanyBlockedReason = "";
-                            blockedMessage = Resources.English.ResourceManager.GetString("CompanyPatientExpired");
-                            blockedMessage2L = Resources.Arabic.ResourceManager.GetString("CompanyPatientExpired");
-                            hdnblnCOmpanyBlockedReason = Resources.English.ResourceManager.GetString("CompanyPatientExpired");
+                            //blockedMessage = Resources.English.ResourceManager.GetString("CompanyPatientExpired");
+                            //blockedMessage2L = Resources.Arabic.ResourceManager.GetString("CompanyPatientExpired");
+                            //hdnblnCOmpanyBlockedReason = Resources.English.ResourceManager.GetString("CompanyPatientExpired");
+                            blockedMessage = System.Configuration.ConfigurationManager.AppSettings["CompanyPatientBlocked"].ToString();
+                            blockedMessage2L = System.Configuration.ConfigurationManager.AppSettings["CompanyPatientBlocked"].ToString();
+                            hdnblnCOmpanyBlockedReason = System.Configuration.ConfigurationManager.AppSettings["CompanyPatientBlocked"].ToString();
                         }
                         else if (Convert.ToString(drrblock[0]["ISInsuranceExpired"]) == "1")
                         {
                             hdnblnInsuranceExpired = "true";
                             hdnblnCOmpanyBlockedReason = "";
-                            blockedMessage = Resources.English.ResourceManager.GetString("InsuranceCompanyPatientExpired");
-                            blockedMessage2L = Resources.Arabic.ResourceManager.GetString("InsuranceCompanyPatientExpired");
-                            hdnblnCOmpanyBlockedReason = Resources.English.ResourceManager.GetString("InsuranceCompanyPatientExpired");
+                            //blockedMessage = Resources.English.ResourceManager.GetString("InsuranceCompanyPatientExpired");
+                            //blockedMessage2L = Resources.Arabic.ResourceManager.GetString("InsuranceCompanyPatientExpired");
+                            //hdnblnCOmpanyBlockedReason = Resources.English.ResourceManager.GetString("InsuranceCompanyPatientExpired");
+                            blockedMessage = System.Configuration.ConfigurationManager.AppSettings["InsuranceCompanyPatientExpired"].ToString();
+                            blockedMessage2L = System.Configuration.ConfigurationManager.AppSettings["InsuranceCompanyPatientExpired"].ToString();
+                            hdnblnCOmpanyBlockedReason = System.Configuration.ConfigurationManager.AppSettings["InsuranceCompanyPatientExpired"].ToString();
                         }
                         objPatientList.Code = (int)ProcessStatus.Success;
                         objPatientList.Status = ProcessStatus.Success.ToString();
@@ -572,8 +595,10 @@ namespace Reports.BusinessLogic
                                 {
                                     objPatientList.Code = (int)ProcessStatus.Success;
                                     objPatientList.Status = ProcessStatus.Success.ToString();
-                                    objPatientList.Message = Resources.English.ResourceManager.GetString("GradeBlocked");
-                                    objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("GradeBlocked");
+                                    //objPatientList.Message = Resources.English.ResourceManager.GetString("GradeBlocked");
+                                    //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("GradeBlocked");
+                                    objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["GradeBlocked"].ToString(); 
+                                    objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["GradeBlocked"].ToString(); 
                                     return objPatientList;
                                 }
                             }
@@ -588,8 +613,10 @@ namespace Reports.BusinessLogic
                     {
                         objPatientList.Code = (int)ProcessStatus.Success;
                         objPatientList.Status = ProcessStatus.Success.ToString();
-                        objPatientList.Message = Resources.English.ResourceManager.GetString("CompanyContractDateExpired");
-                        objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("CompanyContractDateExpired");
+                        //objPatientList.Message = Resources.English.ResourceManager.GetString("CompanyContractDateExpired");
+                        //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("CompanyContractDateExpired");
+                        objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["CompanyContractDateExpired"].ToString(); 
+                        objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["CompanyContractDateExpired"].ToString();
                         return objPatientList;
                     }
 
@@ -604,8 +631,10 @@ namespace Reports.BusinessLogic
                                 {
                                     objPatientList.Code = (int)ProcessStatus.Success;
                                     objPatientList.Status = ProcessStatus.Success.ToString();
-                                    objPatientList.Message = Resources.English.ResourceManager.GetString("InsuranceCardExpired");
-                                    objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("InsuranceCardExpired");
+                                    //objPatientList.Message = Resources.English.ResourceManager.GetString("InsuranceCardExpired");
+                                    //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("InsuranceCardExpired");
+                                    objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["InsuranceCardExpired"].ToString();
+                                    objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["InsuranceCardExpired"].ToString();
                                     return objPatientList;
                                 }
                             }
@@ -649,8 +678,10 @@ namespace Reports.BusinessLogic
                     {
                         objPatientList.Code = (int)ProcessStatus.Success;
                         objPatientList.Status = ProcessStatus.Success.ToString();
-                        objPatientList.Message = Resources.English.ResourceManager.GetString("NoAPPGBill");
-                        objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("NoAPPGBill");
+                        //objPatientList.Message = Resources.English.ResourceManager.GetString("NoAPPGBill");
+                        //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("NoAPPGBill");
+                        objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["NoAPPGBill"].ToString(); 
+                        objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["NoAPPGBill"].ToString();
                         return objPatientList;
                     }
                 }
@@ -658,8 +689,10 @@ namespace Reports.BusinessLogic
                 {
                     objPatientList.Code = (int)ProcessStatus.Success;
                     objPatientList.Status = ProcessStatus.Success.ToString();
-                    objPatientList.Message = Resources.English.ResourceManager.GetString("NoAPPGBill");
-                    objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("NoAPPGBill");
+                    //objPatientList.Message = Resources.English.ResourceManager.GetString("NoAPPGBill");
+                    //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("NoAPPGBill");
+                    objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["NoAPPGBill"].ToString();
+                    objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["NoAPPGBill"].ToString();
                     return objPatientList;
                 }
 
@@ -1255,24 +1288,30 @@ namespace Reports.BusinessLogic
                             {
                                 objPatientList.Code = (int)ProcessStatus.Success;
                                 objPatientList.Status = ProcessStatus.Success.ToString();
-                                objPatientList.Message = Resources.English.ResourceManager.GetString("NoRecordsFound");
-                                objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("NoRecordsFound");
+                                //objPatientList.Message = Resources.English.ResourceManager.GetString("NoRecordsFound");
+                                //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("NoRecordsFound");
+                                objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["NoRecordsFound"].ToString(); 
+                                objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["NoRecordsFound"].ToString(); 
                             }
                         }
                         else
                         {
                             objPatientList.Code = (int)ProcessStatus.Success;
                             objPatientList.Status = ProcessStatus.Success.ToString();
-                            objPatientList.Message = Resources.English.ResourceManager.GetString("NoRecordsFound");
-                            objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("NoRecordsFound");
+                            //objPatientList.Message = Resources.English.ResourceManager.GetString("NoRecordsFound");
+                            //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("NoRecordsFound");
+                            objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["NoRecordsFound"].ToString();
+                            objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["NoRecordsFound"].ToString();
                         }
                     }
                     else
                     {
                         objPatientList.Code = (int)ProcessStatus.Success;
                         objPatientList.Status = ProcessStatus.Success.ToString();
-                        objPatientList.Message = Resources.English.ResourceManager.GetString("NoRecordsFound");
-                        objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("NoRecordsFound");
+                        //objPatientList.Message = Resources.English.ResourceManager.GetString("NoRecordsFound");
+                        //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("NoRecordsFound");
+                        objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["NoRecordsFound"].ToString();
+                        objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["NoRecordsFound"].ToString();
                     }
 
 
@@ -2466,8 +2505,10 @@ namespace Reports.BusinessLogic
                                 {
                                     objPatientList.Code = (int)ProcessStatus.Success;
                                     objPatientList.Status = ProcessStatus.Success.ToString();
-                                    objPatientList.Message = Resources.English.ResourceManager.GetString("Creditbillnotpossibleforpatient");
-                                    objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("Creditbillnotpossibleforpatient");
+                                    //objPatientList.Message = Resources.English.ResourceManager.GetString("Creditbillnotpossibleforpatient");
+                                    //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("Creditbillnotpossibleforpatient");
+                                    objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["Creditbillnotpossibleforpatient"].ToString();
+                                    objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["Creditbillnotpossibleforpatient"].ToString();
                                     return objPatientList;
                                 }
                                 if ((dtPinBlock.Rows[0]["Blocktype"].ToString()) == "1")
@@ -2726,8 +2767,10 @@ namespace Reports.BusinessLogic
                                             {
                                                 objPatientList.Code = (int)ProcessStatus.Success;
                                                 objPatientList.Status = ProcessStatus.Success.ToString();
-                                                objPatientList.Message = Resources.English.ResourceManager.GetString("CCDSDSD");
-                                                objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("CCDSDSD");
+                                                //objPatientList.Message = Resources.English.ResourceManager.GetString("CCDSDSD");
+                                                //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("CCDSDSD");
+                                                objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["CCDSDSD"].ToString();
+                                                objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["CCDSDSD"].ToString();
                                                 return objPatientList;
 
                                             }
@@ -2745,7 +2788,7 @@ namespace Reports.BusinessLogic
                             }
                             else
                             {
-                                objPatientList.Code = ProcessStatus.Success;
+                                objPatientList.Code = (int)ProcessStatus.Success;
                                 objPatientList.Status = ProcessStatus.Success.ToString();
                                 objPatientList.Message = "Select Payer and Grade";
                                 objPatientList.Message2L = "Select Payer and Grade";
@@ -2760,8 +2803,10 @@ namespace Reports.BusinessLogic
                             string BlockedMessage = string.Empty; string BlockedMessage2L = string.Empty;
                             if (hdnblnCOmpanyBlocked == "true")
                             {
-                                BlockedMessage = Resources.English.ResourceManager.GetString("CompanyPatientBlocked") + "< br />";
-                                BlockedMessage2L = Resources.Arabic.ResourceManager.GetString("CompanyPatientBlocked") + "< br />";
+                                //BlockedMessage = Resources.English.ResourceManager.GetString("CompanyPatientBlocked") + "< br />";
+                                //BlockedMessage2L = Resources.Arabic.ResourceManager.GetString("CompanyPatientBlocked") + "< br />";
+                                BlockedMessage = System.Configuration.ConfigurationManager.AppSettings["CompanyPatientBlocked"].ToString() + "< br />";
+                                BlockedMessage2L = System.Configuration.ConfigurationManager.AppSettings["CompanyPatientBlocked"].ToString() + "< br />";
                                 if (hdnblnCOmpanyBlockedReason != null)
                                 {
                                     BlockedMessage = BlockedMessage + " Reason: " + hdnblnCOmpanyBlockedReason;
@@ -2811,8 +2856,10 @@ namespace Reports.BusinessLogic
                             {
                                 objPatientList.Code = (int)ProcessStatus.Success;
                                 objPatientList.Status = ProcessStatus.Success.ToString();
-                                objPatientList.Message = Resources.English.ResourceManager.GetString("CompanyContractDateExpired");
-                                objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("CompanyContractDateExpired");
+                                //objPatientList.Message = Resources.English.ResourceManager.GetString("CompanyContractDateExpired");
+                                //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("CompanyContractDateExpired");
+                                objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["CompanyContractDateExpired"].ToString();
+                                objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["CompanyContractDateExpired"].ToString();
                                 return objPatientList;
                             }
                         }
@@ -2828,8 +2875,10 @@ namespace Reports.BusinessLogic
                                 {
                                     objPatientList.Code = (int)ProcessStatus.Success;
                                     objPatientList.Status = ProcessStatus.Success.ToString();
-                                    objPatientList.Message = Resources.English.ResourceManager.GetString("GradeBlocked");
-                                    objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("GradeBlocked");
+                                    //objPatientList.Message = Resources.English.ResourceManager.GetString("GradeBlocked");
+                                    //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("GradeBlocked");
+                                    objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["GradeBlocked"].ToString();
+                                    objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["GradeBlocked"].ToString();
                                     return objPatientList;
                                 }
                             }
@@ -2853,8 +2902,10 @@ namespace Reports.BusinessLogic
                             {
                                 objPatientList.Code = (int)ProcessStatus.Success;
                                 objPatientList.Status = ProcessStatus.Success.ToString();
-                                objPatientList.Message = Resources.English.ResourceManager.GetString("LAVDE");
-                                objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("LAVDE");
+                                //objPatientList.Message = Resources.English.ResourceManager.GetString("LAVDE");
+                                //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("LAVDE");
+                                objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["LAVDE"].ToString();
+                                objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["LAVDE"].ToString();
                                 return objPatientList;
                             }
                         }
@@ -2925,10 +2976,14 @@ namespace Reports.BusinessLogic
                                     if (CheckDefaultLOA(Convert.ToInt32(hdnPatientID.Trim()), Convert.ToInt32(strCompanyID), Convert.ToInt32(strGradeID), Convert.ToInt32(hdnDocSpecialiseId)) == false)
                                     {
                                         strMsg = new StringBuilder(); strMsg2L = new StringBuilder();
-                                        strMsg.Append(Resources.English.ResourceManager.GetString("LOANM") + "<\br>");
-                                        strMsg.Append(Resources.English.ResourceManager.GetString("CARD"));
-                                        strMsg2L.Append(Resources.Arabic.ResourceManager.GetString("LOANM") + "<\br>");
-                                        strMsg2L.Append(Resources.Arabic.ResourceManager.GetString("CARD"));
+                                        //strMsg.Append(Resources.English.ResourceManager.GetString("LOANM") + "<\br>");
+                                        //strMsg.Append(Resources.English.ResourceManager.GetString("CARD"));
+                                        //strMsg2L.Append(Resources.Arabic.ResourceManager.GetString("LOANM") + "<\br>");
+                                        //strMsg2L.Append(Resources.Arabic.ResourceManager.GetString("CARD"));
+                                        strMsg.Append(System.Configuration.ConfigurationManager.AppSettings["LOANM"].ToString() + "<\br>");
+                                        strMsg.Append(System.Configuration.ConfigurationManager.AppSettings["CARD"].ToString());
+                                        strMsg2L.Append(System.Configuration.ConfigurationManager.AppSettings["LOANM"].ToString() + "<\br>");
+                                        strMsg2L.Append(System.Configuration.ConfigurationManager.AppSettings["CARD"].ToString());
                                         objPatientList.Code = (int)ProcessStatus.Success;
                                         objPatientList.Status = ProcessStatus.Success.ToString();
                                         objPatientList.Message = strMsg.ToString();
@@ -3180,13 +3235,13 @@ namespace Reports.BusinessLogic
                                                     {
                                                         if (dtAR.Rows.Count == 0)
                                                         {
-                                                            objPatientList.Code = ProcessStatus.Success;
+                                                            objPatientList.Code = (int)ProcessStatus.Success;
                                                             objPatientList.Status = ProcessStatus.Success.ToString();
                                                             objPatientList.Message = "Following item(s) NEED APPROVAL to proceed further<br/>" + strexclmsgitems.ToString();
                                                         }
                                                         else
                                                         {
-                                                            objPatientList.Code = ProcessStatus.Success;
+                                                            objPatientList.Code = (int)ProcessStatus.Success;
                                                             objPatientList.Status = ProcessStatus.Success.ToString();
                                                             objPatientList.Message = "Approval Required for selected Items <br/>" + strexclmsgitems.ToString();
                                                         }
@@ -3232,13 +3287,13 @@ namespace Reports.BusinessLogic
                                                 {
                                                     if (dtAR.Rows.Count == 0)
                                                     {
-                                                        objPatientList.Code = ProcessStatus.Success;
+                                                        objPatientList.Code = (int)ProcessStatus.Success;
                                                         objPatientList.Status = ProcessStatus.Success.ToString();
                                                         objPatientList.Message = "Following item(s) NEED APPROVAL to proceed further<br/>" + strexclmsgitems.ToString();
                                                     }
                                                     else
                                                     {
-                                                        objPatientList.Code = ProcessStatus.Success;
+                                                        objPatientList.Code = (int)ProcessStatus.Success;
                                                         objPatientList.Status = ProcessStatus.Success.ToString();
                                                         objPatientList.Message = "Approval Status for selected Items <br/>" + strexclmsgitems.ToString();
                                                     }
@@ -3285,7 +3340,7 @@ namespace Reports.BusinessLogic
                                 string strqty = (gdvSearchResultData.Rows[intCount]["Quantity"]).ToString();
                                 if (string.IsNullOrEmpty(strqty) || strqty == "0")
                                 {
-                                    objPatientList.Code = ProcessStatus.Success;
+                                    objPatientList.Code = (int)ProcessStatus.Success;
                                     objPatientList.Status = ProcessStatus.Success.ToString();
                                     objPatientList.Message = "Quantity can not be  Zero/Empty";
                                     return objPatientList;
@@ -4626,8 +4681,10 @@ namespace Reports.BusinessLogic
                                     {
                                         objPatientList.Code = (int)ProcessStatus.Success;
                                         objPatientList.Status = ProcessStatus.Success.ToString();
-                                        objPatientList.Message = Resources.English.ResourceManager.GetString("CCNDCARD");
-                                        objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("CCNDCARD");
+                                        //objPatientList.Message = Resources.English.ResourceManager.GetString("CCNDCARD");
+                                        //objPatientList.Message2L = Resources.Arabic.ResourceManager.GetString("CCNDCARD");
+                                        objPatientList.Message = System.Configuration.ConfigurationManager.AppSettings["CCNDCARD"].ToString();
+                                        objPatientList.Message2L = System.Configuration.ConfigurationManager.AppSettings["CCNDCARD"].ToString();
                                         return objPatientList;
                                     }
                                     else
@@ -4929,7 +4986,7 @@ namespace Reports.BusinessLogic
                                             if (intBillAmount > 0 && intCPAY <= 0)
                                             {
                                                 blnLimitUtilization = true;
-                                                objPatientList.Code = ProcessStatus.Success;
+                                                objPatientList.Code = (int)ProcessStatus.Success;
                                                 objPatientList.Status = ProcessStatus.Success.ToString();
                                                 objPatientList.Message = "Bill cannot be saved as Limit amount got utilized completely.Please do Cash Bill";
                                                 return objPatientList;
@@ -4939,7 +4996,7 @@ namespace Reports.BusinessLogic
                                                 if (hdnPatientType != "3")
                                                 {
                                                     blnLimitUtilization = true;
-                                                    objPatientList.Code = ProcessStatus.Success;
+                                                    objPatientList.Code = (int)ProcessStatus.Success;
                                                     objPatientList.Status = ProcessStatus.Success.ToString();
                                                     objPatientList.Message = "Limit exceeded";
                                                     return objPatientList;
@@ -4947,7 +5004,7 @@ namespace Reports.BusinessLogic
                                                 else
                                                 {
                                                     strERExceedMSG = "Limit Exceeded  <br/><br/>" + strERExceedMSG;
-                                                    objPatientList.Code = ProcessStatus.Success;
+                                                    objPatientList.Code = (int)ProcessStatus.Success;
                                                     objPatientList.Status = ProcessStatus.Success.ToString();
                                                     objPatientList.Message = strERExceedMSG;
                                                     return objPatientList;
@@ -4956,7 +5013,7 @@ namespace Reports.BusinessLogic
                                         }
                                         else
                                         {
-                                            objPatientList.Code = ProcessStatus.Success;
+                                            objPatientList.Code = (int)ProcessStatus.Success;
                                             objPatientList.Status = ProcessStatus.Success.ToString();
                                             objPatientList.Message = "Following Services are Not Covered! Need Approval" + strPatShareMsg.ToString();
                                             return objPatientList;
@@ -4990,7 +5047,7 @@ namespace Reports.BusinessLogic
                                         {
                                             strPatShareMsg.Append("<br/>Do you want to remove the Uncovered Item(s) ? ");
                                             //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','Following Services are Not Covered! Need Approval" + strPatShareMsg.ToString() + "','YESNO','Information');", true);
-                                            objPatientList.Code = ProcessStatus.Success;
+                                            objPatientList.Code = (int)ProcessStatus.Success;
                                             objPatientList.Status = ProcessStatus.Success.ToString();
                                             objPatientList.Message = "Following Services are Not Covered! Need Approval" + strPatShareMsg.ToString();
                                             return objPatientList;
@@ -5391,7 +5448,7 @@ namespace Reports.BusinessLogic
             }
             catch (Exception ex)
             {
-                HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in DTTestProfiles", "");
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in DTTestProfiles", "");
                 return null;
             }
             return dtTestsProfile;
@@ -7570,13 +7627,17 @@ namespace Reports.BusinessLogic
                     {
                         if (TagId == 0)
                         {
-                            CompanyReturnMessage = Resources.English.ResourceManager.GetString("ICECBNP");
-                            CompanyReturnMessage2L = Resources.Arabic.ResourceManager.GetString("ICECBNP");
+                            //CompanyReturnMessage = Resources.English.ResourceManager.GetString("ICECBNP");
+                            //CompanyReturnMessage2L = Resources.Arabic.ResourceManager.GetString("ICECBNP");
+                            CompanyReturnMessage = System.Configuration.ConfigurationManager.AppSettings["ICECBNP"].ToString();
+                            CompanyReturnMessage2L = System.Configuration.ConfigurationManager.AppSettings["ICECBNP"].ToString();
                         }
                         else
                         {
-                            CompanyReturnMessage = Resources.English.ResourceManager.GetString("ICECBNP");
-                            CompanyReturnMessage2L = Resources.Arabic.ResourceManager.GetString("ICECBNP");
+                            //CompanyReturnMessage = Resources.English.ResourceManager.GetString("ICECBNP");
+                            //CompanyReturnMessage2L = Resources.Arabic.ResourceManager.GetString("ICECBNP");
+                            CompanyReturnMessage = System.Configuration.ConfigurationManager.AppSettings["ICECBNP"].ToString();
+                            CompanyReturnMessage2L = System.Configuration.ConfigurationManager.AppSettings["ICECBNP"].ToString();
                         }
 
                         blnStatus = true;
@@ -8734,6 +8795,358 @@ namespace Reports.BusinessLogic
             }
         }
 
+        protected void SplzFollowupConfig(int intSplzID, PatientBillList PatientBillList)
+        {
+            try
+            {
+                DataTable dtSpecCofig = HISCONFIG.Copy(); string TypeMapi = string.Empty; string FilterMAPI = string.Empty; string OrderMAPI = string.Empty;
+                if (dtSpecCofig.Select("Parameter ='SPC_Dental'").Length > 0 || dtSpecCofig.Select("Parameter ='SPC_Dermatology'").Length > 0)
+                {
+                    DataRow[] drtemp = dtSpecCofig.Select("Parameter ='SPC_Dental'");
+                    string strsplzconfig = string.Empty;
+                    if (drtemp.Length > 0)
+                    {
+                        strsplzconfig = drtemp[0]["Value"].ToString();
+                        drtemp = dtSpecCofig.Select("Parameter ='SPC_Dermatology'");
+                        if (drtemp.Length > 0)
+                            strsplzconfig = strsplzconfig + "," + drtemp[0]["Value"].ToString();
+                    }
+                    else
+                    {
+                        drtemp = dtSpecCofig.Select("Parameter ='SPC_Dermatology'");
+                        strsplzconfig = drtemp[0]["Value"].ToString();
+                    }
+                    string strNewVisitOrderTypeId = string.Empty;
+                    if (ConfigurationManager.AppSettings["NewVisitOrderTypeId"] != null)
+                    {
+                        strNewVisitOrderTypeId = ConfigurationManager.AppSettings["NewVisitOrderTypeId"];
+                    }
+                    string[] splitSeperatorValues = { "," };
+                    string[] strsplarray = strsplzconfig.Split(splitSeperatorValues, StringSplitOptions.None);
+
+                    foreach (string strsplz in strsplarray)
+                    {
+                        if (strsplz == intSplzID.ToString())
+                        {
+                            DataTable dtItems;
+                            if (hdnrblbilltypeCredit == true)
+                            {
+                                if (!string.IsNullOrEmpty(hdnProcedureID))
+                                {
+                                    TypeMapi = "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID";
+                                    FilterMAPI = "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CR' and OrderTypeID=" + strNewVisitOrderTypeId + " and PatientId=" + hdnPatientID + " and servicedocid=" + hdnProcedureID + " and datediff(day,Orderdate,getdate())<= 60";
+                                    OrderMAPI = "Order by ORDERDATE desc,ORDERTYPEID desc";
+                                    //dtItems = FetchMISProcedureDetails("Pr_FetchConsFollowUpDetailsAdv", "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID", "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CR' and OrderTypeID=" + strNewVisitOrderTypeId + " and PatientId=" + hdnPatientID + " and servicedocid=" + hdnProcedureID + " and datediff(day,Orderdate,getdate())<= 60", "Order by ORDERDATE desc,ORDERTYPEID desc", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0];
+                                    dtItems = FetchMISProcedureDetailsMAPI(Convert.ToInt32(hdnPatientID), TypeMapi, FilterMAPI, OrderMAPI, PatientBillList.HospitalId, Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+                                }
+                                else
+                                {
+                                    TypeMapi = "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID";
+                                    FilterMAPI = "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CR' and OrderTypeID=" + strNewVisitOrderTypeId + " and PatientId=" + hdnPatientID + " and datediff(day,Orderdate,getdate())<= 60";
+                                    OrderMAPI = "Order by ORDERDATE desc,ORDERTYPEID desc";
+                                    //dtItems = FetchMISProcedureDetails("Pr_FetchConsFollowUpDetailsAdv", "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID", "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CR' and OrderTypeID=" + strNewVisitOrderTypeId + " and PatientId=" + hdnPatientID + " and datediff(day,Orderdate,getdate())<= 60", "Order by ORDERDATE desc,ORDERTYPEID desc", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0];
+                                    dtItems = FetchMISProcedureDetailsMAPI(Convert.ToInt32(hdnPatientID), TypeMapi, FilterMAPI, OrderMAPI, PatientBillList.HospitalId, Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+                                }
+
+                                if (dtItems.Rows.Count == 0)
+                                {
+                                    TypeMapi = "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID";
+                                    FilterMAPI = "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + " and BillType='CR' and OrderTypeID=" + strNewVisitOrderTypeId + " and PatientId=" + hdnPatientID + " and datediff(day,Orderdate,getdate()) <= 60";
+                                    OrderMAPI = "Order by ORDERDATE desc,ORDERTYPEID desc";
+                                    // dtItems = FetchMISProcedureDetails("Pr_FetchConsFollowUpDetailsAdv", "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID", "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + " and BillType='CR' and OrderTypeID=" + strNewVisitOrderTypeId + " and PatientId=" + hdnPatientID + " and datediff(day,Orderdate,getdate()) <= 60", "order by IPID desc, ORDERDATE desc,ORDERTYPEID desc", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0];
+                                    dtItems = FetchMISProcedureDetailsMAPI(Convert.ToInt32(hdnPatientID), TypeMapi, FilterMAPI, OrderMAPI, PatientBillList.HospitalId, Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+                                }
+
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(hdnProcedureID))
+                                {
+                                    TypeMapi = "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID";
+                                    FilterMAPI = "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CS' and OrderTypeID=" + strNewVisitOrderTypeId + " and PatientId=" + hdnPatientID + " and servicedocid=" + hdnProcedureID + " and datediff(day,Orderdate,getdate())<=60";
+                                    OrderMAPI = "Order by ORDERDATE desc,ORDERTYPEID desc";
+                                    //dtItems = FetchMISProcedureDetails("Pr_FetchConsFollowUpDetailsAdv", "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID", "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CS' and OrderTypeID=" + strNewVisitOrderTypeId + " and PatientId=" + hdnPatientID + " and servicedocid=" + hdnProcedureID + " and datediff(day,Orderdate,getdate())<=60", "Order by ORDERDATE desc,ORDERTYPEID desc", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0];
+                                    dtItems = FetchMISProcedureDetailsMAPI(Convert.ToInt32(hdnPatientID), TypeMapi, FilterMAPI, OrderMAPI, PatientBillList.HospitalId, Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+                                }
+                                else
+                                {
+                                    // dtItems = FetchMISProcedureDetails("Pr_FetchConsFollowUpDetailsAdv", "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID", "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CS' and OrderTypeID=" + strNewVisitOrderTypeId + " and PatientId=" + hdnPatientID + " and datediff(day,Orderdate,getdate())<=60", "Order by ORDERDATE desc,ORDERTYPEID desc", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0];
+                                    TypeMapi = "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID";
+                                    FilterMAPI = "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CS' and OrderTypeID=" + strNewVisitOrderTypeId + " and PatientId=" + hdnPatientID + " and datediff(day,Orderdate,getdate())<=60";
+                                    OrderMAPI = "Order by ORDERDATE desc,ORDERTYPEID desc";
+                                    dtItems = FetchMISProcedureDetailsMAPI(Convert.ToInt32(hdnPatientID), TypeMapi, FilterMAPI, OrderMAPI, PatientBillList.HospitalId, Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+
+                                }
+                                if (dtItems.Rows.Count == 0)
+                                {
+                                    // dtItems = FetchMISProcedureDetails("Pr_FetchConsFollowUpDetailsAdv", "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID", "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + " and BillType='CS' and OrderTypeID=" + strNewVisitOrderTypeId + " and PatientId=" + hdnPatientID + " and datediff(day,Orderdate,getdate()) <=60", "order by ORDERDATE desc,ORDERTYPEID desc", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0];
+                                    TypeMapi = "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID";
+                                    FilterMAPI = "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + " and BillType='CS' and OrderTypeID=" + strNewVisitOrderTypeId + " and PatientId=" + hdnPatientID + " and datediff(day,Orderdate,getdate()) <=60";
+                                    OrderMAPI = "Order by ORDERDATE desc,ORDERTYPEID desc";
+                                    dtItems = FetchMISProcedureDetailsMAPI(Convert.ToInt32(hdnPatientID), TypeMapi, FilterMAPI, OrderMAPI, PatientBillList.HospitalId, Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+
+                                }
+
+                            }
+                            int inttempipid = 0;
+                            if (hdnIPID == "0" && dtItems.Rows.Count > 0)
+                            {
+                                LatestIPID = dtItems.Rows[0]["IPID"].ToString();
+                                inttempipid = Convert.ToInt32(dtItems.Rows[0]["IPID"]);
+                            }
+                            else
+                                inttempipid = Convert.ToInt32(hdnIPID);
+
+                            DataTable dtPatientfollowup = NewFetchPatientFile(0, inttempipid, 0, "39", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId)).Tables[0];
+
+                            if (dtPatientfollowup.Rows.Count > 0)
+                            {
+                                if (!string.IsNullOrEmpty(Convert.ToString(dtPatientfollowup.Rows[0]["FollowupDAYS"])))
+                                {
+                                    DateTime dtToday = DateTime.Today;
+                                    DateTime dtfollowupValidity = Convert.ToDateTime(dtPatientfollowup.Rows[0]["CreateDate"].ToString());
+                                    if ((dtToday - dtfollowupValidity).Days <= Convert.ToDecimal(dtPatientfollowup.Rows[0]["FollowupDAYS"]))
+                                    {
+                                        if (!string.IsNullOrEmpty(Convert.ToString(dtPatientfollowup.Rows[0]["FollowupCount"])))
+                                            SPLFOLLOWUPLMT = dtPatientfollowup.Rows[0]["FollowupCount"].ToString();
+                                        if (!string.IsNullOrEmpty(Convert.ToString(dtPatientfollowup.Rows[0]["FollowupDAYS"])))
+                                            SPLFOLLOWUPDAYS = dtPatientfollowup.Rows[0]["FollowupDAYS"].ToString();
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            SPLFOLLOWUPLMT = null;
+                            SPLFOLLOWUPDAYS = null;
+                        }
+                    }
+                }
+                if (dtSpecCofig.Select("Parameter ='DEPT_EMERGENCY' AND  HospitalId = " + strDefaultHospitalId + " ").Length > 0)
+                {
+                    DataRow[] drtemp = dtSpecCofig.Select("Parameter ='DEPT_EMERGENCY'  AND  HospitalId = " + strDefaultHospitalId + " ");
+                    string strsplzconfig = string.Empty;
+                    if (drtemp.Length > 0)
+                    {
+                        strsplzconfig = drtemp[0]["Value"].ToString();
+                    }
+                    string[] splitSeperatorValues = { "," };
+                    string[] strsplarray = strsplzconfig.Split(splitSeperatorValues, StringSplitOptions.None);
+
+                    foreach (string strsplz in strsplarray)
+                    {
+                        if (strsplz == hdnDocHospDeptId)
+                        {
+                            DataTable dtItems;
+                            if (hdnrblbilltypeCredit == true)
+                            {
+                                if (!string.IsNullOrEmpty(hdnProcedureID))
+                                {
+                                    // dtItems = FetchMISProcedureDetails("Pr_FetchConsFollowUpDetailsAdv", "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID", "serviceid=2  and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CR' and OrderTypeID=49 and PatientId=" + hdnPatientID + " and servicedocid=" + hdnProcedureID + " and datediff(minute,Orderdate,getdate()) <=1440", "Order by ORDERDATE,ORDERTYPEID desc", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0];
+                                    TypeMapi = "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID";
+                                    FilterMAPI = "serviceid=2  and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CR' and OrderTypeID=49 and PatientId=" + hdnPatientID + " and servicedocid=" + hdnProcedureID + " and datediff(minute,Orderdate,getdate()) <=1440";
+                                    OrderMAPI = "Order by ORDERDATE desc,ORDERTYPEID desc";
+                                    dtItems = FetchMISProcedureDetailsMAPI(Convert.ToInt32(hdnPatientID), TypeMapi, FilterMAPI, OrderMAPI, PatientBillList.HospitalId, Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+
+                                }
+                                else
+                                {
+                                    //dtItems = FetchMISProcedureDetails("Pr_FetchConsFollowUpDetailsAdv", "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID", "serviceid=2  and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CR' and OrderTypeID=49 and PatientId=" + hdnPatientID + " and datediff(minute,Orderdate,getdate()) <=1440", "Order by ORDERDATE,ORDERTYPEID desc", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0];
+                                    TypeMapi = "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID";
+                                    FilterMAPI = "serviceid=2  and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CR' and OrderTypeID=49 and PatientId=" + hdnPatientID + " and datediff(minute,Orderdate,getdate()) <=1440";
+                                    OrderMAPI = "Order by ORDERDATE desc,ORDERTYPEID desc";
+                                    dtItems = FetchMISProcedureDetailsMAPI(Convert.ToInt32(hdnPatientID), TypeMapi, FilterMAPI, OrderMAPI, PatientBillList.HospitalId, Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+
+                                }
+
+                                if (dtItems.Rows.Count == 0)
+                                {
+                                    //dtItems = FetchMISProcedureDetails("Pr_FetchConsFollowUpDetailsAdv", "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID", "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + " and BillType='CR' and OrderTypeID=49 and PatientId=" + hdnPatientID + " and datediff(minute,Orderdate,getdate()) <=1440", "order by ORDERDATE,ORDERTYPEID desc", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0];
+                                    TypeMapi = "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID";
+                                    FilterMAPI = "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + " and BillType='CR' and OrderTypeID=49 and PatientId=" + hdnPatientID + " and datediff(minute,Orderdate,getdate()) <=1440";
+                                    OrderMAPI = "Order by ORDERDATE desc,ORDERTYPEID desc";
+                                    dtItems = FetchMISProcedureDetailsMAPI(Convert.ToInt32(hdnPatientID), TypeMapi, FilterMAPI, OrderMAPI, PatientBillList.HospitalId, Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+
+                                }
+
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(hdnProcedureID))
+                                {
+                                    // dtItems = FetchMISProcedureDetails("Pr_FetchConsFollowUpDetailsAdv", "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID", "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CS' and OrderTypeID=49 and PatientId=" + hdnPatientID + " and servicedocid=" + hdnProcedureID + " and datediff(minute,Orderdate,getdate()) <=1440", "Order by ORDERDATE,ORDERTYPEID desc", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0];
+                                    TypeMapi = "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID";
+                                    FilterMAPI = "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CS' and OrderTypeID=49 and PatientId=" + hdnPatientID + " and servicedocid=" + hdnProcedureID + " and datediff(minute,Orderdate,getdate()) <=1440";
+                                    OrderMAPI = "Order by ORDERDATE desc,ORDERTYPEID desc";
+                                    dtItems = FetchMISProcedureDetailsMAPI(Convert.ToInt32(hdnPatientID), TypeMapi, FilterMAPI, OrderMAPI, PatientBillList.HospitalId, Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+
+                                }
+                                else
+                                {
+                                    // dtItems = FetchMISProcedureDetails("Pr_FetchConsFollowUpDetailsAdv", "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID", "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CS' and OrderTypeID=49 and PatientId=" + hdnPatientID + " and datediff(minute,Orderdate,getdate()) <=1440", "Order by ORDERDATE,ORDERTYPEID desc", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0];
+                                    TypeMapi = "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID";
+                                    FilterMAPI = "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + "  and BillType='CS' and OrderTypeID=49 and PatientId=" + hdnPatientID + " and datediff(minute,Orderdate,getdate()) <=1440";
+                                    OrderMAPI = "Order by ORDERDATE desc,ORDERTYPEID desc";
+                                    dtItems = FetchMISProcedureDetailsMAPI(Convert.ToInt32(hdnPatientID), TypeMapi, FilterMAPI, OrderMAPI, PatientBillList.HospitalId, Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+
+                                }
+
+                                if (dtItems.Rows.Count == 0)
+                                {
+                                    //dtItems = FetchMISProcedureDetails("Pr_FetchConsFollowUpDetailsAdv", "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID", "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + " and BillType='CS' and OrderTypeID=49 and PatientId=" + hdnPatientID + " and datediff(minute,Orderdate,getdate()) <=1440", "order by ORDERDATE,ORDERTYPEID desc", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0];
+                                    TypeMapi = "ORDERTYPEID,ORDERTYPE,ORDERDATE,BILLID,SERVICEDOCID,PATIENTID,IPID,COMPANYID,GRADEID";
+                                    FilterMAPI = "serviceid=2 and specialiseId=" + hdnDocSpecialiseId + " and BillType='CS' and OrderTypeID=49 and PatientId=" + hdnPatientID + " and datediff(minute,Orderdate,getdate()) <=1440";
+                                    OrderMAPI = "Order by ORDERDATE desc,ORDERTYPEID desc";
+                                    dtItems = FetchMISProcedureDetailsMAPI(Convert.ToInt32(hdnPatientID), TypeMapi, FilterMAPI, OrderMAPI, PatientBillList.HospitalId, Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+
+                                }
+
+                            }
+                            if (dtItems.Rows.Count > 0)
+                            {
+                                DataRow[] drtempFollowup = dtSpecCofig.Select("Parameter ='EMRFOLLOWUP' AND  HospitalId = " + strDefaultHospitalId + " ");
+                                if (drtempFollowup.Length > 0)
+                                {
+                                    SPLFOLLOWUPLMT = drtempFollowup[0]["Value"].ToString();
+                                    SPLFOLLOWUPDAYS = "2";
+                                    DataRow[] drFollowUpConsulStatus = dtSpecCofig.Select("Parameter = 'FollowUpConsultation' AND  HospitalId = " + strDefaultHospitalId + "");
+                                    if (drFollowUpConsulStatus.Length > 0)
+                                    {
+                                        string strFollowUpConsulStatus = dtSpecCofig.Select("Parameter = 'FollowUpConsultation'  AND  HospitalId = " + strDefaultHospitalId + " ")[0]["Value"].ToString();
+                                        FollowUpConsulStatus = strFollowUpConsulStatus;
+                                    }
+                                    if (SPLFOLLOWUPLMT.ToString() == "0")
+                                    {
+                                        ViewStateLetterid = null;
+                                        VSParentLetterid = null;
+                                        drtemp = dtSpecCofig.Select("Parameter ='EMR_COPAY'  AND  HospitalId = " + strDefaultHospitalId + " ");
+                                        if (drtemp.Length > 0)
+                                        {
+                                            if (drtemp[0]["Value"].ToString().ToUpper() == "NO")
+                                                EMRCOPAY = "NO";
+                                            else
+                                                EMRCOPAY = "YES";
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                DataRow[] drtempFollowup = dtSpecCofig.Select("Parameter ='EMRFOLLOWUP' AND  HospitalId = " + strDefaultHospitalId + " ");
+                                if (drtempFollowup.Length > 0)
+                                {
+                                    SPLFOLLOWUPLMT = drtempFollowup[0]["Value"].ToString();
+                                    if (SPLFOLLOWUPLMT.ToString() == "0")
+                                    {
+                                        ViewStateLetterid = null;
+                                        VSParentLetterid = null;
+                                        drtemp = dtSpecCofig.Select("Parameter ='EMR_COPAY'  AND  HospitalId = " + strDefaultHospitalId + " ");
+                                        if (drtemp.Length > 0)
+                                        {
+                                            if (drtemp[0]["Value"].ToString().ToUpper() == "NO")
+                                                EMRCOPAY = "NO";
+                                            else
+                                                EMRCOPAY = "YES";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        SPLFOLLOWUPLMT = null;
+                                        SPLFOLLOWUPDAYS = null;
+                                    }
+                                }
+                                else
+                                {
+                                    SPLFOLLOWUPLMT = null;
+                                    SPLFOLLOWUPDAYS = null;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+
+            }
+        }
+
+        private void FillEmptyLOAGrid()
+        {
+            DataTable dtEmpty = CreateLOAGrid();
+            hdnblnSaveDefaultLOA = "true";
+            DataRow dr = dtEmpty.NewRow();
+            dr["LetterNo"] = ""; dr["FrmDate"] = ""; dr["ToDate"] = "";
+            dr["Payer"] = ""; dr["Payerid"] = ""; dr["Letterid"] = "";
+            dtEmpty.Rows.Add(dr);
+            dtEmpty.AcceptChanges();
+
+        }
+
+        private DataTable CreateLOAGrid()
+        {
+            DataTable dtLOAGrid = new DataTable();
+            try
+            {
+                dtLOAGrid.Columns.Add("SlNo", typeof(int)).AutoIncrement = true;
+                dtLOAGrid.Columns["SlNo"].AutoIncrementSeed = 1;
+                dtLOAGrid.Columns.Add("LetterNo", typeof(string));
+                dtLOAGrid.Columns.Add("FrmDate", typeof(string));
+                dtLOAGrid.Columns.Add("ToDate", typeof(string));
+                dtLOAGrid.Columns.Add("Payer", typeof(string));
+                dtLOAGrid.Columns.Add("Payerid", typeof(string));
+                dtLOAGrid.Columns.Add("Letterid", typeof(string));
+                dtLOAGrid.Columns.Add("ParentLetterid", typeof(string));
+                dtLOAGrid.Columns.Add("DoctorName", typeof(string));
+                return dtLOAGrid;
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in CreateLOAGrid", "");
+                return null;
+            }
+        }
+        private DataTable SortbyLetterID(DataTable DtLtetters)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                DataRow[] drrow = DtLtetters.Select("", "LetterId desc");
+                dt = DtLtetters.Clone();
+                foreach (DataRow drow in drrow)
+                {
+                    dt.ImportRow(drow);
+                }
+                DtLtetters = null;
+                DtLtetters = dt;
+                dt = null;
+                return DtLtetters;
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in SortbyLetterID", "");
+                return null;
+            }
+        }
+
+
+        public DataSet GetLOA_Deatils(int intMin, int intMax, int intType, string strFilter, int intUserID, int intWorkstationID, int intError)
+        {
+
+            FrontOfficeServiceContractClient objFOServiceClient = new FrontOfficeServiceContractClient();
+            DataSet dsGetCons = new DataSet();
+            try
+            {
+                dsGetCons = objFOServiceClient.GetLOA_Deatils(intMin, intMax, intType, strFilter, intUserID, intWorkstationID, intError);
+            }
+            finally
+            {
+                objFOServiceClient.Close();
+            }
+            return dsGetCons;
+        }
 
         public DataSet CalculateDeductibles(DataTable dtDeductibles, bool blfalse, bool strIsPackage, decimal discAmount)
         {
@@ -8747,6 +9160,3849 @@ namespace Reports.BusinessLogic
             finally
             {
                 objBillCalcClient.Close();
+            }
+        }
+
+        protected void LOARB_CheckedChanged(string ParentLetterId, string Letterid)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(ParentLetterId.ToString()))
+                    VSParentLetterid = ParentLetterId.ToString();
+                else
+                    VSParentLetterid = "0";
+                ViewStateLetterid = Letterid.ToString();
+                LOALetterID = Letterid.ToString();
+                hdnblnSaveDefaultLOA = "false";
+                DataTable dt = dtLOADetails.Copy();
+                DataRow[] dr = dt.Select("LetterId=" + ViewStateLetterid);
+                dtLetter = dr.CopyToDataTable();
+                dtLetter.AcceptChanges();
+                TimeSpan ts = Convert.ToDateTime(dr[0]["ToDate"]).Date - Convert.ToDateTime(dr[0]["frmDate"]).Date;
+                hdnLOAfollowupDays = ts.Days.ToString();
+            }
+            catch (Exception ex)
+            {
+               // HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in LOARB_CheckedChanged Event", "");
+            }
+        }
+
+        public DataSet FetchFollowupdays(int DocID, int SpecilaseId, int UserId, int WstationId, int intError, int PatientID)
+        {
+
+            FrontOfficeServiceContractClient objfrontoffice = new FrontOfficeServiceContractClient();
+            try
+            {
+                return objfrontoffice.FetchFollowupdays(DocID, SpecilaseId, UserId, WstationId, intError, PatientID);
+            }
+
+            finally
+            {
+                objfrontoffice.Close();
+            }
+        }
+
+        public DataSet FetchLetterDetails(int intLetterNo, int intType, string strTableID, int intUserId, int intWorkstationid, int intError)
+        {
+            try
+            {
+                objFOClient = new FrontOfficeServiceContractClient();
+                return objFOClient.FetchLetterDetails(intLetterNo, intType, strTableID, intUserId, intWorkstationid, intError);
+            }
+
+            finally
+            {
+                objFOClient.Close();
+            }
+        }
+
+        private string CheckforLimits(int FollowupLimit, bool CheckType, DataTable dtItems, int DocId, int OrderTypeId, string OrderType, int BaseOrderType, string BaseOrderName)
+        {
+            try
+            {
+                hdnDelConfirm = "0";
+                if (FollowupLimit > 0)
+                {
+                    if (OrderTypeId != BaseOrderType)
+                    {
+                        OrderTypeID = OrderTypeId; BaseOrderTypeM = BaseOrderType;
+                        DataTable dttempLt = dtItems.Clone();
+                        string strFilter = "";
+                        string str = "";
+
+                        if (CheckType)
+                        { strFilter = " OrderTypeId = " + BaseOrderType; }
+                        else
+                        { strFilter = " OrderTypeId = " + BaseOrderType + " and ServiceDocId = " + DocId; }
+
+                        foreach (DataRow dr in dtItems.Select(strFilter, " OrderDate Desc"))
+                        { dttempLt.ImportRow(dr); }
+                        dttempLt.AcceptChanges();
+
+                        //Added below condition to validate, if consultation bill is having different company/grade-Vasu
+                        bool isSameCompany = false;
+                        if (hdnrblbilltypeCredit == true)
+                        {
+                            var dr = dtItems.Select("COMPANYID is not null and GRADEID is not null and COMPANYID=" + strCompanyID + " AND GRADEID=" + strGradeID);
+                            if (dr.Length > 0)
+                                isSameCompany = true;
+                            if (!isSameCompany && (dtItems.Rows.Count == 0 || dtItems.Select("COMPANYID is null and GRADEID is null").Length > 0))
+                            {
+                                isSameCompany = true;
+                            }
+                        }
+
+
+                        if (dttempLt.Rows.Count < FollowupLimit && (isSameCompany || hdnrblbilltypecash == true))
+                        {
+                            if (TagId == 0)
+                                str = "Patient can avail " + BaseOrderName.ToUpper() + " visit, Do you want to avail? ";
+                            else
+                                str = "Patient can avail " + BaseOrderName.ToUpper() + " visit, Do you want to avail? ";
+
+                        }
+                        else
+                        { str = ""; }
+
+                        if (dttempLt.Rows.Count < FollowupLimit && (isSameCompany || hdnrblbilltypecash == true))
+                        {
+                            //DialogResult dlg;
+                            if (TagId == 0)
+                            {
+                                if (CheckType)
+                                {
+                                    StringBuilder strMsg = new StringBuilder();
+                                    //if (MaxStr != null)
+                                    if (!string.IsNullOrEmpty(MaxStr))
+                                    {
+                                        string strmax = MaxStr.ToString();
+                                        strMsg.Append(strmax + " <br/>");
+                                        Maxconsult = null;
+                                        MaxStr = null;
+                                    }
+                                    strMsg.Append("Patients Previous visits to this Speciality is within the follow up limit defined. ");
+                                    strMsg.Append("" + str + "");
+
+                                    // if (FollowUpConsulStatus != null)
+                                    if (!string.IsNullOrEmpty(FollowUpConsulStatus))
+                                    {
+                                        if ((FollowUpConsulStatus.ToString()).ToUpper() != "YES")
+                                        {
+                                            if (System.Configuration.ConfigurationSettings.AppSettings["FollowUpMsgYESNO"].ToString().ToLower() == "yes")
+                                            {
+                                                OrderTypeVisit = "Followup";
+                                                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','YESNO','Information');", true);
+                                                hdnIsFollowUp = "YESNO";
+                                            }
+                                            else
+                                            {
+                                                OrderTypeVisit = "Followup";
+                                                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                                hdnIsFollowUp = "YES";
+                                            }
+                                        }
+                                    }
+                                    OrderTypeID = OrderTypeId;
+                                    BaseOrderTypeM = BaseOrderType;
+                                    OrderTypeM = OrderType;
+
+                                    hfConfirmNext = "ORDERTYPE";
+                                    return OrderTypeId + "/" + OrderType;//New
+                                    //dlg = System.Windows.Forms.MessageBox.Show("Patients previous visits to this Speciality is within the followup limit defined " + str, this.Title, MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Information);
+                                }
+                                else
+                                {
+                                    StringBuilder strMsg = new StringBuilder();
+                                    // if (MaxStr != null)
+                                    if (!string.IsNullOrEmpty(MaxStr))
+                                    {
+                                        string strmax = MaxStr.ToString();
+                                        strMsg.Append(strmax + " <br/>");
+                                        Maxconsult = null;
+                                        MaxStr = null;
+                                    }
+                                    strMsg.Append("Patients previous visits to this doctor is within the follow up limit defined. ");
+                                    strMsg.Append("" + str + "");
+
+                                    //if (FollowUpConsulStatus != null)
+                                    if (!string.IsNullOrEmpty(FollowUpConsulStatus))
+                                    {
+                                        if ((FollowUpConsulStatus.ToString()).ToUpper() != "YES")
+                                        {
+                                            if (System.Configuration.ConfigurationSettings.AppSettings["FollowUpMsgYESNO"].ToString().ToLower() == "yes")
+                                            {
+                                                // ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','YESNO','Information');", true);
+                                                hdnIsFollowUp = "YESNO";
+                                            }
+                                            else
+                                            {
+                                                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                                hdnIsFollowUp = "YES";
+                                            }
+                                        }
+                                    }
+
+                                    OrderTypeID = OrderTypeId; BaseOrderTypeM = BaseOrderType;
+                                    OrderTypeM = OrderType;
+                                    hfConfirmNext = "ORDERTYPE";
+                                    return OrderTypeId + "/" + OrderType;//New
+
+                                    //dlg = MessageBox.Show("Patients previous visits to this doctor is within the followup limit defined " + str, this.Title, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                                }
+                            }
+                            else
+                            {
+                                if (CheckType)
+                                {
+                                    StringBuilder strMsg = new StringBuilder();
+                                    // if (MaxStr != null)
+                                    if (!string.IsNullOrEmpty(MaxStr))
+                                    {
+                                        string strmax = MaxStr.ToString();
+                                        strMsg.Append(strmax + " <br/>");
+                                        Maxconsult = null;
+                                        MaxStr = null;
+                                    }
+                                    strMsg.Append("Patients previous visits to this Speciality is within the Follow up limit defined. ");
+                                    strMsg.Append("" + str + "");
+
+                                    //Manipal Development CR#172 added by Venkat -- start here
+
+                                    //if (FollowUpConsulStatus != null)
+                                    if (!string.IsNullOrEmpty(FollowUpConsulStatus))
+                                    {
+                                        if ((FollowUpConsulStatus.ToString()).ToUpper() != "YES")
+                                        {
+                                            if (System.Configuration.ConfigurationSettings.AppSettings["FollowUpMsgYESNO"].ToString().ToLower() == "yes")
+                                            {
+                                                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','YESNO','Information');", true);
+                                                hdnIsFollowUp = "YESNO";
+                                            }
+                                            else
+                                            {
+                                                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                                hdnIsFollowUp = "YES";
+                                            }
+                                        }
+                                    }
+                                    OrderTypeID = OrderTypeId; BaseOrderTypeM = BaseOrderType;
+                                    OrderTypeM = OrderType;
+                                    hfConfirmNext = "ORDERTYPE";
+                                    return OrderTypeId + "/" + OrderType;
+
+                                }
+                                else
+                                {
+                                    StringBuilder strMsg = new StringBuilder();
+                                    if (!string.IsNullOrEmpty(MaxStr))
+                                    {
+                                        string strmax = MaxStr.ToString();
+                                        strMsg.Append(strmax + " <br/>");
+                                        Maxconsult = null;
+                                        MaxStr = null;
+                                    }
+                                    strMsg.Append("Patients previous visits to this Doctor is within the follow up limit defined. ");
+                                    strMsg.Append("" + str + "");
+
+
+                                    if (!string.IsNullOrEmpty(FollowUpConsulStatus))
+                                    {
+                                        if ((FollowUpConsulStatus.ToString()).ToUpper() != "YES")
+                                        {
+                                            if (System.Configuration.ConfigurationSettings.AppSettings["FollowUpMsgYESNO"].ToString().ToLower() == "yes")
+                                            {
+                                                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','YESNO','Information');", true);
+                                                hdnIsFollowUp = "YESNO";
+                                            }
+                                            else
+                                            {
+                                                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                                hdnIsFollowUp = "YES";
+                                            }
+                                        }
+                                    }
+                                    OrderTypeID = OrderTypeId; BaseOrderTypeM = BaseOrderType;
+                                    OrderTypeM = OrderType;
+                                    hfConfirmNext = "ORDERTYPE";
+                                    return OrderTypeId + "/" + OrderType;
+
+                                }
+                            }
+
+                        }
+                        else
+                        { return OrderTypeId + "/" + OrderType; }
+
+                    }
+                    else if (OrderTypeId == BaseOrderType)
+                    {
+                        BaseOrderTypeM = BaseOrderType;
+                        DataTable dttempLt = dtItems.Clone();
+                        string strFilter = "";
+
+                        if (CheckType)
+                        { strFilter = "OrderTypeId = " + BaseOrderTypeM; }
+                        else
+                        { strFilter = "OrderTypeId = " + BaseOrderTypeM + " and ServiceDocId = " + DocId; }
+
+                        if (dtItems.Columns.Contains("BillID"))
+                        {
+                            strFilter += " and billid is not null and BillID > 0";
+                        }
+
+                        if (hdnrblbilltypeCredit == true && dtItems.Rows.Count > 0)
+                        {
+                            var dr = dtItems.Select("COMPANYID is not null and GRADEID is not null and COMPANYID=" + strCompanyID + " AND GRADEID=" + strGradeID);
+                            if (dr.Length == 0)
+                                dr = dtItems.Select("COMPANYID is null and GRADEID is null");
+                            if (dr.Length == 0)
+                            {
+                                strMsg = new StringBuilder();
+                                strMsg.Append("FollowUp cannot be possible, As the Consultation bill is under different Company or Grade.");
+
+                                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                return "";
+                            }
+                        }
+
+
+                        foreach (DataRow dr in dtItems.Select(strFilter, " OrderDate Desc"))
+                        { dttempLt.ImportRow(dr); }
+                        dttempLt.AcceptChanges();
+
+                        if (dttempLt.Rows.Count > 0)
+                        {
+
+                            if (dttempLt.Rows.Count >= FollowupLimit)
+                            {
+                                StringBuilder strMsg = null;
+
+                                if (TagId == 0)
+                                {
+                                    if (CheckType)
+                                    {
+                                        strMsg = new StringBuilder();
+                                        strMsg.Append("FollowUp cannot be possible for the selected speciality <br/>");
+                                        strMsg.Append("As the patient doesnot have previous visits to this Speciality exceeds the followup limit defined ");
+                                        // ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                        //MessageBox.Show("FollowUp cannot be possible for the selected speciality \nAs the patients previous visits to this Speciality exceeds the followup limit defined ", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information); 
+                                    }
+                                    else
+                                    {
+                                        strMsg = new StringBuilder();
+                                        strMsg.Append("FollowUp cannot be possible for the selected doctor <br/>");
+                                        strMsg.Append("As the patient doesnot have previous visits to this doctor exceeds the followup limit defined ");
+                                        // ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                        //MessageBox.Show("FollowUp cannot be possible for the selected Doctor \nAs the patients previous visits to this doctor exceeds the followup limit defined ", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information); 
+                                    }
+                                    return ""; //false;
+                                }
+                                else
+                                {
+                                    if (CheckType)
+                                    {
+                                        strMsg = new StringBuilder();
+                                        strMsg.Append("FollowUp cannot be possible for the selected speciality <br/>");
+                                        strMsg.Append("As the patient doesnot have previous visits to this Speciality exceeds the Followup limit defined ");
+
+                                        //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                        //MessageBox.Show(resources1.GetString("frmOPBillingNew.cs.MSG15"), this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information); 
+                                    }
+                                    else
+                                    {
+                                        strMsg = new StringBuilder();
+                                        strMsg.Append("FollowUp cannot be possible for the selected doctor <br/>");
+                                        strMsg.Append("As the patient doesnot have previous visits to this doctor exceeds the followup limit defined ");
+
+                                        //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                        //MessageBox.Show(resources1.GetString("frmOPBillingNew.cs.MSG16"), this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                    return ""; //false;
+                                }
+                            }
+                            else
+                            { return OrderTypeId + "/" + OrderType; }// true;	}
+                        }
+                        else
+                        { return OrderTypeId + "/" + OrderType; }// true;	}
+
+                    }
+                    else
+                    { return OrderTypeId + "/" + OrderType; }
+                }
+                else
+                { return OrderTypeId + "/" + OrderType; }
+
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in CheckforLimits", "");
+                return string.Empty;
+            }
+
+        }
+
+        private string CheckforDays(int FollowupDays, bool CheckType, DataTable dtItems, int DocId, int OrderTypeId, string OrderType, int BaseOrderType, string BaseOrderName)
+        {
+            try
+            {
+                hdnDelConfirm = "0";
+                if (FollowupDays > 0)
+                {
+
+                    if (OrderTypeId != BaseOrderType)
+                    {
+                        DataTable dttemp = dtItems.Clone();
+                        string strFilter = "";
+                        string str = "";
+
+                        DataRow[] drChk = dtItems.Select("OrderTypeId = " + BaseOrderType, " OrderDate Desc");
+                        if (drChk.Length > 0)
+                        {
+                            if (CheckType)
+                            { strFilter = " OrderTypeId = " + BaseOrderType; }
+                            else
+                            { strFilter = " OrderTypeId = " + BaseOrderType + " and ServiceDocId = " + DocId; }
+
+                        }
+                        else
+                        {
+                            if (CheckType)
+                            { strFilter = ""; }
+                            else
+                            { strFilter = " ServiceDocId = " + DocId; }
+                        }
+                        if (dtItems.Columns.Contains("BillID") && strFilter != "")
+                        {
+                            strFilter += " and billid is not null and BillID > 0";
+                        }
+                        else
+                            strFilter += "billid is not null and BillID > 0";
+                        foreach (DataRow dr in dtItems.Select(strFilter, " OrderDate Desc"))
+                        { dttemp.ImportRow(dr); }
+                        dttemp.AcceptChanges();
+
+
+                        bool isSameCompany = false;
+                        if (hdnrblbilltypeCredit == true)
+                        {
+                            var dr = dtItems.Select("COMPANYID is not null and GRADEID is not null and COMPANYID=" + strCompanyID + " AND GRADEID=" + strGradeID);
+                            if (dr.Length > 0)
+                                isSameCompany = true;
+                            if (!isSameCompany && (dtItems.Rows.Count == 0 || dtItems.Select("COMPANYID is null and GRADEID is null").Length > 0))
+                            {
+                                isSameCompany = true;
+                            }
+                        }
+
+                        if (dttemp.Rows.Count > 0 && (isSameCompany || hdnrblbilltypecash == true))
+                        {
+                            DataRow[] drItem = dttemp.Select();
+                            TimeSpan ts = DateTime.Now - Convert.ToDateTime(drItem[0]["OrderDate"]).Date;
+
+                            if (ts.Days < FollowupDays)
+                            {
+                                if (TagId == 0)
+                                    str = "<br>Patient can avail " + BaseOrderName.ToUpper() + " visit, Do you want to avail? ";
+                                else
+                                    str = "<br>Patient can avail " + BaseOrderName.ToUpper() + " visit, Do you want to avail? ";
+                            }
+                            else
+                            { str = ""; }
+                            if (ts.Days < FollowupDays)
+                            {
+                                if (TagId == 0)
+                                {
+                                    if (CheckType)
+                                    {
+                                        StringBuilder strMsg = new StringBuilder();
+                                        // if (MaxStr != null)
+                                        if (!string.IsNullOrEmpty(MaxStr))
+                                        {
+                                            string strmax = MaxStr.ToString();
+                                            strMsg.Append(strmax + " <br/>");
+                                            Maxconsult = null;
+                                            MaxStr = null;
+                                        }
+                                        strMsg.Append("Patients previous visits to this Speciality is within the Follow Up limit defined. ");
+                                        strMsg.Append("" + str + "");
+
+                                        // if (FollowUpConsulStatus != null)
+                                        if (!string.IsNullOrEmpty(FollowUpConsulStatus))
+                                        {
+                                            //if (DoctorAvailable != null)
+                                            if (!string.IsNullOrEmpty(DoctorAvailable))
+                                                if (DoctorAvailable.ToString() == "NO")
+                                                    DoctorAvailable = "YES";
+                                            if ((FollowUpConsulStatus.ToString()).ToUpper() != "YES")
+                                            {
+                                                if (ConfigurationSettings.AppSettings["FollowUpMsgYESNO"].ToString().ToLower() == "yes")
+                                                {
+                                                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','YESNO','Information');", true);
+                                                    hdnIsFollowUp = "YESNO";
+                                                }
+                                                else
+                                                {
+                                                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                                    hdnIsFollowUp = "YES";
+                                                }
+                                            }
+                                        }
+                                        OrderTypeID = OrderTypeId;
+                                        BaseOrderTypeM = BaseOrderType;
+                                        OrderTypeM = OrderType;
+                                        hfConfirmNext = "ORDERTYPE";
+                                        return OrderTypeId + "/" + OrderType;
+                                    }
+                                    else
+                                    {
+
+                                        StringBuilder strMsg = new StringBuilder();
+                                        if (MaxStr != null)
+                                        {
+                                            string strmax = MaxStr.ToString();
+                                            strMsg.Append(strmax + " <br/>");
+                                            Maxconsult = null;
+                                            MaxStr = null;
+                                        }
+                                        strMsg.Append("Patients previous visits to this doctor is within the Follow up limit defined. ");
+                                        strMsg.Append("" + str + "");
+
+                                        if (FollowUpConsulStatus != null)
+                                        {
+                                            if ((FollowUpConsulStatus.ToString()).ToUpper() != "YES")
+                                            {
+                                                if (ConfigurationSettings.AppSettings["FollowUpMsgYESNO"].ToString().ToLower() == "yes")
+                                                {
+                                                    // ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','YESNO','Information');", true);
+                                                    hdnIsFollowUp = "YESNO";
+                                                }
+                                                else
+                                                {
+                                                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                                    hdnIsFollowUp = "YES";
+                                                }
+                                            }
+                                        }
+                                        OrderTypeID = OrderTypeId; BaseOrderTypeM = BaseOrderType;
+                                        OrderTypeM = OrderType;
+                                        hfConfirmNext = "ORDERTYPE";
+                                        return OrderTypeId + "/" + OrderType;
+                                    }
+                                }
+                                else
+                                {
+
+                                    if (CheckType)
+                                    {
+
+                                        StringBuilder strMsg = new StringBuilder();
+                                        if (MaxStr != null)
+                                        {
+                                            string strmax = MaxStr.ToString();
+                                            strMsg.Append(strmax + " <br/>");
+                                            Maxconsult = null;
+                                            MaxStr = null;
+                                        }
+                                        strMsg.Append("Patients previous visits to this Speciality is within the follow up limit defined. ");
+                                        strMsg.Append("" + str + "");
+
+                                        if (FollowUpConsulStatus != null)
+                                        {
+                                            if ((FollowUpConsulStatus.ToString()).ToUpper() != "YES")
+                                            {
+                                                if (System.Configuration.ConfigurationSettings.AppSettings["FollowUpMsgYESNO"].ToString().ToLower() == "yes")
+                                                {
+                                                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','YESNO','Information');", true);
+                                                    hdnIsFollowUp = "YESNO";
+                                                }
+                                                else
+                                                {
+                                                    // ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                                    hdnIsFollowUp = "YES";
+                                                }
+                                            }
+                                        }
+                                        OrderTypeID = OrderTypeId; BaseOrderTypeM = BaseOrderType;
+                                        OrderTypeM = OrderType;
+                                        hfConfirmNext = "ORDERTYPE";
+                                        return OrderTypeId + "/" + OrderType;
+                                    }
+                                    else
+                                    {
+                                        StringBuilder strMsg = new StringBuilder();
+                                        if (MaxStr != null)
+                                        {
+                                            string strmax = MaxStr.ToString();
+                                            strMsg.Append(strmax + " <br/>");
+                                            Maxconsult = null;
+                                            MaxStr = null;
+                                        }
+                                        strMsg.Append("Patients previous visits to this doctor is within the follow up Limit defined. ");
+                                        strMsg.Append("" + str + "");
+
+                                        if (FollowUpConsulStatus != null)
+                                        {
+                                            if ((FollowUpConsulStatus.ToString()).ToUpper() != "YES")
+                                            {
+                                                if (ConfigurationSettings.AppSettings["FollowUpMsgYESNO"].ToString().ToLower() == "yes")
+                                                {
+                                                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','YESNO','Information');", true);
+                                                    hdnIsFollowUp = "YESNO";
+                                                }
+                                                else
+                                                {
+                                                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                                    hdnIsFollowUp = "YES";
+                                                }
+                                            }
+                                        }
+                                        OrderTypeID = OrderTypeId; BaseOrderTypeM = BaseOrderType;
+                                        OrderTypeM = OrderType;
+                                        hfConfirmNext = "ORDERTYPE";
+                                        return OrderTypeId + "/" + OrderType;
+                                    }
+                                }
+                            }
+                            else
+                            { return OrderTypeId + "/" + OrderType; }
+                        }
+                        else
+                        { return OrderTypeId + "/" + OrderType; }
+                    }
+                    else if (OrderTypeId == BaseOrderType)
+                    {
+                        DataTable dttemp = dtItems.Clone();
+                        string strFilter = "";
+
+                        if (CheckType)
+                        { strFilter = "OrderTypeId = " + BaseOrderType; }
+                        else
+                        { strFilter = "OrderTypeId = " + BaseOrderType + " and ServiceDocId = " + DocId; }
+
+                        //Added below condition to validate, if consultation bill is having different company/grade
+                        if (hdnrblbilltypeCredit == true && dtItems.Rows.Count > 0)
+                        {
+                            var dr = dtItems.Select("COMPANYID is not null and GRADEID is not null and COMPANYID=" + strCompanyID + " AND GRADEID=" + strGradeID);
+                            if (dr.Length == 0)
+                                dr = dtItems.Select("COMPANYID is null and GRADEID is null");
+                            if (dr.Length == 0)
+                            {
+                                strMsg = new StringBuilder();
+                                strMsg.Append("FollowUp cannot be possible, As the Consultation bill is under different Company or Grade.");
+
+                                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                return "";
+                            }
+                        }
+
+                        foreach (DataRow dr in dtItems.Select(strFilter, " OrderDate Desc"))
+                        { dttemp.ImportRow(dr); }
+                        dttemp.AcceptChanges();
+
+                        if (dttemp.Rows.Count > 0)
+                        {
+                            DataRow[] drItem = dttemp.Select();
+                            TimeSpan ts = DateTime.Today.Date - Convert.ToDateTime(drItem[0]["OrderDate"]).Date;
+                            StringBuilder strMsg = null;
+                            if (ts.Days >= FollowupDays)
+                            {
+
+                                if (TagId == 0)
+                                {
+                                    if (CheckType)
+                                    {
+                                        strMsg = new StringBuilder();
+                                        strMsg.Append("FollowUp cannot be possible for the selected Speciality <br/>");
+                                        strMsg.Append("As the patient doesnot have previous visits to this Speciality exceeds the follow up limit defined ");
+
+                                        //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                        return "";
+                                        //MessageBox.Show("FollowUp cannot be possible for the selected speciality \nAs the patients previous visits to this Speciality exceeds the followup limit days defined ", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                    else
+                                    {
+                                        strMsg = new StringBuilder();
+                                        strMsg.Append("FollowUp cannot be possible for the selected doctor <br/>");
+                                        strMsg.Append("As the patient doesnot have previous visits to this doctor exceeds the followup limit defined ");
+
+                                        //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+                                        return "";
+                                        //MessageBox.Show("FollowUp cannot be possible for the selected Doctor \nAs the patients previous visits to this doctor exceeds the followup limit days defined ", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                }
+                                else
+                                {
+                                    if (CheckType)
+                                    {
+                                        strMsg = new StringBuilder();
+                                        strMsg.Append("FollowUp cannot be possible for the selected Speciality <br/>");
+                                        strMsg.Append("As the patient does not have previous visits to this Speciality exceeds the follow up limit defined ");
+                                        // ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+
+                                        //MessageBox.Show(resources1.GetString("frmOPBillingNew.cs.MSG11"), this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information); 
+                                    }
+                                    else
+                                    {
+                                        strMsg = new StringBuilder();
+                                        strMsg.Append("FollowUp cannot be possible for the selected doctor <br/>");
+                                        strMsg.Append("As the patient doesnot have previous visits to this doctor exceeds the followup limit defined ");
+                                        //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strMsg.ToString() + "','OK','Information');", true);
+
+                                        //MessageBox.Show(resources1.GetString("frmOPBillingNew.cs.MSG12"), this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                }
+                                return "";// false;
+                            }
+                            else
+                            { return OrderTypeId + "/" + OrderType; }
+                        }
+                        else
+                        { return OrderTypeId + "/" + OrderType; }
+                    }
+                    else
+                    { return OrderTypeId + "/" + OrderType; }
+                }
+                else
+                { return OrderTypeId + "/" + OrderType; }
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in CheckforDays", "");
+                return string.Empty;
+            }
+
+        }
+
+        private bool DischargeFollowUp()
+        {
+
+            bool blnFlag = false;
+            try
+            {
+                int intUserId = Convert.ToInt32(strDefaultUserId);
+                int intWorkstationid = Convert.ToInt32(strDefWorkstationId);
+                DataSet ds = new DataSet();
+                ds = FetchAllBillDetailsAdv(0, "RegCode = '" + UHID.Trim() + "' and Status <>3 and patienttype<>6 and SpecialiseID='" + Convert.ToInt32(specilaize.ToString()) + "'", intUserId, intWorkstationid, 0);
+
+                DataTable dt = new DataTable();
+                int days = 0;
+                int noOfVisits = 0;
+                if (ds.Tables.Count > 0)
+                {
+                    dt = ds.Tables[0];
+                    DataView dv = dt.DefaultView;
+                    dv.Sort = "BillDate Desc";
+                    dt = dv.ToTable();
+                    if (dt.Rows.Count > 0)
+                    {
+                        System.TimeSpan ts = DateTime.Now - Convert.ToDateTime(dt.Rows[0]["BillDate"].ToString());
+                        days = ts.Days;
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            if (Convert.ToInt32(dt.Rows[i]["PatientType"]) == 2)
+                                break;
+                            noOfVisits++;
+                        }
+                    }
+                }
+                DataTable dtConfollowupD = FetchFollowupdays(Convert.ToInt32(Doctorid.ToString()), Convert.ToInt32(specilaize.ToString()), intUserId, intWorkstationid, 0, Convert.ToInt32(hdnPatientID)).Tables[0];
+                dtConfollowup = dtConfollowupD;
+                int intDischargeFollowUpDays = 0;
+                int intDischargeFollowUpLimit = 0;
+                if (dtConfollowup.Rows.Count > 0)
+                {
+                    if (!string.IsNullOrEmpty(dtConfollowup.Rows[1]["DischargeFollowUpDays"].ToString()))
+                        intDischargeFollowUpDays = Convert.ToInt32(dtConfollowup.Rows[1]["DischargeFollowUpDays"].ToString());
+                    if (!string.IsNullOrEmpty(dtConfollowup.Rows[1]["DischargeFollowUpLimit"].ToString()))
+                        intDischargeFollowUpLimit = Convert.ToInt32(dtConfollowup.Rows[1]["DischargeFollowUpLimit"].ToString());
+                }
+                if (days <= intDischargeFollowUpDays && noOfVisits < intDischargeFollowUpLimit)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in DischargeFollowUp", "");
+                return false;
+            }
+            finally
+            {
+
+            }
+            return blnFlag;
+        }
+
+        public Boolean GetDoctorConfiguration()
+        {
+            try
+            {
+
+                DataSet dsConsultConfig = null;
+
+                string strReturnMsg = "";
+
+                int DocID = Convert.ToInt32(Doctorid);
+                int HospID = Convert.ToInt32(strDefaultHospitalId);
+                int intUId = Convert.ToInt32(strDefaultUserId);
+                int intWId = Convert.ToInt32(strDefWorkstationId);
+                dsConsultConfig = FetchConsultantConfiguration(DocID, Convert.ToInt32(HospID), "1", intUId, intWId, 0);
+
+                if (dsConsultConfig != null)
+                {
+                    if (dsConsultConfig.Tables[0].Rows.Count > 0)
+                    {
+                        bool bWalkinLimit = false;
+                        int MCCCount = 0, intActAppt = 0, intWalkinBilled = 0;
+                        System.Collections.Generic.Dictionary<int, string> dictWeekdays = GetWeekDaysPair();
+                        System.Collections.Generic.List<string> strWeekDays = GetWeekDays();
+                        dsConsultConfig.Tables[0].Columns.Add("WeekDayName");
+
+                        DateTime ScheduleDate = DateTime.Today;
+
+                        string str = ScheduleDate.ToString("dd-MMM-yyyy");
+                        DateTime dt = Convert.ToDateTime(str);
+
+                        string strFilter = " Blocked = 0 AND DoctorID=" + DocID + " AND Convert(Varchar(10),ScheduleDate,120)='" + ScheduleDate.ToString("yyyy-MM-dd") + "'";
+                        DataSet dsAppointments = FetchAppointment(strFilter, intUId, intWId, 0);
+
+                        string strWalkinFilter = "Status = 1 and StartTime is null and Convert(Varchar(10),OrderDate,110) = '" + ScheduleDate.ToString("MM-dd-yyyy") + "' and DoctorID = " + DocID.ToString();
+                        DataSet dsWalkinBilled = FetchConsultations_Perf(1, strWalkinFilter, intUId, intWId, 0, 0, DocID, ScheduleDate, HospID);
+
+                        if (dsAppointments.Tables.Count > 0)
+                        {
+                            if (dsAppointments.Tables[0].Rows.Count > 0)
+                            {
+                                intActAppt = Convert.ToInt32(dsAppointments.Tables[0].Rows[0]["Count"]);
+                            }
+                        }
+                        if (dsWalkinBilled.Tables[0].Rows.Count > 0)
+                        {
+                            intWalkinBilled = dsWalkinBilled.Tables[0].Rows.Count;
+                        }
+                        foreach (DataRow drv in dsConsultConfig.Tables[0].Rows)
+                        {
+                            foreach (System.Collections.Generic.KeyValuePair<int, string> item in dictWeekdays)
+                            {
+                                if (item.Key.ToString() == drv["weekday"].ToString())
+                                {
+                                    drv["WeekdayName"] = item.Value;
+                                }
+                            }
+                        }
+                        dsConsultConfig.Tables[0].AcceptChanges();
+                        foreach (DataRow dr in dsConsultConfig.Tables[0].Rows)
+                        {
+                            if (dr["WeekDayName"].ToString() == DateTime.Today.DayOfWeek.ToString())
+                            {
+                                bWalkinLimit = (Boolean)dr["WalkinLimitAlert"];
+                                MCCCount = Convert.ToInt32(dr["MaxConsultation"]);
+                                break;
+                            }
+                        }
+                        if (bWalkinLimit)
+                        {
+                            strReturnMsg = "The Doctor has Walkin Limit specified for " + DateTime.Today.DayOfWeek.ToString();
+                            return true;
+                        }
+                        else
+                        {
+                            int balWalkin = MCCCount - intActAppt - intWalkinBilled;
+
+                            if (MCCCount != 0 && balWalkin <= 0)
+                            {
+                                if (WalkinBalance == null || WalkinBalance.ToString() == "false")
+                                {
+                                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','There is no balance walkin for the Doctor.<br>Max Consultation Count: " + MCCCount.ToString() + "<br>Walkin Balance: " + balWalkin.ToString() + "<br>Do you want to continue ?','YESNO','Warning');", true);
+                                    WalkinBalance = "true";
+                                    strReturnMsg = "There is no balance walkin for the Doctor.<br>Max Consultation Count: " + MCCCount.ToString() + "<br>Walkin Balance: " + balWalkin.ToString() + "<br>Do you want to continue ?";
+                                    // ScriptManager.RegisterStartupScript(this, Page.GetType(), "OutPatient Billing", "ShowMsgBox('" + this.Title + "','" + strReturnMsg + "','YESNO','Information');", true);
+                                    return true;
+
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+                return false;
+
+
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in GetDoctorConfiguration", "");
+                return false;
+            }
+            finally
+            {
+
+            }
+        }
+
+        public DataSet FetchPackageLOA(int intType, string strFilter, int intUserId, int intWorkstationid, int intError, int HospitalID)
+        {
+            try
+            {
+                objFOClient = new FrontOfficeServiceContractClient();
+                return objFOClient.FetchHospitalPackageLOA(intType, strFilter, intUserId, intWorkstationid, intError, HospitalID);
+            }
+
+            finally
+            {
+                objFOClient.Close();
+            }
+        }
+
+        public DataSet FetchPackageLOA(int intType, string strFilter, int intUserId, int intWorkstationid, int intError)
+        {
+            try
+            {
+                objFOClient = new FrontOfficeServiceContractClient();
+                return objFOClient.FetchPackageLOA(intType, strFilter, intUserId, intWorkstationid, intError);
+            }
+
+            finally
+            {
+                objFOClient.Close();
+            }
+        }
+
+        public DataSet FetchMaxconsultdays(int DocID, string TBL, int UserId, int WstationId, int intError)
+        {
+
+            FrontOfficeServiceContractClient objfrontoffice = new FrontOfficeServiceContractClient();
+            try
+            {
+                return objfrontoffice.FetchMaxconsultdays(DocID, TBL, UserId, WstationId, intError);
+            }
+            finally
+            {
+                objfrontoffice.Close();
+            }
+        }
+
+        private DataTable GetGeneralExclusionCategory(int TariffID)
+        {
+            try
+            {
+
+                DataSet dsData = FetchfromAdv("Pr_FetchGeneralExculusiongroupsAdv", "2", "Blocked = 0 and TariffID=" + TariffID + "", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), null, null, "FetchGeneralExculusion");
+                DataTable dtExclusionsD = null;
+                if (dsData.Tables.Count > 0)
+                {
+
+
+                    for (int i = 0; i < dsData.Tables[0].Rows.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            dtExclusionsD = BindCategoryItems(Convert.ToInt32(dsData.Tables[0].Rows[i]["PackageItemCategoryID"]));
+                        }
+                        else
+                        {
+                            dtExclusionsD.Merge(BindCategoryItems(Convert.ToInt32(dsData.Tables[0].Rows[i]["PackageItemCategoryID"])));
+                        }
+                    }
+                    if (dtExclusionsD != null)
+                    {
+                        DataTable dtExclusions = dtExclusionsD.DefaultView.ToTable( /*distinct*/ true);
+                        return dtExclusions;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in GetGeneralExclusionCategory", "");
+                return null;
+            }
+        }
+
+        public DataSet FetchGeneralExculusionMAPI(int CompanyID, int GradeID, string Serviceitemid, int HospitalID, int intWorkstationId, PatientBillList PatientBillList)
+        {
+            DataHelper objDataHelper = new DataHelper(DEFAULTWORKSTATION, (int)Database.Master);
+            DataSet dsSpecConfig = new DataSet();
+            try
+            {
+                List<IDbDataParameter> objIDbDataParameters = new List<IDbDataParameter>();
+                objIDbDataParameters.Add(CreateParam(objDataHelper, "@CompanyID", CompanyID.ToString(), DbType.Int32, ParameterDirection.Input));
+                objIDbDataParameters.Add(CreateParam(objDataHelper, "@GradeID", GradeID.ToString(), DbType.Int32, ParameterDirection.Input));
+                objIDbDataParameters.Add(CreateParam(objDataHelper, "@Serviceitemid", Serviceitemid.ToString(), DbType.String, ParameterDirection.Input));
+                dsSpecConfig = objDataHelper.RunSPReturnDS("Pr_FetchGeneralExculusion_MAPI", objIDbDataParameters.ToArray());
+                return dsSpecConfig;
+            }
+            finally
+            {
+
+            }
+        }
+
+        public DataSet GetDiscountsConfig(int DiscountId, string strTableId, int FeatureId, int FunctionId, string CallContext, int UserId, int WstationId, int intError)
+        {
+
+            DataSet ds = new DataSet();
+            FrontOfficeServiceContractClient objFrontOfficeContractClient = new FrontOfficeServiceContractClient();
+            try
+            {
+                ds = objFrontOfficeContractClient.FetchDiscountsConfig(DiscountId, strTableId, FeatureId, FunctionId, CallContext, UserId, WstationId, intError);
+                return ds;
+            }
+            finally
+            {
+                objFrontOfficeContractClient.Close();
+            }
+        }
+
+        public DataSet GetDiscountConfigNew(DataSet ds, int intDiscountId, double TotalAmount)
+        {
+            DataSet dsConfiguredDetails = new DataSet();
+            dsConfiguredDetails.Clear();
+            int intDiscountLevel = 0;
+            string strDiscountType = string.Empty;
+            try
+            {
+
+                bool IsPercentage = false;
+                double DisValue = 0;
+                DataRow[] drConf = ds.Tables[0].Select("Blocked=0");
+                if (drConf.Length > 0)
+                {
+                    intDiscountLevel = Convert.ToInt32(drConf[0]["DiscountLevel"].ToString());
+                    strDiscountType = Convert.ToString(drConf[0]["DiscountName"].ToString());
+                    IsPercentage = Convert.ToBoolean(drConf[0]["IsPercentage"]);
+                    DisValue = Convert.ToDouble(drConf[0]["Value"].ToString());
+                    if (intDiscountLevel > -1)
+                    {
+                        DataTable dtOnBill = new DataTable("OnBill");
+                        dtOnBill = GetDiscountDetails().Clone();
+                        if (!dtOnBill.Columns.Contains("IsPercentage"))
+                        { dtOnBill.Columns.Add("IsPercentage", typeof(bool)); }
+
+                        dtOnBill.AcceptChanges();
+
+                        DataTable dtOnItem = new DataTable("OnItem");
+                        dtOnItem = dtOnBill.Clone();
+
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            DataRow drnew = dtOnBill.NewRow();
+                            drnew["mLevel"] = intDiscountLevel;
+                            drnew["Type"] = strDiscountType;
+                            drnew["ServiceId"] = 0;
+                            drnew["ServiceName"] = "";
+                            drnew["HospDeptID"] = 0;
+                            drnew["DepartmentName"] = "";
+                            drnew["SpecialiseID"] = 0;
+                            drnew["SpecialiseName"] = "";
+                            drnew["ServiceItemID"] = 0;
+                            drnew["ItemName"] = "";
+                            drnew["Total"] = TotalAmount;
+                            drnew["Discount"] = dr["Value"];
+                            drnew["IsPercentage"] = dr["IsPercentage"];
+                            dtOnBill.Rows.Add(drnew);
+                            DataRow drnewOB = dtOnItem.NewRow();
+                            drnewOB["mLevel"] = intDiscountLevel;
+                            drnewOB["Type"] = strDiscountType;
+                            drnewOB["ServiceId"] = 0;
+                            drnewOB["ServiceName"] = "";
+                            drnewOB["HospDeptID"] = 0;
+                            drnewOB["DepartmentName"] = "";
+                            drnewOB["SpecialiseID"] = 0;
+                            drnewOB["SpecialiseName"] = "";
+                            drnewOB["ServiceItemID"] = 0;
+                            drnewOB["ItemName"] = "";
+                            drnewOB["Total"] = TotalAmount;
+                            drnewOB["Discount"] = dr["Value"];
+                            drnewOB["IsPercentage"] = dr["IsPercentage"];
+
+                            dtOnItem.Rows.Add(drnewOB);
+
+                        }
+                        dtOnBill.Columns["SpecialiseName"].ColumnName = "Specialisation";
+                        dtOnBill.Columns["ItemName"].ColumnName = "ServiceItemName";
+                        dtOnBill.AcceptChanges();
+                        dtOnBill.TableName = "OnBill";
+                        dsConfiguredDetails.Tables.Add(dtOnBill);
+
+
+                        if (ds.Tables[1].Rows.Count > 0)
+                        {
+                            DataRow[] dr = ds.Tables[1].Select("Blocked = 0");
+                            for (int intctr = 0; intctr < dr.Length; intctr++)
+                            {
+                                DataRow drnew = dtOnItem.NewRow();
+                                drnew["mLevel"] = dr[intctr]["Mlevel"];
+                                drnew["Type"] = strDiscountType;
+                                drnew["ServiceId"] = dr[intctr]["ServiceId"];
+                                drnew["ServiceName"] = dr[intctr]["ServiceName"];
+                                drnew["HospDeptID"] = dr[intctr]["HospDeptId"];
+                                drnew["DepartmentName"] = dr[intctr]["HospDeptName"];
+                                drnew["SpecialiseID"] = dr[intctr]["SpecialiseID"];
+                                drnew["SpecialiseName"] = dr[intctr]["Specialisation"];
+                                drnew["ServiceItemID"] = dr[intctr]["ItemId"];
+                                drnew["ItemName"] = dr[intctr]["DisplayName"];
+                                drnew["Total"] = 0;
+                                drnew["Discount"] = dr[intctr]["Value"];
+                                drnew["IsPercentage"] = dr[intctr]["IsPercentage"];
+                                dtOnItem.Rows.Add(drnew);
+
+                            }
+                            dtOnItem.Columns["SpecialiseName"].ColumnName = "Specialisation";
+                            dtOnItem.Columns["ItemName"].ColumnName = "ServiceItemName";
+                            dtOnItem.AcceptChanges();
+                            dtOnItem.TableName = "OnItem";
+                            dsConfiguredDetails.Tables.Add(dtOnItem);
+                        }
+                        else
+                        {
+                            dtOnItem.Columns["SpecialiseName"].ColumnName = "Specialisation";
+                            dtOnItem.Columns["ItemName"].ColumnName = "ServiceItemName";
+                            dtOnItem.AcceptChanges();
+                            dtOnItem.TableName = "OnItem";
+                            dsConfiguredDetails.Tables.Add(dtOnItem);
+                        }
+
+                    }
+                }
+                return dsConfiguredDetails;
+            }
+            catch (Exception ex)
+            {
+
+                return dsConfiguredDetails;
+            }
+        }
+
+        public DataTable ProcessDiscountConfigurationLatest(int DiscLevel, DataTable dtSelected, DataTable dtServices, int IPOP, DataSet dsConfiguration, string StrBillType, string DiscountType, string Check, decimal Pay)
+        {
+            if (Check == "0")
+            {
+                radPatient = true;
+                radpayer = false;
+                PAmount = Pay;
+                CAmount = 0;
+            }
+            else
+            {
+                radpayer = true;
+                radPatient = false;
+                PAmount = 0;
+                CAmount = Pay;
+            }
+            string[] strFilterType = FilterType(StrBillType, IPOP);
+            if (!dtSelected.Columns.Contains("ISDISCAPP"))
+                dtSelected.Columns.Add("ISDISCAPP", typeof(bool));
+            if (dsConfiguration.Tables.Count > 0)
+            {
+                if (dsConfiguration.Tables[1].Rows.Count > 0)
+                {
+                    if (!dsConfiguration.Tables[1].Columns.Contains("ISDISCAPP"))
+                        dsConfiguration.Tables[1].Columns.Add("ISDISCAPP", typeof(bool));
+                }
+            }
+            DataTable dtfinal = new DataTable();
+            decimal dcCPAY, dcPPAY = 0; string strFilter = string.Empty;
+            try
+            {
+                if (dtSelected.Columns.Contains("ISDISCPR"))
+                {
+                    foreach (DataRow dr1 in dtSelected.Select("mlevel=5 and serviceid=9 and ISDISCPR is not null"))
+                    {
+                        DataRow[] drsplz = dtSelected.Select("mlevel=4 and serviceid=9 and hospdeptid=" + dr1["hospdeptid"] + " and specialiseid=" + dr1["SpecialiseId"]);
+                        if (drsplz.Length > 0)
+                            drsplz[0]["CPAY"] = Convert.ToDouble(drsplz[0]["CPAY"]) - Convert.ToDouble(dr1["CPAY"]);
+
+                        DataRow[] drdept = dtSelected.Select("mlevel=3 and serviceid=9 and hospdeptid=" + dr1["hospdeptid"]);
+                        if (drdept.Length > 0)
+                            drdept[0]["CPAY"] = Convert.ToDouble(drdept[0]["CPAY"]) - Convert.ToDouble(dr1["CPAY"]);
+
+                        DataRow[] drsrv = dtSelected.Select("mlevel=2 and serviceid=9 ");
+                        if (drsrv.Length > 0)
+                            drsrv[0]["CPAY"] = Convert.ToDouble(drsrv[0]["CPAY"]) - Convert.ToDouble(dr1["CPAY"]);
+
+
+                        dtSelected.Rows.Remove(dr1);
+                    }
+                }
+                dtBillDetails = dtSelected.Copy();
+                /*  Discount Types 
+                    *  -1 - Open
+                    *   0 - On Bill
+                    *   2 - On Service
+                    *   3 - On Department
+                    *   4 - On Specialisation
+                    *   5 - On Item  					*/
+
+
+                DataTable dtTempFinal = new DataTable();
+                DataTable dtSelectedforSorting = new DataTable();
+
+                decimal dDCOM = 0; decimal dDPAT = 0; decimal decPat = 0; decimal decComp = 0;
+
+                decimal dcDiscountAmount = 0;
+                decimal dblVal = 0;
+
+                dtSelectedforSorting = dtSelected.Copy();
+
+                if (!dtSelected.Columns.Contains("BatchID"))
+                {
+                    if (dsConfiguration.Tables.Count > 0)
+                        dsConfiguration.Tables["OnItem"].Columns.Add("BatchID", typeof(int));
+                }
+                dtTempFinal = dsConfiguration.Tables["OnItem"].Clone();
+                DataRow[] drconfig = dtSelected.Select("", " mlevel Desc");
+                for (int intctr = 0; intctr < drconfig.Length; intctr++)
+                {
+                    DiscLevel = Convert.ToInt32(drconfig[intctr]["mLevel"].ToString());
+
+                    if (dsConfiguration.Tables["OnItem"].Select(" mlevel= " + DiscLevel).Length == 0)
+                        continue;
+
+                    switch (DiscLevel)
+                    {
+                        case 0: // O N   B I L L 
+                            if (dtTempFinal.Rows.Count == 0)
+                            {
+                                dtfinal = dsConfiguration.Tables["OnItem"].Clone();
+                                DataTable dttemp = LoadDetails(dtSelected, DiscLevel, strFilterType[0]).Copy();
+                                foreach (DataRow dr in dsConfiguration.Tables["OnItem"].Select(" mlevel= " + DiscLevel))
+                                {
+                                    DataRow[] drcon = dttemp.Select(" mLevel= " + dr["mLevel"]);
+                                    for (int ictr = 0; ictr < drcon.Length; ictr++)
+                                    { dtfinal.ImportRow(drcon[ictr]); }
+                                    dtfinal.AcceptChanges();
+                                }
+                                DataRow[] drbill = dtfinal.Select();
+                                if (drbill.Length > 0)
+                                {
+
+                                    if (radpayer)
+                                    {
+                                        if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                        {
+                                            if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                            {
+                                                dDCOM = Convert.ToDecimal(drbill[0]["CPAY"].ToString());
+                                                dDPAT = Convert.ToDecimal(drbill[0]["PPAY"].ToString());
+                                                drbill[0]["Total"] = dDCOM + dDPAT;
+                                            }
+                                            else
+                                            {
+
+                                                drbill[0]["Total"] = Convert.ToDecimal(CAmount).ToString();
+                                            }
+                                        }
+                                        else
+                                        {
+
+                                            drbill[0]["Total"] = Convert.ToDecimal(CAmount).ToString();
+                                        }
+                                    }
+                                    else
+                                    { drbill[0]["Total"] = Convert.ToDecimal(PAmount).ToString(); }
+
+
+                                    DataRow[] DrDisbill = dsConfiguration.Tables["OnItem"].Select();
+
+                                    dcDiscountAmount = 0;
+                                    dblVal = 0;
+                                    if (Convert.ToBoolean(DrDisbill[0]["IsPercentage"]))
+                                    {
+                                        if (Convert.ToDecimal(DrDisbill[0]["Discount"]) >= Convert.ToDecimal(100))
+                                        {
+                                            dcDiscountAmount = Convert.ToDecimal(drbill[0]["Total"].ToString());
+                                        }
+                                        else
+                                        {
+                                            if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                            {
+                                                if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                                {
+                                                    decComp = (dDCOM * Convert.ToDecimal(DrDisbill[0]["Discount"])) / 100;
+                                                    decPat = (dDPAT * Convert.ToDecimal(DrDisbill[0]["Discount"])) / 100;
+                                                    dblVal = decComp + decPat;
+                                                    dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                                }
+                                                else
+                                                {
+                                                    dblVal = (Convert.ToDecimal(drbill[0]["Total"]) * Convert.ToDecimal(DrDisbill[0]["Discount"])) / 100;
+                                                    dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                                }
+                                            }
+                                            else
+                                            {
+                                                dblVal = (Convert.ToDecimal(drbill[0]["Total"]) * Convert.ToDecimal(DrDisbill[0]["Discount"])) / 100;
+                                                dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (Convert.ToDecimal(drbill[0]["Total"]) > Convert.ToDecimal(DrDisbill[0]["Discount"]))
+                                        {
+                                            dcDiscountAmount = Convert.ToDecimal(DrDisbill[0]["Discount"]);
+                                        }
+                                        else
+                                        { dcDiscountAmount = Convert.ToDecimal(drbill[0]["Total"]); }
+                                    }
+                                    drbill[0]["Discount"] = Convert.ToDecimal(dcDiscountAmount).ToString();
+
+                                    drbill[0]["Type"] = DiscountType;
+                                    if (radPatient)
+                                    {
+                                        drbill[0]["DCOM"] = 0;
+                                        drbill[0]["DPAT"] = drbill[0]["Discount"];
+                                        drbill[0]["DPER"] = 0;
+                                    }
+                                    else if (radpayer)
+                                    {
+                                        if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                        {
+                                            if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                            {
+                                                drbill[0]["DCOM"] = decComp;
+                                                drbill[0]["DPAT"] = decPat;
+                                                drbill[0]["DPER"] = 0;
+                                            }
+                                            else
+                                            {
+                                                drbill[0]["DCOM"] = drbill[0]["Discount"];
+                                                drbill[0]["DPAT"] = 0;
+                                                drbill[0]["DPER"] = 0;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            drbill[0]["DCOM"] = drbill[0]["Discount"];
+                                            drbill[0]["DPAT"] = 0;
+                                            drbill[0]["DPER"] = 0;
+                                        }
+                                    }
+                                    drbill[0]["CPAY"] = 0;
+                                    drbill[0]["PPAY"] = 0;
+                                    drbill[0]["QTY"] = 0;
+                                    drbill[0]["BQTY"] = 0;
+                                    drbill[0]["SEQ"] = 1;
+
+                                    DataRow[] drBlFnl = dtfinal.Select();
+                                    for (int ictr = 0; ictr < drBlFnl.Length; ictr++)
+                                    { dtTempFinal.ImportRow(drBlFnl[ictr]); }
+                                    dtTempFinal.AcceptChanges();
+                                }
+                            }
+
+                            break;
+                        case 2:// O N    S E R V I C E 
+                            dtfinal = dsConfiguration.Tables["OnItem"].Clone();
+                            DataTable dttempBill = LoadDetails(dtSelected, DiscLevel, strFilterType[0]).Copy();
+                            dcCPAY = dcPPAY = 0;
+                            strFilter = string.Empty;
+                            DataTable dtLevelAppliedSer = LoadDetailsMPHL(dtSelected, 5, strFilterType[0]).Copy();
+
+                            if (dtLevelAppliedSer.Rows.Count > 0)
+                            {
+                                DataRow[] droServ = dttempBill.Select();
+
+                                for (int iLvl = 0; iLvl < droServ.Length; iLvl++)
+                                {
+                                    strFilter = "Serviceid=" + droServ[iLvl]["Serviceid"];
+                                    dcCPAY = Convert.ToDecimal(dtLevelAppliedSer.Compute("sum(CPAY)", strFilter) == DBNull.Value ? 0 : dtLevelAppliedSer.Compute("sum(CPAY)", strFilter));
+                                    dcPPAY = Convert.ToDecimal(dtLevelAppliedSer.Compute("sum(PPAY)", strFilter) == DBNull.Value ? 0 : dtLevelAppliedSer.Compute("sum(PPAY)", strFilter));
+                                    droServ[iLvl]["CPAY"] = dcCPAY > 0 ? Convert.ToDecimal(droServ[iLvl]["CPAY"]) - dcCPAY : droServ[iLvl]["CPAY"];
+                                    droServ[iLvl]["PPAY"] = dcPPAY > 0 ? Convert.ToDecimal(droServ[iLvl]["PPAY"]) - dcPPAY : droServ[iLvl]["PPAY"];
+                                    if (Convert.ToString(strFilterType[0]) == "CPAY")
+                                        droServ[iLvl]["Total"] = Convert.ToDecimal(droServ[iLvl]["Total"]) - dcCPAY;
+                                    if (Convert.ToString(strFilterType[0]) == "PPAY")
+                                        droServ[iLvl]["Total"] = Convert.ToDecimal(droServ[iLvl]["Total"]) - dcPPAY;
+
+                                }
+                                dttempBill.AcceptChanges();
+                            }
+                            strFilter = string.Empty;
+
+                            foreach (DataRow dr in dsConfiguration.Tables["OnItem"].Select(" mlevel= " + DiscLevel + " and serviceid=" + drconfig[intctr]["serviceid"]))
+                            {
+                                strFilter = " ServiceId= " + dr["ServiceId"];
+                                DataRow[] drcon = dttempBill.Select(" ServiceId= " + dr["ServiceId"]);
+                                for (int ictr = 0; ictr < drcon.Length; ictr++)
+                                {
+                                    dtfinal.ImportRow(drcon[ictr]);
+                                }
+                                dtfinal.AcceptChanges();
+
+                                dtSelected.AcceptChanges();
+                            }
+
+
+
+                            DataRow[] drfinal = dtfinal.Select();
+                            for (int ictr = 0; ictr < drfinal.Length; ictr++)
+                            {
+
+                                string strCondition = "";
+                                if (IPOP == 1)
+                                { strCondition = " IsContribution = 1 and mLevel=2 and ServiceID=" + drfinal[ictr]["ServiceId"]; }
+                                else if (IPOP == 2)
+                                { strCondition = " mLevel=2 and ServiceID=" + drfinal[ictr]["ServiceId"]; }
+
+                                string str = "";
+                                if (IPOP == 1)
+                                { str = strCondition.Substring(23); }
+                                else if (IPOP == 2)
+                                { str = strCondition; }
+
+                                DataRow[] DrBillDet = dtBillDetails.Select(strCondition);
+
+                                dcCPAY = Convert.ToDecimal(dtLevelAppliedSer.Compute("sum(CPAY)", "ServiceID=" + drfinal[ictr]["ServiceId"]) == DBNull.Value ? 0 : dtLevelAppliedSer.Compute("sum(CPAY)", "ServiceID=" + drfinal[ictr]["ServiceId"]));
+                                dcPPAY = Convert.ToDecimal(dtLevelAppliedSer.Compute("sum(PPAY)", "ServiceID=" + drfinal[ictr]["ServiceId"]) == DBNull.Value ? 0 : dtLevelAppliedSer.Compute("sum(PPAY)", "ServiceID=" + drfinal[ictr]["ServiceId"]));
+
+
+                                if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                {
+                                    if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                    {
+                                        dDCOM = Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString());
+                                        dDPAT = Convert.ToDecimal(DrBillDet[0]["PPAY"].ToString());
+                                        drfinal[ictr]["Total"] = (dDCOM - dcCPAY) + (dDPAT - dcPPAY);
+                                    }
+                                    else
+                                    {
+                                        drfinal[ictr]["Total"] = Convert.ToString(strFilterType[0]) == "PPAY" ? (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcPPAY).ToString() : (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcCPAY).ToString();
+                                    }
+                                }
+                                else
+                                {
+                                    drfinal[ictr]["Total"] = Convert.ToString(strFilterType[0]) == "PPAY" ? (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcPPAY).ToString() : (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcCPAY).ToString();
+                                }
+
+
+                                DataRow[] DrDis = dsConfiguration.Tables["OnItem"].Select(str);
+
+
+                                dcDiscountAmount = 0;
+                                dblVal = 0;
+                                if (Convert.ToBoolean(DrDis[0]["IsPercentage"]))
+                                {
+                                    if (Convert.ToDecimal(DrDis[0]["Discount"]) >= Convert.ToDecimal(100))
+                                    {
+                                        dcDiscountAmount = Convert.ToDecimal(drfinal[ictr]["Total"]);
+                                    }
+                                    else
+                                    {
+                                        if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                        {
+                                            if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                            {
+                                                decComp = (dDCOM * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                                decPat = (dDPAT * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+
+                                                dblVal = decComp + decPat;
+                                                dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                            }
+                                            else
+                                            {
+                                                dblVal = (Convert.ToDecimal(drfinal[ictr]["Total"]) * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                                dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                            }
+                                        }
+                                        else
+                                        {
+                                            dblVal = (Convert.ToDecimal(drfinal[ictr]["Total"]) * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                            dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (Convert.ToDecimal(drfinal[ictr]["Total"]) > Convert.ToDecimal(DrDis[0]["Discount"]))
+                                    {
+                                        dcDiscountAmount = Convert.ToDecimal(DrDis[0]["Discount"]);
+                                    }
+                                    else
+                                    { dcDiscountAmount = Convert.ToDecimal(drfinal[ictr]["Total"]); }
+                                }
+                                if (ConfigurationSettings.AppSettings["Yaico"].ToString().ToUpper() == "YES")
+                                    dcDiscountAmount = Math.Round(dcDiscountAmount, 2);
+
+                                drfinal[ictr]["Discount"] = Convert.ToDecimal(dcDiscountAmount).ToString();
+
+                                drfinal[ictr]["Type"] = DiscountType;
+                                if (radPatient)
+                                {
+                                    drfinal[ictr]["DCOM"] = 0;
+                                    drfinal[ictr]["DPAT"] = drfinal[ictr]["Discount"];
+                                    drfinal[ictr]["DPER"] = 0;
+                                }
+                                else if (radpayer)
+                                {
+                                    if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                    {
+                                        if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                        {
+                                            drfinal[ictr]["DCOM"] = decComp;
+                                            drfinal[ictr]["DPAT"] = decPat;
+                                            drfinal[ictr]["DPER"] = 0;
+                                        }
+                                        else
+                                        {
+                                            drfinal[ictr]["DCOM"] = drfinal[ictr]["Discount"];
+                                            drfinal[ictr]["DPAT"] = 0;
+                                            drfinal[ictr]["DPER"] = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        drfinal[ictr]["DCOM"] = drfinal[ictr]["Discount"];
+                                        drfinal[ictr]["DPAT"] = 0;
+                                        drfinal[ictr]["DPER"] = 0;
+                                    }
+                                }
+                                drfinal[ictr]["CPAY"] = 0;
+                                drfinal[ictr]["PPAY"] = 0;
+                                drfinal[ictr]["QTY"] = 0;
+                                drfinal[ictr]["BQTY"] = 0;
+                                if (!string.IsNullOrEmpty(DrBillDet[0]["SEQ"].ToString()))
+                                    drfinal[ictr]["SEQ"] = Convert.ToInt32(DrBillDet[0]["SEQ"].ToString());
+                                else
+                                    drfinal[ictr]["SEQ"] = 0;
+                            }
+                            DataRow[] drSrFnl = dtfinal.Select();
+                            for (int ictr = 0; ictr < drSrFnl.Length; ictr++)
+                            {
+                                dtTempFinal.ImportRow(drSrFnl[ictr]);
+                            }
+                            dtTempFinal.AcceptChanges();
+
+                            break;
+                        case 3:// O N     D E P A R T M E N T 
+                            dtfinal = dsConfiguration.Tables["OnItem"].Clone();
+                            DataTable dttempDep = LoadDetails(dtSelected, DiscLevel, strFilterType[0]).Copy();
+
+
+                            DataTable dtLevelAppliedDep = LoadDetailsMPHL(dtSelected, 5, strFilterType[0]).Copy();
+                            dcCPAY = 0; dcPPAY = 0; strFilter = string.Empty;
+                            if (dtLevelAppliedDep.Rows.Count > 0)
+                            {
+
+                                DataRow[] droDep = dttempDep.Select();
+
+                                for (int iLvl = 0; iLvl < droDep.Length; iLvl++)
+                                {
+                                    strFilter = "Serviceid=" + droDep[iLvl]["Serviceid"] + " and HospDeptID=" + droDep[iLvl]["HospDeptID"];
+                                    dcCPAY = Convert.ToDecimal(dtLevelAppliedDep.Compute("sum(CPAY)", strFilter) == DBNull.Value ? 0 : dtLevelAppliedDep.Compute("sum(CPAY)", strFilter));
+                                    dcPPAY = Convert.ToDecimal(dtLevelAppliedDep.Compute("sum(PPAY)", strFilter) == DBNull.Value ? 0 : dtLevelAppliedDep.Compute("sum(PPAY)", strFilter));
+                                    droDep[iLvl]["CPAY"] = dcCPAY > 0 ? Convert.ToDecimal(droDep[iLvl]["CPAY"]) - dcCPAY : droDep[iLvl]["CPAY"];
+                                    droDep[iLvl]["PPAY"] = dcPPAY > 0 ? Convert.ToDecimal(droDep[iLvl]["PPAY"]) - dcPPAY : droDep[iLvl]["PPAY"];
+                                }
+                                dttempDep.AcceptChanges();
+                            }
+                            strFilter = string.Empty;
+
+                            foreach (DataRow dr in dsConfiguration.Tables["OnItem"].Select(" mlevel= " + DiscLevel + " and ServiceId= " + drconfig[intctr]["ServiceId"] + " and HospDeptID= " + drconfig[intctr]["HospDeptID"]))
+                            {
+                                strFilter = " ServiceId= " + dr["ServiceId"] + " and HospDeptID= " + dr["HospDeptID"];
+                                DataRow[] drcon = dttempDep.Select(" ServiceId= " + dr["ServiceId"] + " and HospDeptID= " + dr["HospDeptID"]);
+                                for (int ictr = 0; ictr < drcon.Length; ictr++)
+                                {
+                                    dtfinal.ImportRow(drcon[ictr]);
+                                    SetDiscLevelAppliedMPHL(dtSelected, strFilter);
+                                }
+                                dtfinal.AcceptChanges();
+                                dtSelected.AcceptChanges();
+                            }
+
+                            DataRow[] drfinalDep = dtfinal.Select();
+                            for (int ictr = 0; ictr < drfinalDep.Length; ictr++)
+                            {
+
+                                string strCondition = "";
+                                if (IPOP == 1)
+                                { strCondition = " IsContribution = 1 and mLevel=3 and ServiceID=" + drfinalDep[ictr]["ServiceId"] + " and HospDeptId=" + drfinalDep[ictr]["HospDeptId"]; }
+                                else if (IPOP == 2)
+                                { strCondition = " mLevel=3 and ServiceID=" + drfinalDep[ictr]["ServiceId"] + " and HospDeptId=" + drfinalDep[ictr]["HospDeptId"]; }
+
+                                string str = "";
+                                if (IPOP == 1)
+                                { str = strCondition.Substring(23); }
+                                else if (IPOP == 2)
+                                { str = strCondition; }
+
+                                DataRow[] DrBillDet = dtBillDetails.Select(strCondition);
+                                if (DrBillDet.Length > 0)
+                                {
+                                    dcCPAY = Convert.ToDecimal(dtLevelAppliedDep.Compute("sum(CPAY)", "ServiceID=" + drfinalDep[ictr]["ServiceId"] + " and HospDeptId=" + drfinalDep[ictr]["HospDeptId"]) == DBNull.Value ? 0 : dtLevelAppliedDep.Compute("sum(CPAY)", "ServiceID=" + drfinalDep[ictr]["ServiceId"] + " and HospDeptId=" + drfinalDep[ictr]["HospDeptId"]));
+                                    dcPPAY = Convert.ToDecimal(dtLevelAppliedDep.Compute("sum(PPAY)", "ServiceID=" + drfinalDep[ictr]["ServiceId"] + " and HospDeptId=" + drfinalDep[ictr]["HospDeptId"]) == DBNull.Value ? 0 : dtLevelAppliedDep.Compute("sum(PPAY)", "ServiceID=" + drfinalDep[ictr]["ServiceId"] + " and HospDeptId=" + drfinalDep[ictr]["HospDeptId"]));
+                                    drfinalDep[ictr]["Total"] = Convert.ToString(strFilterType[0]) == "PPAY" ? (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcPPAY).ToString() : (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcCPAY).ToString();
+
+                                    if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                    {
+                                        if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                        {
+                                            dDCOM = Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString());
+                                            dDPAT = Convert.ToDecimal(DrBillDet[0]["PPAY"].ToString());
+                                            drfinalDep[ictr]["Total"] = (dDCOM - dcCPAY) + (dDPAT - dcPPAY);
+                                        }
+                                        else
+                                        {
+                                            drfinalDep[ictr]["Total"] = Convert.ToString(strFilterType[0]) == "PPAY" ? (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcPPAY).ToString() : (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcCPAY).ToString();
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        drfinalDep[ictr]["Total"] = Convert.ToString(strFilterType[0]) == "PPAY" ? (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcPPAY).ToString() : (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcCPAY).ToString();
+                                    }
+                                }
+                                DataRow[] DrDis = dsConfiguration.Tables["OnItem"].Select(str);
+                                dcDiscountAmount = 0;
+                                dblVal = 0;
+                                if (Convert.ToBoolean(DrDis[0]["IsPercentage"]))
+                                {
+                                    if (Convert.ToDecimal(DrDis[0]["Discount"]) >= Convert.ToDecimal(100))
+                                    {
+                                        dcDiscountAmount = Convert.ToDecimal(drfinalDep[ictr]["Total"]);
+                                    }
+                                    else
+                                    {
+                                        if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                        {
+                                            if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                            {
+                                                decComp = (dDCOM * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                                decPat = (dDPAT * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                                dblVal = decComp + decPat;
+                                                dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                            }
+                                            else
+                                            {
+                                                dblVal = (Convert.ToDecimal(drfinalDep[ictr]["Total"]) * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                                dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                            }
+                                        }
+                                        else
+                                        {
+                                            dblVal = (Convert.ToDecimal(drfinalDep[ictr]["Total"]) * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                            dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (Convert.ToDecimal(drfinalDep[ictr]["Total"]) > Convert.ToDecimal(DrDis[0]["Discount"]))
+                                    {
+                                        dcDiscountAmount = Convert.ToDecimal(DrDis[0]["Discount"]);
+                                    }
+                                    else
+                                    { dcDiscountAmount = Convert.ToDecimal(drfinalDep[ictr]["Total"]); }
+                                }
+
+                                drfinalDep[ictr]["Discount"] = Convert.ToDecimal(dcDiscountAmount).ToString();
+
+                                drfinalDep[ictr]["Type"] = DiscountType;
+                                if (radPatient)
+                                {
+                                    drfinalDep[ictr]["DCOM"] = 0;
+                                    drfinalDep[ictr]["DPAT"] = drfinalDep[ictr]["Discount"];
+                                    drfinalDep[ictr]["DPER"] = 0;
+                                }
+                                else if (radpayer)
+                                {
+                                    if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                    {
+                                        if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                        {
+                                            drfinalDep[ictr]["DCOM"] = decComp;
+                                            drfinalDep[ictr]["DPAT"] = decPat;
+                                            drfinalDep[ictr]["DPER"] = 0;
+                                        }
+                                        else
+                                        {
+                                            drfinalDep[ictr]["DCOM"] = drfinalDep[ictr]["Discount"];
+                                            drfinalDep[ictr]["DPAT"] = 0;
+                                            drfinalDep[ictr]["DPER"] = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        drfinalDep[ictr]["DCOM"] = drfinalDep[ictr]["Discount"];
+                                        drfinalDep[ictr]["DPAT"] = 0;
+                                        drfinalDep[ictr]["DPER"] = 0;
+                                    }
+                                }
+                                drfinalDep[ictr]["CPAY"] = 0;
+                                drfinalDep[ictr]["PPAY"] = 0;
+                                drfinalDep[ictr]["QTY"] = 0;
+                                drfinalDep[ictr]["BQTY"] = 0;
+
+                                if (!string.IsNullOrEmpty(DrBillDet[0]["SEQ"].ToString()))
+                                    drfinalDep[ictr]["SEQ"] = Convert.ToInt32(DrBillDet[0]["SEQ"].ToString());
+                                else
+                                    drfinalDep[ictr]["SEQ"] = 0;
+
+                            }
+                            DataRow[] drDpFnl = dtfinal.Select();
+                            for (int ictr = 0; ictr < drDpFnl.Length; ictr++)
+                            { dtTempFinal.ImportRow(drDpFnl[ictr]); }
+                            dtTempFinal.AcceptChanges();
+
+                            break;
+                        case 4://  O N    S P E C I A L I S A T I O N 
+                            dtfinal = dsConfiguration.Tables["OnItem"].Clone();
+                            DataTable dttempspl = LoadDetails(dtSelected, DiscLevel, strFilterType[0]).Copy();
+                            DataTable dtLevelAppliedItm = LoadDetailsMPHL(dtSelected, 5, strFilterType[0]).Copy();
+                            dcCPAY = 0; dcPPAY = 0; strFilter = string.Empty;
+
+                            if (dtLevelAppliedItm.Rows.Count > 0)
+                            {
+
+                                DataRow[] droSpecial = dttempspl.Select();
+
+                                for (int iLvl = 0; iLvl < droSpecial.Length; iLvl++)
+                                {
+                                    strFilter = "Serviceid=" + droSpecial[iLvl]["Serviceid"] + " and HospDeptID=" + droSpecial[iLvl]["HospDeptID"] + " and SpecialiseID=" + droSpecial[iLvl]["SpecialiseID"];
+                                    dcCPAY = Convert.ToDecimal(dtLevelAppliedItm.Compute("sum(CPAY)", strFilter) == DBNull.Value ? 0 : dtLevelAppliedItm.Compute("sum(CPAY)", strFilter));
+                                    dcPPAY = Convert.ToDecimal(dtLevelAppliedItm.Compute("sum(PPAY)", strFilter) == DBNull.Value ? 0 : dtLevelAppliedItm.Compute("sum(PPAY)", strFilter));
+                                    droSpecial[iLvl]["CPAY"] = dcCPAY > 0 ? Convert.ToDecimal(droSpecial[iLvl]["CPAY"]) - dcCPAY : droSpecial[iLvl]["CPAY"];
+                                    droSpecial[iLvl]["PPAY"] = dcPPAY > 0 ? Convert.ToDecimal(droSpecial[iLvl]["PPAY"]) - dcPPAY : droSpecial[iLvl]["PPAY"];
+
+
+                                }
+                                dttempspl.AcceptChanges();
+                            }
+                            strFilter = string.Empty;
+
+                            foreach (DataRow dr in dsConfiguration.Tables["OnItem"].Select(" mlevel= " + DiscLevel + " and ServiceId= " + drconfig[intctr]["ServiceId"] + " and HospDeptID= " + drconfig[intctr]["HospDeptID"] + " and SpecialiseID= " + drconfig[intctr]["SpecialiseID"]))
+                            {
+                                strFilter = " ServiceId= " + dr["ServiceId"] + " and HospDeptID= " + dr["HospDeptID"] + " and SpecialiseID= " + dr["SpecialiseID"];
+
+                                DataRow[] drcon = dttempspl.Select(" ServiceId= " + dr["ServiceId"] + " and HospDeptID= " + dr["HospDeptID"] + " and SpecialiseID= " + dr["SpecialiseID"]);
+                                for (int ictr = 0; ictr < drcon.Length; ictr++)
+                                {
+                                    dtfinal.ImportRow(drcon[ictr]);
+                                    SetDiscLevelAppliedMPHL(dtSelected, strFilter);
+                                }
+                                dtfinal.AcceptChanges();
+
+                                dtSelected.AcceptChanges();
+                            }
+
+
+
+                            DataRow[] drfinalSpl = dtfinal.Select();
+                            for (int ictr = 0; ictr < drfinalSpl.Length; ictr++)
+                            {
+
+                                string strCondition = "";
+                                if (IPOP == 1)
+                                { strCondition = " IsContribution = 1 and mLevel=4 and ServiceID=" + drfinalSpl[ictr]["ServiceId"] + " and HospDeptId=" + drfinalSpl[ictr]["HospDeptId"] + " and SpecialiseID=" + drfinalSpl[ictr]["SpecialiseId"]; }
+                                else if (IPOP == 2)
+                                { strCondition = " mLevel=4 and ServiceID=" + drfinalSpl[ictr]["ServiceId"] + " and HospDeptId=" + drfinalSpl[ictr]["HospDeptId"] + " and SpecialiseID=" + drfinalSpl[ictr]["SpecialiseId"]; }
+
+
+                                string str = string.Empty;
+                                if (IPOP == 1)
+                                { str = strCondition.Substring(23); }
+                                else if (IPOP == 2)
+                                { str = strCondition; }
+
+                                DataRow[] DrBillDet = dtBillDetails.Select(strCondition);
+
+                                dcCPAY = Convert.ToDecimal(dtLevelAppliedItm.Compute("sum(CPAY)", "ServiceID=" + drfinalSpl[ictr]["ServiceId"] + " and HospDeptId=" + drfinalSpl[ictr]["HospDeptId"] + " and SpecialiseID=" + drfinalSpl[ictr]["SpecialiseId"]) == DBNull.Value ? 0 : dtLevelAppliedItm.Compute("sum(CPAY)", "ServiceID=" + drfinalSpl[ictr]["ServiceId"] + " and HospDeptId=" + drfinalSpl[ictr]["HospDeptId"] + " and SpecialiseID=" + drfinalSpl[ictr]["SpecialiseId"]));
+                                dcPPAY = Convert.ToDecimal(dtLevelAppliedItm.Compute("sum(PPAY)", "ServiceID=" + drfinalSpl[ictr]["ServiceId"] + " and HospDeptId=" + drfinalSpl[ictr]["HospDeptId"] + " and SpecialiseID=" + drfinalSpl[ictr]["SpecialiseId"]) == DBNull.Value ? 0 : dtLevelAppliedItm.Compute("sum(PPAY)", "ServiceID=" + drfinalSpl[ictr]["ServiceId"] + " and HospDeptId=" + drfinalSpl[ictr]["HospDeptId"] + " and SpecialiseID=" + drfinalSpl[ictr]["SpecialiseId"]));
+                                drfinalSpl[ictr]["Total"] = Convert.ToString(strFilterType[0]) == "PPAY" ? (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcPPAY).ToString() : (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcCPAY).ToString();
+
+                                if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                {
+                                    if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                    {
+                                        dDCOM = Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString());
+                                        dDPAT = Convert.ToDecimal(DrBillDet[0]["PPAY"].ToString());
+                                        drfinalSpl[ictr]["Total"] = (dDCOM - dcCPAY) + (dDPAT - dcPPAY);
+                                    }
+                                    else
+                                    {
+                                        drfinalSpl[ictr]["Total"] = Convert.ToString(strFilterType[0]) == "PPAY" ? (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcPPAY).ToString() : (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcCPAY).ToString();
+                                    }
+                                }
+                                else
+                                {
+                                    drfinalSpl[ictr]["Total"] = Convert.ToString(strFilterType[0]) == "PPAY" ? (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcPPAY).ToString() : (Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()) - dcCPAY).ToString();
+                                }
+                                DataRow[] DrDis = dsConfiguration.Tables["OnItem"].Select(str);
+                                if (Convert.ToBoolean(DrDis[0]["IsPercentage"]))
+                                {
+                                    if (Convert.ToDecimal(DrDis[0]["Discount"]) >= Convert.ToDecimal(100))
+                                    {
+                                        dcDiscountAmount = Convert.ToDecimal(drfinalSpl[ictr]["Total"]);
+                                    }
+                                    else
+                                    {
+                                        if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                        {
+                                            if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                            {
+                                                decComp = (dDCOM * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                                decPat = (dDPAT * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                                dblVal = decComp + decPat;
+                                                dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                            }
+                                            else
+                                            {
+                                                dblVal = (Convert.ToDecimal(drfinalSpl[ictr]["Total"]) * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                                dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                            }
+                                        }
+                                        else
+                                        {
+                                            dblVal = (Convert.ToDecimal(drfinalSpl[ictr]["Total"]) * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                            dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (Convert.ToDecimal(drfinalSpl[ictr]["Total"]) > Convert.ToDecimal(DrDis[0]["Discount"]))
+                                    {
+                                        dcDiscountAmount = Convert.ToDecimal(DrDis[0]["Discount"]);
+                                    }
+                                    else
+                                    { dcDiscountAmount = Convert.ToDecimal(drfinalSpl[ictr]["Total"]); }
+                                }
+                                drfinalSpl[ictr]["Discount"] = Convert.ToDecimal(dcDiscountAmount).ToString();
+
+                                drfinalSpl[ictr]["Type"] = DiscountType;
+                                if (radPatient)
+                                {
+                                    drfinalSpl[ictr]["DCOM"] = 0;
+                                    drfinalSpl[ictr]["DPAT"] = drfinalSpl[ictr]["Discount"];
+                                    drfinalSpl[ictr]["DPER"] = 0;
+                                }
+                                else if (radpayer)
+                                {
+                                    if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                    {
+                                        if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                        {
+                                            drfinalSpl[ictr]["DCOM"] = decComp;
+                                            drfinalSpl[ictr]["DPAT"] = decPat;
+                                            drfinalSpl[ictr]["DPER"] = 0;
+                                        }
+                                        else
+                                        {
+                                            drfinalSpl[ictr]["DCOM"] = drfinalSpl[ictr]["Discount"];
+                                            drfinalSpl[ictr]["DPAT"] = 0;
+                                            drfinalSpl[ictr]["DPER"] = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        drfinalSpl[ictr]["DCOM"] = drfinalSpl[ictr]["Discount"];
+                                        drfinalSpl[ictr]["DPAT"] = 0;
+                                        drfinalSpl[ictr]["DPER"] = 0;
+                                    }
+                                }
+                                drfinalSpl[ictr]["CPAY"] = 0;
+                                drfinalSpl[ictr]["PPAY"] = 0;
+                                drfinalSpl[ictr]["QTY"] = 0;
+                                drfinalSpl[ictr]["BQTY"] = 0;
+                                if (!string.IsNullOrEmpty(DrBillDet[0]["SEQ"].ToString()))
+                                    drfinalSpl[ictr]["SEQ"] = Convert.ToInt32(DrBillDet[0]["SEQ"].ToString());
+                                else
+                                    drfinalSpl[ictr]["SEQ"] = 0;
+                            }
+                            DataRow[] drSpFnl = dtfinal.Select();
+                            for (int ictr = 0; ictr < drSpFnl.Length; ictr++)
+                            { dtTempFinal.ImportRow(drSpFnl[ictr]); }
+                            dtTempFinal.AcceptChanges();
+
+                            break;
+                        case 5:// O N   I T E M
+
+                            dtfinal = dsConfiguration.Tables["OnItem"].Clone();
+                            DataTable dttempItm = LoadDetails(dtSelected, DiscLevel, strFilterType[0]).Copy();
+
+                            if (dttempItm.Rows.Count > 0)
+                            {
+
+                                foreach (DataRow dr in dsConfiguration.Tables["OnItem"].Select(" mlevel= " + DiscLevel + " and serviceid = " + drconfig[intctr]["serviceid"] + " and serviceitemid = " + drconfig[intctr]["serviceitemid"]))
+                                {
+
+                                    DataRow[] DrSelService = dtServices.Select(" id = " + dr["ServiceId"]);
+                                    if (DrSelService[0]["ItemHop"].ToString() == "1001")
+                                        blnSkipDeptSpec = true;
+                                    string strCond = "";
+                                    if (blnSkipDeptSpec == false)
+                                    {
+                                        strCond = " ServiceId= " + dr["ServiceId"] + " and HospDeptID= " + dr["HospDeptID"] + " and SpecialiseID= " + dr["SpecialiseID"] + " and ServiceItemID= " + dr["ServiceItemID"];
+                                    }
+                                    else if (blnSkipDeptSpec == true)
+                                    { strCond = " ServiceId= " + dr["ServiceId"] + " and ServiceItemID= " + dr["ServiceItemID"]; }
+
+                                    DataRow[] drcon = dttempItm.Select(strCond);
+
+                                    if (drcon.Length > 0)
+                                    {
+                                        dtfinal.ImportRow(drcon[0]);
+                                        SetDiscLevelAppliedMPHL(dtSelected, strCond);
+                                    }
+                                    dtfinal.AcceptChanges();
+
+                                    dtSelected.AcceptChanges();
+                                }
+                            }
+
+                            DataRow[] drfinalItm = dtfinal.Select();
+                            for (int ictr = 0; ictr < drfinalItm.Length; ictr++)
+                            {
+                                DataRow[] DrSelService = dtServices.Select(" id = " + drfinalItm[ictr]["ServiceId"]);
+                                if (DrSelService[0]["ItemHop"].ToString() == "1001")
+                                    blnSkipDeptSpec = true;
+                                string strCondition = "";
+                                if (blnSkipDeptSpec == false)
+                                {
+                                    if (IPOP == 1)
+                                    { strCondition = " IsContribution = 1 and mLevel=5 and ServiceID=" + drfinalItm[ictr]["ServiceId"] + " and HospDeptId=" + drfinalItm[ictr]["HospDeptId"] + " and SpecialiseID=" + drfinalItm[ictr]["SpecialiseId"] + " and ServiceItemID=" + drfinalItm[ictr]["ServiceItemId"]; }
+                                    else if (IPOP == 2)
+                                    {
+                                        strCondition = " mLevel=5 and ServiceID=" + drfinalItm[ictr]["ServiceId"] + " and HospDeptId=" + drfinalItm[ictr]["HospDeptId"] + " and SpecialiseID=" + drfinalItm[ictr]["SpecialiseId"] + " and ServiceItemID=" + drfinalItm[ictr]["ServiceItemId"];
+                                    }
+                                }
+                                else if (blnSkipDeptSpec == true)
+                                {
+                                    if (IPOP == 1)
+                                    {
+                                        strCondition = " IsContribution = 1 and mLevel=5 and ServiceID=" + drfinalItm[ictr]["ServiceId"] + " and ServiceItemID=" + drfinalItm[ictr]["ServiceItemId"];
+                                    }
+                                    else if (IPOP == 2)
+                                    {
+                                        strCondition = " mLevel=5 and ServiceID=" + drfinalItm[ictr]["ServiceId"] + " and ServiceItemID=" + drfinalItm[ictr]["ServiceItemId"];
+                                    }
+                                }
+                                DataRow[] DrBillDet = dtBillDetails.Select(strCondition);
+                                if (IPOP == 2 && drconfig[intctr]["orderid"] != DBNull.Value && drconfig[intctr]["orderid"].ToString() != string.Empty)
+                                    DrBillDet = dtBillDetails.Select(strCondition + " and orderid = " + drconfig[intctr]["orderid"]);
+
+                                string str = "";
+                                if (IPOP == 1)
+                                { str = strCondition.Substring(23); }
+                                else if (IPOP == 2)
+                                { str = strCondition; }
+                                if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                {
+                                    if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                    {
+                                        dDCOM = Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString());
+                                        dDPAT = Convert.ToDecimal(DrBillDet[0]["PPAY"].ToString());
+                                        drfinalItm[ictr]["Total"] = dDCOM + dDPAT;
+                                    }
+                                    else
+                                    {
+                                        drfinalItm[ictr]["Total"] = Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()).ToString();
+
+                                    }
+                                }
+                                else
+                                {
+                                    drfinalItm[ictr]["Total"] = Convert.ToDecimal(DrBillDet[0][strFilterType[0]].ToString()).ToString();
+                                }
+                                DataRow[] DrDis = dsConfiguration.Tables["OnItem"].Select(str);
+                                dcDiscountAmount = 0;
+                                dblVal = 0;
+                                if (Convert.ToBoolean(DrDis[0]["IsPercentage"]))
+                                {
+                                    if (Convert.ToDecimal(DrDis[0]["Discount"]) >= Convert.ToDecimal(100))
+                                    {
+                                        dcDiscountAmount = Convert.ToDecimal(drfinalItm[ictr]["Total"]);
+                                    }
+                                    else
+                                    {
+                                        if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                        {
+                                            if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                            {
+                                                decComp = (dDCOM * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                                decPat = (dDPAT * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+
+                                                dblVal = decComp + decPat;
+                                                dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                            }
+                                            else
+                                            {
+                                                dblVal = (Convert.ToDecimal(drfinalItm[ictr]["Total"]) * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                                dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            dblVal = (Convert.ToDecimal(drfinalItm[ictr]["Total"]) * Convert.ToDecimal(DrDis[0]["Discount"])) / 100;
+                                            dcDiscountAmount = Convert.ToDecimal(dblVal.ToString());
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (Convert.ToDecimal(drfinalItm[ictr]["Total"]) / Convert.ToDecimal(drfinalItm[ictr]["BQTY"]) > Convert.ToDecimal(DrDis[0]["Discount"]))
+                                    {
+                                        dcDiscountAmount = Convert.ToDecimal(DrDis[0]["Discount"]) * Convert.ToDecimal(drfinalItm[ictr]["BQTY"]);
+                                    }
+                                    else
+                                    { dcDiscountAmount = Convert.ToDecimal(drfinalItm[ictr]["Total"]); }
+                                }
+                                drfinalItm[ictr]["Discount"] = Convert.ToDecimal(dcDiscountAmount).ToString();
+                                drfinalItm[ictr]["Type"] = DiscountType;
+                                if (radPatient)
+                                {
+                                    drfinalItm[ictr]["DCOM"] = 0;
+                                    drfinalItm[ictr]["DPAT"] = drfinalItm[ictr]["Discount"];
+                                    drfinalItm[ictr]["DPER"] = 0;
+                                }
+                                else if (radpayer)
+                                {
+                                    if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                    {
+                                        if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                        {
+                                            drfinalItm[ictr]["DCOM"] = decComp;
+                                            drfinalItm[ictr]["DPAT"] = decPat;
+                                            drfinalItm[ictr]["DPER"] = 0;
+                                        }
+                                        else
+                                        {
+                                            drfinalItm[ictr]["DCOM"] = drfinalItm[ictr]["Discount"];
+                                            drfinalItm[ictr]["DPAT"] = 0;
+                                            drfinalItm[ictr]["DPER"] = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        drfinalItm[ictr]["DCOM"] = drfinalItm[ictr]["Discount"];
+                                        drfinalItm[ictr]["DPAT"] = 0;
+                                        drfinalItm[ictr]["DPER"] = 0;
+                                    }
+                                }
+                                drfinalItm[ictr]["CPAY"] = 0;
+                                drfinalItm[ictr]["PPAY"] = 0;
+                                drfinalItm[ictr]["QTY"] = Convert.ToDecimal(DrBillDet[0]["BQTY"].ToString());
+                                drfinalItm[ictr]["BQTY"] = Convert.ToDecimal(DrBillDet[0][strFilterType[1]].ToString());
+                                if (!string.IsNullOrEmpty(DrBillDet[0]["SEQ"].ToString()))
+                                    drfinalItm[ictr]["SEQ"] = Convert.ToInt32(DrBillDet[0]["SEQ"].ToString());
+                                else
+                                    drfinalItm[ictr]["SEQ"] = 0;
+                                if (!dtSelected.Columns.Contains("ISDISCAPP"))
+                                    drfinalItm[ictr]["ISDISCAPP"] = true;
+
+                            }
+                            DataRow[] drIFnl = dtfinal.Select();
+                            for (int ictr = 0; ictr < drIFnl.Length; ictr++)
+                            { dtTempFinal.ImportRow(drIFnl[ictr]); }
+                            dtTempFinal.AcceptChanges();
+                            break;
+
+                    }
+                }
+
+                if (dtTempFinal.Select("Mlevel=5").Length > 0)
+                {
+                    foreach (DataRow DrowIsApp in dtTempFinal.Select("Mlevel=5"))
+                    {
+                        DataRow[] droNewUpdate = dtSelectedforSorting.Select("Mlevel=5 and ServiceItemID=" + DrowIsApp["ServiceItemID"]);
+                        for (int iUpdate = 0; iUpdate < droNewUpdate.Length; iUpdate++)
+                        {
+                            droNewUpdate[iUpdate]["ISDISCAPP"] = true;
+                        }
+                    }
+                }
+                dtSelectedforSorting.AcceptChanges();
+                dtTempFinal = TempFinal(dsConfiguration.Tables[1], dtSelectedforSorting, dtTempFinal, 0, StrBillType, IPOP);
+                return dtTempFinal;
+
+            }
+            catch (Exception ex)
+            {
+                return dtfinal;
+            }
+        }
+
+        public DataSet FetchPatientAdmissionLetters(int intIPID, int intUserId, int intWorkstationid)
+        {
+            objFOClient = new FrontOfficeServiceContractClient();
+            DataSet dsLetters = new DataSet();
+            try
+            {
+                dsLetters = objFOClient.FetchPatientAdmissionLetters(intIPID, intUserId, intWorkstationid);
+            }
+            finally
+            {
+                objFOClient.Close();
+            }
+            return dsLetters;
+        }
+
+        public DataSet GetCategoryItems(int CategoryID, int intUserId, int intWorkStationId, int FeatureID, int FunctionID, string CallContext, int intError)
+        {
+            ContractMgmtServiceContractClient objContractMgmtServiceContractClient = new ContractMgmtServiceContractClient();
+            DataSet dsCategoryItems = new DataSet();
+
+            try
+            {
+                dsCategoryItems = objContractMgmtServiceContractClient.GetCategoryItems(CategoryID, intUserId, intWorkStationId, FeatureID, FunctionID, CallContext, intError);
+            }
+
+            finally
+            {
+                objContractMgmtServiceContractClient.Close();
+
+            }
+            return dsCategoryItems;
+        }
+
+        public DataSet FetchApprovalRequest(int EntryID, string tableid, int intUserID, int intWorkstationID, int intFeatureID, int intFunctionID, string strCallContext)
+        {
+            ARServiceContractClient objARServiceContractClient = new ARServiceContractClient();
+            DataSet dsFetchApprovalRequest = new DataSet();
+            try
+            {
+                dsFetchApprovalRequest = objARServiceContractClient.FetchApprovalRequest(EntryID, tableid, intUserID, intWorkstationID, intFeatureID, intFunctionID, strCallContext);
+            }
+
+            finally
+            {
+                objARServiceContractClient.Close();
+
+            }
+            return dsFetchApprovalRequest;
+        }
+
+        public DataSet FetchApprovalRequestEntryIDMAPI(int Visitid, int Customerid, int GradeID, int Specialiseid, int intWorkstationId, PatientBillList PatientBillList)
+        {
+            DataHelper objDataHelper = new DataHelper(DEFAULTWORKSTATION, (int)Database.Master);
+            DataSet dsSpecConfig = new DataSet("ChkPatient");
+            try
+            {
+                List<IDbDataParameter> objIDbDataParameters = new List<IDbDataParameter>();
+                objIDbDataParameters.Add(CreateParam(objDataHelper, "@Visitid", Visitid.ToString(), DbType.Int32, ParameterDirection.Input));
+                objIDbDataParameters.Add(CreateParam(objDataHelper, "@Customerid", Customerid, DbType.Int32, ParameterDirection.Input));
+                objIDbDataParameters.Add(CreateParam(objDataHelper, "@GradeID", GradeID, DbType.Int32, ParameterDirection.Input));
+                objIDbDataParameters.Add(CreateParam(objDataHelper, "@Specialiseid", Specialiseid, DbType.Int32, ParameterDirection.Input));
+                dsSpecConfig = objDataHelper.RunSPReturnDS("Pr_FetchApprovalRequestEntryIDs_MAPI", objIDbDataParameters.ToArray());
+                return dsSpecConfig;
+            }
+            finally
+            {
+
+            }
+        }
+
+        public DataSet GetLOA(int intLetterId, int intLevel, string strTableId, int intUserId, int intWorkStationId, int intError, int intFeatureID, int intFunctionID, string strCallContext, int HospitalID)
+        {
+
+            ContractMgmtServiceContractClient objContractMgmtServiceContractClient = new ContractMgmtServiceContractClient();
+            DataSet dsGetLOA = new DataSet();
+            try
+            {
+                dsGetLOA = objContractMgmtServiceContractClient.GetLOAHospital(intLetterId, intLevel, strTableId, intUserId, intWorkStationId, intError, intFeatureID, intFunctionID, strCallContext, HospitalID);
+            }
+
+            finally
+            {
+                objContractMgmtServiceContractClient.Close();
+
+            }
+            return dsGetLOA;
+        }
+        public DataSet GetCoverageConfiguration(int intcompanyid, string strtbl, bool blnisinsurance, int intpatienttype, int intUserId, int intWorkStationId, int intError)
+        {
+            ContractMgmtServiceContractClient objContractMgmtService = new ContractMgmtServiceContractClient();
+            DataSet dsGeneralExclusions = new DataSet();
+            try
+            {
+                dsGeneralExclusions = objContractMgmtService.GetSavedConfiguration(intcompanyid, strtbl, blnisinsurance, intpatienttype, intUserId, intWorkStationId, intError);
+            }
+
+            finally
+            {
+                objContractMgmtService.Close();
+
+            }
+
+            return dsGeneralExclusions;
+        }
+
+        public DataSet GetMasterConfigurationForVAT(int PatientType, int HospitalId, int TaxType)
+        {
+            FrontOfficeServiceContractClient objfrontoffice = new FrontOfficeServiceContractClient();
+            try
+            {
+                DataSet dsMasterVATConfig = objfrontoffice.GetMasterVATConfig(PatientType, HospitalId, TaxType);
+                objfrontoffice.Close();
+                return dsMasterVATConfig;
+            }
+            finally
+            {
+                objfrontoffice.Close();
+            }
+        }
+
+        private DataTable DTPatientDetails()
+        {
+            DataTable DTPatientData = new DataTable("PatientDetails");
+            try
+            {
+                DTPatientData.Columns.Add("PatientId", typeof(int));
+                DTPatientData.Columns.Add("InterDocId", typeof(int));
+                DTPatientData.Columns.Add("ExterDocId", typeof(int));
+                DTPatientData.Columns.Add("BillType", typeof(int));
+                DTPatientData.Columns.Add("CompanyID", typeof(int));
+                DTPatientData.Columns.Add("TariffID", typeof(int));
+                DTPatientData.Columns.Add("GradeID", typeof(int));
+                DTPatientData.Columns.Add("GradeName", typeof(string));
+                DTPatientData.Columns.Add("BedTypeID", typeof(int));
+                DTPatientData.Columns.Add("BedTypeName", typeof(string));
+                DTPatientData.Columns.Add("LetterNo", typeof(string));
+                DTPatientData.Columns.Add("cmbOPackageSelected", typeof(int));
+                DTPatientData.Columns.Add("PatientType", typeof(int));
+                DTPatientData.Columns.Add("CollectableType", typeof(int));
+                DTPatientData.Columns.Add("IsCardCollectable", typeof(bool));
+                DTPatientData.Columns.Add("MaxCollectable", typeof(int));
+                DTPatientData.Columns.Add("Priority", typeof(int));
+                DTPatientData.Columns.Add("SessionId", typeof(string));
+                DTPatientData.Columns.Add("UHID", typeof(string));
+                DTPatientData.Columns.Add("PackageId", typeof(int));
+                DTPatientData.Columns.Add("BillID", typeof(int));
+                DTPatientData.Columns.Add("AuthenticationUserId", typeof(int));
+                DTPatientData.Columns.Add("RemarksOrReasons", typeof(string));
+                DTPatientData.Columns.Add("IsDefaultLOA", typeof(bool));
+                DTPatientData.Columns.Add("RefDocSpecId", typeof(string));
+                DTPatientData.Columns.Add("HospID", typeof(int));
+                return DTPatientData;
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in DTPatientDetails", "");
+                return null;
+            }
+        }
+
+        private DataTable DTOPPackage()
+        {
+            DataTable dtOPPackage = new DataTable("OPPackage");
+            try
+            {
+                dtOPPackage.Columns.Add("Level", typeof(string));
+                dtOPPackage.Columns.Add("ServiceItemID", typeof(int));
+                dtOPPackage.Columns.Add("PackageId", typeof(int));
+                dtOPPackage.Columns.Add("ServiceID", typeof(int));
+                dtOPPackage.Columns.Add("Name", typeof(string));
+                dtOPPackage.Columns.Add("HospDeptId", typeof(int));
+                dtOPPackage.Columns.Add("HospId", typeof(int));
+                dtOPPackage.Columns.Add("SpecialiseId", typeof(int));
+                dtOPPackage.Columns.Add("LimitType", typeof(string));
+                dtOPPackage.Columns.Add("LTName", typeof(string));
+                dtOPPackage.Columns.Add("Limit", typeof(decimal));
+                dtOPPackage.Columns.Add("ISR", typeof(string));
+                dtOPPackage.Columns.Add("SEQ", typeof(int));
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in DTOPPackage", "");
+                return null;
+            }
+            return dtOPPackage;
+        }
+
+        private void GetMaxCollectable(int PatentLOAID)
+        {
+            try
+            {
+                int intUserid = 0, intworkstationid = 0, intError = 0;
+                intUserid = Convert.ToInt32(strDefaultUserId); intworkstationid = Convert.ToInt32(strDefWorkstationId);
+                if (MaxCollectable > 0)
+                {
+
+                    decimal TempMax = 0;
+
+                    TempMax = FetchMaxCollectable(DateTime.Now, DateTime.Now, 0, 0, 0, 0, PatentLOAID, "null", intUserid, intworkstationid, 0, 0, 0, "");
+                    MaxCollectable = (MaxCollectable - Convert.ToInt32(TempMax));
+                }
+                else if (MaxCollectable < 0)
+                {
+                    decimal TempMax = 0;
+                    //WebRefFrontOffice.WSFrontOffice objMax = new WebRefFrontOffice.WSFrontOffice();
+                    TempMax = FetchMaxCollectable(DateTime.Now, DateTime.Now, 0, 0, 0, 0, PatentLOAID, "null", intUserid, intworkstationid, 0, 0, 0, "");
+                    if (TempMax > 0)
+                        MaxCollectable = (0 - Convert.ToInt32(TempMax));
+                    else
+                        MaxCollectable = (MaxCollectable - Convert.ToInt32(TempMax));
+
+                    //hdnMaxCollectable.Value = (MaxCollectable).ToString();
+                }
+                if (MaxCollectable < 0 & MaxCollectable != -1) MaxCollectable = 0;
+                if (intBillMaxCollectable == -1 & MaxCollectable <= 0) MaxCollectable = -1;
+            }
+            finally
+            {
+
+            }
+        }
+
+        private DataTable DtOtherOrders()
+        {
+            DataTable DtOtherOrders = new DataTable("OtherOrderBillDetail");
+            try
+            {
+                DtOtherOrders.Columns.Add("ServiceName", typeof(String));
+                DtOtherOrders.Columns.Add("ServiceId", typeof(int));
+                DtOtherOrders.Columns.Add("Procedure", typeof(String));
+                DtOtherOrders.Columns.Add("ProcedureId", typeof(int));
+                DtOtherOrders.Columns.Add("Sample", typeof(String));
+                DtOtherOrders.Columns.Add("SampleId", typeof(int));
+                DtOtherOrders.Columns.Add("DeptId", typeof(int));//
+                DtOtherOrders.Columns.Add("DeptName", typeof(String));//
+                DtOtherOrders.Columns.Add("SpecialiseId", typeof(int));
+                DtOtherOrders.Columns.Add("SpecialiseName", typeof(String));//
+                DtOtherOrders.Columns.Add("Qty", typeof(int));
+                DtOtherOrders.Columns.Add("PPAY", typeof(decimal));
+                DtOtherOrders.Columns.Add("CPAY", typeof(decimal));
+                DtOtherOrders.Columns.Add("ScheduleId", typeof(int));
+                DtOtherOrders.Columns.Add("OrderId", typeof(int));
+
+                DtOtherOrders.Columns.Add("DPAY", typeof(decimal));
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in DtOtherOrders", "");
+                return null;
+            }
+            return DtOtherOrders;
+        }
+
+        public DataTable GetDiscountDetails()
+        {
+            dtDiscountDetails.Columns.Add("mLevel", typeof(int));
+            dtDiscountDetails.Columns.Add("Type", typeof(string));
+            dtDiscountDetails.Columns.Add("ServiceId", typeof(int));
+            dtDiscountDetails.Columns.Add("ServiceName", typeof(string));
+            dtDiscountDetails.Columns.Add("HospDeptID", typeof(int));
+            dtDiscountDetails.Columns.Add("DepartmentName", typeof(string));
+            dtDiscountDetails.Columns.Add("SpecialiseID", typeof(int));
+            dtDiscountDetails.Columns.Add("SpecialiseName", typeof(string));
+            dtDiscountDetails.Columns.Add("ServiceItemID", typeof(int));
+            dtDiscountDetails.Columns.Add("ItemName", typeof(string));
+            dtDiscountDetails.Columns.Add("Total", typeof(decimal));
+            dtDiscountDetails.Columns.Add("Discount", typeof(decimal));
+
+            dtDiscountDetails.Columns.Add("CPAY", typeof(decimal));
+            dtDiscountDetails.Columns.Add("PPAY", typeof(decimal));
+            dtDiscountDetails.Columns.Add("DCOM", typeof(decimal));
+            dtDiscountDetails.Columns.Add("DPAT", typeof(decimal));
+            dtDiscountDetails.Columns.Add("DPER", typeof(decimal));
+            dtDiscountDetails.Columns.Add("QTY", typeof(decimal));
+            dtDiscountDetails.Columns.Add("BQTY", typeof(decimal));
+            dtDiscountDetails.Columns.Add("SEQ", typeof(int));
+            dtDiscountDetails.Columns.Add("Level", typeof(int));
+            return dtDiscountDetails;
+        }
+
+        private DataTable SplitCollectables(DataTable dtBillContribution, DataTable dtBillSummary, DataTable dtDiscountDetails)//DsCreditBillDetails.Tables[1]-->BillSummary Table
+        {
+            try
+            {
+                decimal decDPAY = 0;
+                decimal decCPAY = 0;
+                decimal decPercentageCollectable = 1;
+                bool blnLevelCollectable = false;
+                decimal decDiscountonItem = 0;
+                bool blnLimitExceed = false;
+                decimal decTotalBillAmount = 0;
+                decimal decCollAmount = 0;
+                decimal decDiscountSum = 0;
+                decimal decCollectedAmount = 0;
+                bool blnCollectableInPercentage = true;
+                bool blnHasMaxCollectable = true;
+                int intMaxCollDeclaredAmount = 0;
+                bool blnServicelevelamountCollected = false;
+                bool blnDepartmentlevelamountCollected = false;
+                bool blnSpecializationlevelamountCollected = false;
+                bool blnNeedpercentCalculation = true;
+                DataRow[] drDtbillcontribution = dtBillContribution.Select("TYP=5", "SID ASC");
+                decTotalBillAmount = Convert.ToDecimal(dtBillSummary.Rows[0]["Amount"]);
+
+                if (CollectableType == 0)
+                {
+                    return dtBillContribution;
+                }
+
+                if (CollectableType == 1 || CollectableType == 3 && drDtbillcontribution.Length > 0)
+                {
+                    if (decTotalBillAmount > 0)
+                    {
+                        if (dtDiscountDetails.Rows.Count > 0)
+                            decDiscountSum = Convert.ToDecimal(dtDiscountDetails.Compute("sum([DCOM])", "TYP=5"));
+
+                        #region Limit exceeds billing                       
+
+                        decTotalBillAmount = Convert.ToDecimal(dtBillSummary.Rows[0]["CPAY"]) + Convert.ToDecimal(dtBillSummary.Rows[0]["DPAY"]);
+                        decCollAmount = Convert.ToDecimal(dtBillSummary.Rows[0]["DPAY"]);
+                        #endregion
+
+                        if (decTotalBillAmount == 0)
+                            decTotalBillAmount = 1;
+
+                        decPercentageCollectable = Convert.ToDecimal((decCollAmount * 100) / decTotalBillAmount);
+                    }
+                    dtBillContribution.AcceptChanges();
+
+                }
+                else if (CollectableType == 2 && drDtbillcontribution.Length > 0)
+                {
+                    if (decTotalBillAmount > 0)
+                    {
+                        if (dtDiscountDetails.Rows.Count > 0)
+                            decDiscountSum = Convert.ToDecimal(dtDiscountDetails.Compute("sum([DCOM])", "TYP=5"));
+
+                        #region Limit exceeds billing
+
+
+                        decTotalBillAmount = Convert.ToDecimal(dtBillSummary.Rows[0]["CPAY"]) + Convert.ToDecimal(dtBillSummary.Rows[0]["DPAY"]);
+
+                        decTotalBillAmount = (decTotalBillAmount - decDiscountSum);
+
+                        decCollAmount = Convert.ToDecimal(dtBillSummary.Rows[0]["DPAY"]);
+                        #endregion                       
+                        if (decTotalBillAmount == 0)
+                            decTotalBillAmount = 1;
+
+                        decPercentageCollectable = Convert.ToDecimal((decCollAmount * 100) / decTotalBillAmount);
+                    }
+                }
+
+                #region LimitTag Display Value Calculation Newly Added by shankar
+                int intLimitDisplayValu = 0;
+                if (MaxCollectable == -1)
+                {
+                    intLimitDisplayValu = 0;
+                }
+                else
+                    intLimitDisplayValu = Convert.ToInt32(hdnMaxCollectable);
+                #endregion LimitTag Display Value Calculation Newly Added
+
+
+                decCollectedAmount = Convert.ToDecimal(Convert.ToInt32(intLimitDisplayValu) - MaxCollectable);
+                intMaxCollDeclaredAmount = Convert.ToInt32(intLimitDisplayValu);
+
+
+                if (MaxCollectable == -1)
+                    blnHasMaxCollectable = false;
+
+
+                // this code is general to both collectables
+                for (int iCount = 0; iCount < drDtbillcontribution.Length; iCount++)
+                {
+                    blnLevelCollectable = false;
+                    string strFilterDiscount = "";
+
+                    strFilterDiscount = "SIID=" + Convert.ToInt32(drDtbillcontribution[iCount]["SIID"]);
+
+                    // this is for fetching the collectable percentage at different levels
+                    if (dsDeductables_ColSplit.Tables.Count > 1)
+                    {
+                        // Item
+                        if (dsDeductables_ColSplit.Tables[4].Rows.Count != 0 & dsDeductables_ColSplit.Tables[4].Select("ServiceID=" + drDtbillcontribution[iCount]["SID"] + " and  HospDeptId = " + drDtbillcontribution[iCount]["DID"] + " and SpecialiseID=" + drDtbillcontribution[iCount]["SPID"] + " and ServiceItemID=" + drDtbillcontribution[iCount]["SIID"]).Length > 0)
+                        {
+                            string strF = "";
+                            strF = "ServiceID=" + drDtbillcontribution[iCount]["SID"] + " and  HospDeptId = " + drDtbillcontribution[iCount]["DID"] + " and SpecialiseID=" + drDtbillcontribution[iCount]["SPID"] + " and ServiceItemID=" + drDtbillcontribution[iCount]["SIID"];
+                            DataRow[] drColLevel = dsDeductables_ColSplit.Tables[4].Select(strF, "");
+                            if (drColLevel.Length > 0)
+                            {
+                                blnLevelCollectable = true;
+                                if (drColLevel[0]["LimitType"].ToString() == "2")
+                                {
+                                    blnCollectableInPercentage = true;
+                                    if (blnHasMaxCollectable)
+                                    {
+                                        if ((decCollAmount + decCollectedAmount) < intMaxCollDeclaredAmount)
+                                        {
+                                            decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                            blnNeedpercentCalculation = true;
+                                        }
+
+                                    }
+
+                                }
+                                else if (drColLevel[0]["LimitType"].ToString() == "6")// limit given as amount
+                                {
+                                    blnCollectableInPercentage = false;
+                                    if (blnHasMaxCollectable)
+                                    {
+                                        if ((decCollAmount + decCollectedAmount) < intMaxCollDeclaredAmount)
+                                            decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                        else
+                                            decPercentageCollectable = Convert.ToDecimal(Convert.ToDecimal(decCollAmount / drDtbillcontribution.Length));//decPercentageCollectable = Convert.ToDecimal(Convert.ToDecimal(decCollAmount / drDtbillcontribution.Length).ToString(objfrmCommon.CurrencyFormat));
+                                    }
+
+
+                                }
+                            }
+
+                        }
+                        // Specialization
+                        else if (dsDeductables_ColSplit.Tables[3].Rows.Count != 0 & dsDeductables_ColSplit.Tables[3].Select("ServiceID=" + drDtbillcontribution[iCount]["SID"] + " and  HospDeptId = " + drDtbillcontribution[iCount]["DID"] + " and SpecialiseID=" + drDtbillcontribution[iCount]["SPID"]).Length > 0)
+                        {
+                            string strF = "";
+                            strF = "ServiceID=" + drDtbillcontribution[iCount]["SID"] + " and  HospDeptId = " + drDtbillcontribution[iCount]["DID"] + " and SpecialiseID=" + drDtbillcontribution[iCount]["SPID"];
+                            DataRow[] drColLevel = dsDeductables_ColSplit.Tables[3].Select(strF, "");
+                            if (drColLevel.Length > 0)
+                            {
+                                if (drColLevel[0]["LimitType"].ToString() == "2")
+                                {
+                                    blnCollectableInPercentage = true;
+                                    if (blnHasMaxCollectable)
+                                    {
+                                        if ((decCollAmount + decCollectedAmount) < intMaxCollDeclaredAmount)
+                                        {
+                                            decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                            blnNeedpercentCalculation = true;
+                                        }
+
+                                    }
+
+                                }
+                                else if (drColLevel[0]["LimitType"].ToString() == "6")// limit given as amount
+                                {
+                                    blnCollectableInPercentage = false;
+                                    if (blnHasMaxCollectable)
+                                    {
+                                        if (blnSpecializationlevelamountCollected == false)
+                                        {
+                                            if ((decCollAmount + decCollectedAmount) < intMaxCollDeclaredAmount)
+                                            {
+                                                decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                                blnSpecializationlevelamountCollected = true;
+                                            }
+                                            else
+                                            {
+                                                decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                                blnServicelevelamountCollected = true;
+                                                if (decCollAmount <= decPercentageCollectable)
+                                                {
+                                                    decPercentageCollectable = decCollAmount;
+                                                    decCollAmount = 0;
+                                                }
+                                                else
+                                                {
+                                                    decCollAmount = decCollAmount - decPercentageCollectable;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            decPercentageCollectable = 0;
+                                        }
+                                    }
+                                    else // no maxcollectable but amount is given
+                                    {
+                                        if (blnServicelevelamountCollected == false)
+                                        {
+                                            blnServicelevelamountCollected = true;
+                                            decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                        }
+                                        else
+                                        {
+                                            decPercentageCollectable = 0;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // Department
+                        else if (dsDeductables_ColSplit.Tables[2].Rows.Count != 0 & dsDeductables_ColSplit.Tables[2].Select("ServiceID=" + drDtbillcontribution[iCount]["SID"] + " and HospDeptId = " + drDtbillcontribution[iCount]["DID"]).Length > 0)
+                        {
+                            string strF = "";
+                            strF = "ServiceID=" + drDtbillcontribution[iCount]["SID"] + " and HospDeptId = " + drDtbillcontribution[iCount]["DID"];
+                            DataRow[] drColLevel = dsDeductables_ColSplit.Tables[2].Select(strF, "");
+                            if (drColLevel.Length > 0)
+                            {
+                                blnLevelCollectable = true;
+                                if (drColLevel[0]["LimitType"].ToString() == "2")
+                                {
+                                    blnCollectableInPercentage = true;
+                                    if (blnHasMaxCollectable)
+                                    {
+                                        if ((decCollAmount + decCollectedAmount) < intMaxCollDeclaredAmount)
+                                        {
+                                            decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                            blnNeedpercentCalculation = true;
+                                        }
+                                    }
+                                }
+                                else if (drColLevel[0]["LimitType"].ToString() == "6")// limit given as amount
+                                {
+                                    blnCollectableInPercentage = false;
+                                    if (blnHasMaxCollectable)
+                                    {
+                                        if (blnDepartmentlevelamountCollected == false)
+                                        {
+                                            if ((decCollAmount + decCollectedAmount) < intMaxCollDeclaredAmount)
+                                            {
+                                                decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                                blnDepartmentlevelamountCollected = true;
+                                            }
+                                            else
+                                            {
+                                                decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                                blnDepartmentlevelamountCollected = true;
+                                                if (decCollAmount <= decPercentageCollectable)
+                                                {
+                                                    decPercentageCollectable = decCollAmount;
+                                                    decCollAmount = 0;
+                                                }
+                                                else
+                                                {
+                                                    decCollAmount = decCollAmount - decPercentageCollectable;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            decPercentageCollectable = 0;
+                                        }
+                                    }
+                                    else // no maxcollectable but amount is given
+                                    {
+                                        if (blnDepartmentlevelamountCollected == false)
+                                        {
+                                            blnDepartmentlevelamountCollected = true;
+                                            decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                        }
+                                        else
+                                        {
+                                            decPercentageCollectable = 0;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // Service
+                        else if (dsDeductables_ColSplit.Tables[1].Rows.Count != 0 & dsDeductables_ColSplit.Tables[1].Select("ServiceID=" + drDtbillcontribution[iCount]["SID"]).Length > 0)
+                        {
+                            string strF = "";
+                            strF = "ServiceID=" + drDtbillcontribution[iCount]["SID"];
+                            DataRow[] drColLevel = dsDeductables_ColSplit.Tables[1].Select(strF, "");
+
+                            if (drColLevel.Length > 0)
+                            {
+                                blnLevelCollectable = true;
+                                if (drColLevel[0]["LimitType"].ToString() == "2")
+                                {
+                                    blnCollectableInPercentage = true;
+                                    if (blnHasMaxCollectable)
+                                    {
+                                        if ((decCollAmount + decCollectedAmount) < intMaxCollDeclaredAmount)
+                                        {
+                                            decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                            blnNeedpercentCalculation = true;
+                                        }
+
+                                    }
+
+                                }
+                                else if (drColLevel[0]["LimitType"].ToString() == "6")// limit given as amount
+                                {
+                                    blnCollectableInPercentage = false;
+                                    blnNeedpercentCalculation = false;
+                                    if (blnHasMaxCollectable)
+                                    {
+                                        if (blnServicelevelamountCollected == false)
+                                        {
+                                            if ((decCollAmount + decCollectedAmount) < intMaxCollDeclaredAmount)
+                                            {
+                                                decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                                blnServicelevelamountCollected = true;
+                                            }
+                                            else
+                                            {
+                                                decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                                blnServicelevelamountCollected = true;
+                                                if (decCollAmount <= decPercentageCollectable)
+                                                {
+                                                    decPercentageCollectable = decCollAmount;
+                                                    decCollAmount = 0;
+                                                }
+                                                else
+                                                {
+                                                    decCollAmount = decCollAmount - decPercentageCollectable;
+
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            decPercentageCollectable = 0;
+                                        }
+                                    }
+                                    else // no maxcollectable but amount is given
+                                    {
+                                        if (blnServicelevelamountCollected == false)
+                                        {
+                                            blnServicelevelamountCollected = true;
+                                            decPercentageCollectable = Convert.ToDecimal(drColLevel[0]["Limit"]);
+                                        }
+                                        else
+                                        {
+                                            decPercentageCollectable = 0;
+                                        }
+
+                                    }
+
+                                }
+                            }
+                        }
+                        // bill level or Grade level
+                        else if (dsDeductables_ColSplit.Tables[0].Rows.Count != 0)
+                        {
+                            // limit given as percentage
+                            if (dsDeductables_ColSplit.Tables[0].Rows[0]["LimitType"].ToString() == "2")
+                            {
+                                blnLevelCollectable = true;
+                                blnCollectableInPercentage = true;
+                                if (blnHasMaxCollectable)
+                                {
+                                    if ((decCollAmount + decCollectedAmount) < intMaxCollDeclaredAmount)
+                                    {
+                                        decPercentageCollectable = Convert.ToDecimal(dsDeductables_ColSplit.Tables[0].Rows[0]["Limit"]);
+                                        blnNeedpercentCalculation = true;
+                                    }
+
+                                }
+
+                            }
+                            else if (dsDeductables_ColSplit.Tables[0].Rows[0]["LimitType"].ToString() == "6")// limit given as amount
+                            {
+                                blnCollectableInPercentage = false;
+                                blnNeedpercentCalculation = false;
+                                blnLevelCollectable = true;
+                                if (blnHasMaxCollectable)
+                                {
+                                    if (blnServicelevelamountCollected == false)
+                                    {
+                                        if ((decCollAmount + decCollectedAmount) < intMaxCollDeclaredAmount)
+                                        {
+                                            decPercentageCollectable = Convert.ToDecimal(dsDeductables_ColSplit.Tables[0].Rows[0]["Limit"]);
+                                            blnServicelevelamountCollected = true;
+                                        }
+                                        else
+                                        {
+                                            decPercentageCollectable = Convert.ToDecimal(dsDeductables_ColSplit.Tables[0].Rows[0]["Limit"]);
+                                            blnServicelevelamountCollected = true;
+                                            if (decCollAmount <= decPercentageCollectable)
+                                            {
+                                                decPercentageCollectable = decCollAmount;
+                                                decCollAmount = 0;
+                                            }
+                                            else
+                                            {
+                                                decCollAmount = decCollAmount - decPercentageCollectable;
+
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        decPercentageCollectable = 0;
+                                    }
+                                }
+                                else // no maxcollectable but amount is given
+                                {
+                                    if (blnServicelevelamountCollected == false)
+                                    {
+                                        blnServicelevelamountCollected = true;
+                                        decPercentageCollectable = Convert.ToDecimal(dsDeductables_ColSplit.Tables[0].Rows[0]["Limit"]);
+                                    }
+                                    else
+                                    {
+                                        decPercentageCollectable = 0;
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                    //END this is for fetching the collectable percentage at different levels
+                    //to make collectable zero for EMR Auto raised items 
+                    if (dtBillContribution.Select("SID=2").Length > 0 && dtBillContribution.Select("SID=5").Length > 0 && drDtbillcontribution[iCount]["SID"].ToString() == "5" && hdnPatientType.Trim() == "1")
+                    {
+                        decPercentageCollectable = 0;
+                    }
+
+                    if (blnLevelCollectable)
+                    {
+                        decDiscountonItem = 0;
+                        decCPAY = 0;
+                        decDPAY = 0;
+
+                        if (dtDiscountDetails.Rows.Count <= 0)
+                            strFilterDiscount = "";
+
+                        DataRow[] DrdtDiscountDetails = dtDiscountDetails.Select(strFilterDiscount, "");
+                        if (DrdtDiscountDetails.Length > 0)
+                        {
+                            decDiscountonItem = Convert.ToDecimal(dtDiscountDetails.Compute("Sum([DCOM])", strFilterDiscount));
+
+                        }
+                        decCPAY = Convert.ToDecimal(drDtbillcontribution[iCount]["CPAY"]) * Convert.ToDecimal(drDtbillcontribution[iCount]["Quantity"]);
+                        if (CollectableType == 1 || CollectableType == 3) // amount without any discount
+                            decCPAY = decCPAY;
+                        else if (CollectableType == 2)
+                            decCPAY = decCPAY - decDiscountonItem;
+                        // this is for sending the unit price with out multiplying with qty
+                        // this code for assigning the percentage collected or amount given in the collectable configuration.
+                        decDPAY = blnNeedpercentCalculation ? Convert.ToDecimal(Convert.ToDecimal((decCPAY * decPercentageCollectable) / 100)) : decPercentageCollectable;
+                        string strYiaco = ConfigurationSettings.AppSettings["Yaico"].ToString();
+                        if (strYiaco.ToUpper() == "YES")
+                        {
+                            decDPAY = Convert.ToDecimal(RoundCorrect(Convert.ToDouble(decDPAY), 2));
+                        }
+                        if (decCPAY == 0)
+                            decDPAY = 0;
+
+                        if (Convert.ToDecimal(drDtbillcontribution[iCount]["PPAY"].ToString()) == 0)
+                            drDtbillcontribution[iCount]["PPAY"] = decDPAY;
+                        else
+                        {
+                            blnLimitExceed = true;
+                            drDtbillcontribution[iCount]["PPAY"] = Convert.ToDecimal(drDtbillcontribution[iCount]["PPAY"].ToString()) + decDPAY;
+                        }
+
+                        drDtbillcontribution[iCount]["DPAY"] = decDPAY;
+
+                        decimal decCpayUnitamt = Convert.ToDecimal(drDtbillcontribution[iCount]["CPAY"]) * Convert.ToDecimal(drDtbillcontribution[iCount]["Quantity"]);
+                        drDtbillcontribution[iCount]["CPAY"] = decCpayUnitamt - decDPAY;
+                    }
+                    else
+                    {
+                        drDtbillcontribution[iCount]["CPAY"] = Convert.ToDecimal(drDtbillcontribution[iCount]["CPAY"]) * Convert.ToDecimal(drDtbillcontribution[iCount]["Quantity"]);
+                    }
+
+                }
+
+                dtBillContribution.AcceptChanges();
+
+
+                if (blnLimitExceed)
+                    return dtBillContribution;
+
+
+                // this is to check whether the collectable amount is exceeding the actual amount
+                decimal decsumofcol = 0, decsumofcolppay = 0;
+                decsumofcol = Convert.ToDecimal(dtBillContribution.Compute("sum([PPAY])", "TYP = 5"));
+                decsumofcolppay = Convert.ToDecimal(dtBillContribution.Compute("sum([PPAY])", "TYP = 5"));
+                if (decsumofcol > decCollAmount)
+                {
+                    DataRow[] drUpdateColldiffamt = dtBillContribution.Select("TYP=5");
+                    if (decCollAmount == 0)
+                        decCollAmount = decPercentageCollectable;
+                    if (drUpdateColldiffamt.Length > 0)
+                    {
+                        string strYiaco = ConfigurationSettings.AppSettings["Yaico"].ToString();
+                        if (strYiaco.ToUpper() == "YES")
+                        {
+                            decCollAmount = Math.Round(decCollAmount, 2);
+                        }
+
+                        decimal decsumofppay = Convert.ToDecimal(drUpdateColldiffamt[0]["PPAY"]);
+                        decimal decsumofdpay = Convert.ToDecimal(drUpdateColldiffamt[0]["DPAY"]);
+                        drUpdateColldiffamt[0]["PPAY"] = (decsumofppay - (decsumofcolppay - decCollAmount));
+                        drUpdateColldiffamt[0]["DPAY"] = (decsumofdpay - (decsumofcol - decCollAmount));
+                    }
+                    dtBillContribution.AcceptChanges();
+
+                }
+                else if (decsumofcol < decCollAmount)
+                {
+                    DataRow[] drUpdateColldiffamt = dtBillContribution.Select("TYP=5");
+                    if (drUpdateColldiffamt.Length > 0)
+                    {
+                        decimal decsumofppay = Convert.ToDecimal(drUpdateColldiffamt[0]["PPAY"]);
+                        decimal decsumofdpay = Convert.ToDecimal(drUpdateColldiffamt[0]["DPAY"]);
+                        drUpdateColldiffamt[0]["PPAY"] = (decsumofppay + (decsumofcolppay - decsumofcol));
+                        drUpdateColldiffamt[0]["DPAY"] = (decsumofdpay + (decCollAmount - decsumofcol));
+                    }
+                    dtBillContribution.AcceptChanges();
+                }
+
+                // this is to check whether the collectable amount is exceeding the actual amount
+                // this is to update service ppay
+                if (dtBillContribution.Rows.Count > 0)
+                {
+
+                }
+                // this is to update service ppay
+                return dtBillContribution;
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in SplitCollectables", "");
+                return null;
+            }
+
+
+        }
+
+        private DataTable TempFinal(DataTable dsConfiguration, DataTable dtBillItems, DataTable dtFinaltable, int discountType, string strBillType, int IPOP)
+        {
+            try
+            {
+
+                if (IPOP == 1)
+                {
+                    return dtFinaltable;
+                }
+
+                bool flag = false;
+                if (dtBillItems.Columns.Contains("BatchID"))
+                    flag = true;
+
+                if (!dtFinaltable.Columns.Contains("OrderID"))
+                {
+                    dtFinaltable.Columns.Add("OrderID", typeof(int));
+                }
+                if (!dtFinaltable.Columns.Contains("BedSeq"))
+                {
+                    dtFinaltable.Columns.Add("BedSeq", typeof(int));
+                }
+
+                if (!dtFinaltable.Columns.Contains("OrderItemID"))
+                {
+                    dtFinaltable.Columns.Add("OrderItemID", typeof(int));
+                }
+
+
+                if (dtBillItems != null)
+                {
+                    if (dtBillItems.Columns.Contains("BatchID"))
+                    {
+                        if (!dtFinaltable.Columns.Contains("BatchID"))
+                            dtFinaltable.Columns.Add("BatchID", typeof(int));
+                    }
+                }
+
+
+                DataTable dtFinalTableTemp = dtFinaltable.Copy();
+                # region predefined Discount
+                decimal decCPAY = 0; decimal decPPAY = 0; double decDCOM = 0; double decDPAT = 0;
+
+                {
+                    DataRow[] drdtTempFinal = dtFinaltable.Select("serviceid >0 and mlevel <>5", "");
+                    DataRow drNewrow = null;
+
+                    #region Service to Item level for Predefined Discount
+
+                    if (drdtTempFinal.Length > 0)
+                    {
+
+                        for (int iCount = 0; iCount < drdtTempFinal.Length; iCount++)
+                        {
+                            string strFilter = "";
+                            // this filter for fetching the items based on levels
+                            if (drdtTempFinal[iCount]["mlevel"].ToString() == "2")
+                            {
+                                strFilter = "serviceid =" + drdtTempFinal[iCount]["serviceid"] + " and mlevel =5 and ISDISCAPP is null ";
+                            }
+                            else if (drdtTempFinal[iCount]["mlevel"].ToString() == "3")
+                            {
+                                strFilter = "serviceid =" + drdtTempFinal[iCount]["serviceid"] + " and HospDeptId =" + drdtTempFinal[iCount]["HospDeptId"] + " and mlevel =5 and ISDISCAPP is null ";
+                            }
+                            else if (drdtTempFinal[iCount]["mlevel"].ToString() == "4")
+                            {
+                                strFilter = "serviceid =" + drdtTempFinal[iCount]["serviceid"] + " and HospDeptId =" + drdtTempFinal[iCount]["HospDeptId"] + " and  SpecialiseID =" + drdtTempFinal[iCount]["SpecialiseID"] + " and mlevel =5 and ISDISCAPP is null ";
+                            }
+
+                            //this filter for fetching the items based on levels
+                            DataRow[] drdtBillItems = dtBillItems.Select(strFilter, "");
+
+                            if (drdtBillItems.Length > 0)
+                            {
+                                decimal decDiscount = 0;
+                                string strDisName = "";
+                                decimal decTotal = 0;
+                                bool blnIspercentage = false;
+                                decimal decIScompany = 0;
+                                decimal decISpatient = 0;
+                                strFilter = "";
+
+                                if (drdtTempFinal[iCount]["mlevel"].ToString() == "2")
+                                    strFilter = "serviceid =" + drdtBillItems[0]["serviceid"] + "  ";
+                                else if (drdtTempFinal[iCount]["mlevel"].ToString() == "3")
+                                    strFilter = "serviceid =" + drdtBillItems[0]["serviceid"] + " and HospDeptId =" + drdtBillItems[0]["HospDeptId"] + "  ";
+                                else if (drdtTempFinal[iCount]["mlevel"].ToString() == "4")
+                                    strFilter = "serviceid =" + drdtBillItems[0]["serviceid"] + " and HospDeptId =" + drdtBillItems[0]["HospDeptId"] + " and  SpecialiseID =" + drdtBillItems[0]["SpecialiseID"] + "   ";
+
+                                DataRow[] drDsconfiguration = dsConfiguration.Select(strFilter, "");
+                                decDiscount = Convert.ToDecimal(drDsconfiguration[0]["Discount"]);
+                                strDisName = Convert.ToString(drDsconfiguration[0]["Type"]);
+                                decTotal = Convert.ToDecimal(drDsconfiguration[0]["Total"]);
+                                blnIspercentage = Convert.ToBoolean(drDsconfiguration[0]["IsPercentage"]);
+
+                                if (drDsconfiguration[0]["DCOM"].ToString() != "")
+                                    decIScompany = Convert.ToDecimal(drDsconfiguration[0]["DCOM"]);
+                                if (drDsconfiguration[0]["DPAT"].ToString() != "")
+                                    decISpatient = Convert.ToDecimal(drDsconfiguration[0]["DPAT"]);
+
+                                if (drdtBillItems.Length > 0)
+                                {
+                                    for (int jCount = 0; jCount < drdtBillItems.Length; jCount++)
+                                    {
+                                        if (drdtTempFinal[iCount]["mlevel"].ToString() == "2")
+                                        {
+                                            if (dtFinalTableTemp.Select("mlevel=4 and serviceid =" + drdtBillItems[jCount]["serviceid"] + " and HospDeptId =" + drdtBillItems[jCount]["HospDeptId"] + " and  SpecialiseID =" + drdtBillItems[jCount]["SpecialiseID"]).Length > 0)
+                                            { continue; }
+                                            else if (dtFinalTableTemp.Select("mlevel=3 and serviceid =" + drdtBillItems[jCount]["serviceid"] + " and HospDeptId =" + drdtBillItems[jCount]["HospDeptId"]).Length > 0)
+                                            { continue; }
+                                        }
+                                        else if (drdtTempFinal[iCount]["mlevel"].ToString() == "3")
+                                        {
+                                            if (dtFinalTableTemp.Select("mlevel=4 and serviceid =" + drdtBillItems[jCount]["serviceid"] + " and HospDeptId =" + drdtBillItems[jCount]["HospDeptId"] + " and  SpecialiseID =" + drdtBillItems[jCount]["SpecialiseID"]).Length > 0)
+                                            { continue; }
+                                        }
+                                        decimal intItemQty = 0;
+                                        double factor = 1;
+                                        intItemQty = Math.Abs(Convert.ToDecimal(drdtBillItems[jCount]["BQTY"]));
+                                        if (intItemQty != 0)
+                                            factor = (Convert.ToDouble(drdtBillItems[jCount]["BQTY"])) / Math.Abs(Convert.ToDouble(drdtBillItems[jCount]["BQTY"]));
+                                        if (intItemQty == 0)
+                                        {
+                                            intItemQty = Math.Abs(Convert.ToDecimal(drdtBillItems[jCount]["MQTY"]));
+                                            if (intItemQty != 0)
+                                                factor = (Convert.ToDouble(drdtBillItems[jCount]["MQTY"])) / Math.Abs(Convert.ToDouble(drdtBillItems[jCount]["MQTY"]));
+                                        }
+
+
+                                        for (decimal iCC = 0.5M; iCC <= intItemQty; iCC++)
+                                        {
+                                            decimal Amount = 0;
+
+                                            decimal decPrevDiscount = 0;
+                                            decimal decPrevTotalDiscount = 0;
+                                            decimal decTotalbillAmount = 0;
+                                            decimal diff = intItemQty - iCC;
+                                            if (blnIspercentage == false)
+                                            {
+                                                string strFilt = "";
+
+                                                if (dtBillItems.Columns.Contains("IsContribution"))
+                                                {
+                                                    strFilt = "SEQ = " + drdtBillItems[jCount]["SEQ"] + " and mLevel= " + drdtBillItems[jCount]["mLevel"] + " and IsContribution=0" + " and ServiceID=" + drdtBillItems[jCount]["ServiceID"];
+                                                    DataRow[] drPrevDiscount = dtBillItems.Select(strFilt, "");
+                                                    if (drPrevDiscount.Length > 0)
+                                                    {
+                                                        foreach (DataRow drr in drPrevDiscount)
+                                                            decPrevDiscount += Convert.ToDecimal(drr["Discount"]);
+                                                    }
+                                                    decPrevTotalDiscount = Convert.ToDecimal(dtBillItems.Compute("Sum([Discount])", "mLevel=5"));
+                                                }
+
+                                                string strFilterLevel = "";
+                                                if (Convert.ToDecimal(drdtTempFinal[iCount]["mlevel"]) == 2)
+                                                    strFilterLevel = "mLevel=5 and Serviceid=" + drdtBillItems[jCount]["ServiceID"];
+                                                else if (Convert.ToDecimal(drdtTempFinal[iCount]["mlevel"]) == 3)
+                                                    strFilterLevel = "mLevel=5 and Serviceid=" + drdtBillItems[jCount]["ServiceID"] + " and HospDeptId=" + drdtBillItems[jCount]["HospDeptId"];
+                                                else if (Convert.ToDecimal(drdtTempFinal[iCount]["mlevel"]) == 4)
+                                                    strFilterLevel = "mLevel=5 and Serviceid=" + drdtBillItems[jCount]["ServiceID"] + " and SpecialiseId=" + drdtBillItems[jCount]["SpecialiseId"] + " and  HospDeptId= " + drdtBillItems[jCount]["HospDeptId"];
+
+
+                                                if (dtBillItems.Columns.Contains("Discount"))
+                                                    decPrevTotalDiscount = Convert.ToDecimal(dtBillItems.Compute("Sum([Discount])", strFilterLevel));
+
+                                                foreach (DataRow drt in drdtBillItems)
+                                                {
+                                                    if (strBillType == "CR")
+                                                        decTotalbillAmount += Convert.ToDecimal(drt["CPAY"]);
+                                                    else
+                                                    {
+                                                        if (Convert.ToDecimal(drt["BQTY"]) != 0)
+                                                            decTotalbillAmount += Convert.ToDecimal(drt["PPAY"]) * Convert.ToDecimal(drt["BQTY"]);
+                                                        else
+                                                            decTotalbillAmount += Convert.ToDecimal(drt["PPAY"]) * Convert.ToDecimal(drt["MQTY"]);
+
+                                                    }
+                                                }
+
+                                            }
+
+                                            if (strBillType == "CR")
+                                            {
+                                                if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                                {
+                                                    if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                                    {
+                                                        if (diff == 0)
+                                                        {
+                                                            decCPAY = (Convert.ToDecimal(drdtBillItems[jCount]["cpay"]) * 0.5M) / Convert.ToDecimal(drdtBillItems[jCount]["BQTY"]);
+                                                            if (Convert.ToInt32(drdtBillItems[jCount]["ServiceID"]) == 10 || Convert.ToInt32(drdtBillItems[jCount]["ServiceID"]) == 17)
+                                                                decPPAY = (Convert.ToDecimal(drdtBillItems[jCount]["ppay"]) * 0.5M);
+                                                            else
+                                                            {
+                                                                decPPAY = (Convert.ToDecimal(drdtBillItems[jCount]["ppay"]) * 0.5M) / Convert.ToDecimal(drdtBillItems[jCount]["BQTY"]);
+                                                            }
+                                                            Amount = (decCPAY + decPPAY);
+                                                        }
+                                                        else
+                                                        {
+                                                            decCPAY = Convert.ToDecimal(drdtBillItems[jCount]["cpay"]) / Convert.ToDecimal(drdtBillItems[jCount]["BQTY"]);
+                                                            if (Convert.ToInt32(drdtBillItems[jCount]["ServiceID"]) == 10 || Convert.ToInt32(drdtBillItems[jCount]["ServiceID"]) == 17)
+                                                            {
+                                                                decPPAY = Convert.ToDecimal(drdtBillItems[jCount]["ppay"]);
+                                                            }
+                                                            else
+                                                            {
+                                                                decPPAY = Convert.ToDecimal(drdtBillItems[jCount]["ppay"]) / Convert.ToDecimal(drdtBillItems[jCount]["BQTY"]);
+                                                            }
+                                                            Amount = (decCPAY + decPPAY);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (diff == 0)
+                                                        {
+                                                            Amount = Convert.ToDecimal(drdtBillItems[jCount]["cpay"]) / Convert.ToDecimal(drdtBillItems[jCount]["BQTY"]) * 0.5M;
+                                                        }
+                                                        else
+                                                        {
+                                                            Amount = Convert.ToDecimal(drdtBillItems[jCount]["cpay"]) / Convert.ToDecimal(drdtBillItems[jCount]["BQTY"]);
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (diff == 0)
+                                                    {
+                                                        Amount = Convert.ToDecimal(drdtBillItems[jCount]["cpay"]) / Math.Abs(Convert.ToDecimal(drdtBillItems[jCount]["BQTY"])) * 0.5M;
+                                                    }
+                                                    else
+                                                    {
+                                                        Amount = Convert.ToDecimal(drdtBillItems[jCount]["cpay"]) / Math.Abs(Convert.ToDecimal(drdtBillItems[jCount]["BQTY"]));
+                                                    }
+                                                }
+                                            }
+                                            else
+                                                Amount = Convert.ToDecimal(drdtBillItems[jCount]["ppay"]);
+
+
+                                            if (Amount != 0)
+                                            {
+                                                drNewrow = dtFinaltable.NewRow();
+                                                drNewrow["mLevel"] = drdtBillItems[jCount]["mlevel"];
+                                                drNewrow["Type"] = strDisName;
+                                                drNewrow["serviceid"] = drdtBillItems[jCount]["serviceid"];
+                                                drNewrow["ServiceName"] = drdtBillItems[jCount]["ServiceName"];
+                                                drNewrow["HospDeptID"] = drdtBillItems[jCount]["HospDeptID"];
+                                                drNewrow["DepartmentName"] = drdtBillItems[jCount]["DepartmentName"];
+                                                drNewrow["SpecialiseID"] = drdtBillItems[jCount]["SpecialiseID"];
+                                                drNewrow["Specialisation"] = drdtBillItems[jCount]["Specialisation"];
+                                                drNewrow["ServiceItemID"] = drdtBillItems[jCount]["ServiceItemID"];
+                                                drNewrow["ServiceItemName"] = drdtBillItems[jCount]["ServiceItemName"];
+                                                drNewrow["Total"] = Amount;
+                                                drNewrow["OrderID"] = drdtBillItems[jCount]["OrderID"];
+                                                if (dtBillItems.Columns.Contains("BedSeq"))
+                                                {
+                                                    if (!string.IsNullOrEmpty(drdtBillItems[jCount]["BedSeq"].ToString()))
+                                                        drNewrow["BedSeq"] = drdtBillItems[jCount]["BedSeq"];
+                                                }
+                                                if (dtBillItems.Columns.Contains("OrderItemID"))
+                                                {
+                                                    if (!string.IsNullOrEmpty(drdtBillItems[jCount]["OrderItemID"].ToString()))
+                                                        drNewrow["OrderItemID"] = drdtBillItems[jCount]["OrderItemID"];
+                                                }
+
+                                                if (dtBillItems.Columns.Contains("BatchID"))
+                                                {
+                                                    if (!string.IsNullOrEmpty(drdtBillItems[jCount]["BatchID"].ToString()))
+                                                        drNewrow["BatchID"] = drdtBillItems[jCount]["BatchID"];
+                                                }
+
+                                                double DiscountAmount = 0;
+                                                if (blnIspercentage == true)
+                                                {
+                                                    if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                                    {
+                                                        if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                                        {
+                                                            decDCOM = Convert.ToDouble((decCPAY * decDiscount) / 100);
+                                                            decDPAT = Convert.ToDouble((decPPAY * decDiscount) / 100);
+                                                            DiscountAmount = decDCOM + decDPAT;
+                                                            drNewrow["Discount"] = DiscountAmount * factor;
+                                                        }
+                                                        else
+                                                        {
+                                                            DiscountAmount = Convert.ToDouble((Amount * decDiscount) / 100);
+                                                            drNewrow["Discount"] = DiscountAmount * factor;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        DiscountAmount = Convert.ToDouble((Amount * decDiscount) / 100);
+                                                        drNewrow["Discount"] = DiscountAmount * factor;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    DiscountAmount = Convert.ToDouble((Convert.ToDecimal(Amount - decPrevDiscount) * decDiscount) / (decTotalbillAmount - decPrevTotalDiscount));
+                                                    drNewrow["Discount"] = DiscountAmount * factor;
+                                                }
+
+                                                drNewrow["CPAY"] = 0;
+                                                drNewrow["PPAY"] = 0;
+
+
+                                                if (strBillType == "CR")
+                                                {
+                                                    if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                                    {
+                                                        if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                                        {
+                                                            drNewrow["DCOM"] = decDCOM * factor;
+                                                            drNewrow["DPAT"] = decDPAT * factor;
+                                                        }
+                                                        else
+                                                        {
+                                                            drNewrow["DCOM"] = DiscountAmount * factor;
+                                                            drNewrow["DPAT"] = 0;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        drNewrow["DCOM"] = DiscountAmount * factor;
+                                                        drNewrow["DPAT"] = 0;
+                                                    }
+                                                }
+
+                                                else
+                                                {
+                                                    drNewrow["DPAT"] = DiscountAmount * factor;
+                                                    drNewrow["DCOM"] = 0;
+                                                }
+
+                                                drNewrow["DPER"] = 0;
+                                                if (diff == 0) drNewrow["QTY"] = Convert.ToDouble(0.5) * factor; else drNewrow["QTY"] = 1 * factor; ;
+                                                if (diff == 0) drNewrow["BQTY"] = Convert.ToDouble(0.5) * factor; else drNewrow["BQTY"] = 1 * factor; ;
+                                                drNewrow["SEQ"] = 122;
+
+                                                dtFinaltable.Rows.Add(drNewrow);
+                                                dtFinaltable.AcceptChanges();
+
+                                            }
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                    #endregion
+
+                    #region Bill level for Predefined Discount
+                    else
+                    {
+                        int DiscountLevel = 5;
+
+                        drdtTempFinal = dtFinaltable.Select("mlevel = 0 ", "");
+
+                        if (drdtTempFinal.Length > 0)
+                        {
+                            for (int iCount = 0; iCount < drdtTempFinal.Length; iCount++)
+                            {
+                                string strFilter = "";
+                                // this filter for fetching the items based on levels
+                                strFilter = " mlevel =5";
+                                DataRow[] drdtBillItems = dtBillItems.Select(strFilter, "");
+
+                                if (drdtBillItems.Length > 0)
+                                {
+                                    decimal decDiscount = 0;
+                                    string strDisName = "";
+                                    decimal decTotal = 0;
+                                    bool blnIspercentage = false;
+                                    decimal decIScompany = 0;
+                                    decimal decISpatient = 0;
+                                    strFilter = "";
+                                    strFilter = " mlevel <>5";
+                                    DataRow[] drDsconfiguration = dsConfiguration.Select(strFilter, "");
+                                    decDiscount = Convert.ToDecimal(drDsconfiguration[0]["Discount"]);
+                                    strDisName = Convert.ToString(drDsconfiguration[0]["Type"]);
+                                    decTotal = Convert.ToDecimal(drDsconfiguration[0]["Total"]);
+                                    blnIspercentage = Convert.ToBoolean(drDsconfiguration[0]["IsPercentage"]);
+                                    if (drDsconfiguration[0]["DCOM"].ToString() != "")
+                                        decIScompany = Convert.ToDecimal(drDsconfiguration[0]["DCOM"]);
+                                    if (drDsconfiguration[0]["DPAT"].ToString() != "")
+                                        decISpatient = Convert.ToDecimal(drDsconfiguration[0]["DPAT"]);
+
+                                    if (drdtBillItems.Length > 0)
+                                    {
+                                        for (int jCount = 0; jCount < drdtBillItems.Length; jCount++)
+                                        {
+                                            int intItemQty = 0;
+                                            intItemQty = Math.Abs(Convert.ToInt32(drdtBillItems[jCount]["BQTY"]));
+                                            if (intItemQty == 0)
+                                                intItemQty = Math.Abs(Convert.ToInt32(drdtBillItems[jCount]["MQTY"]));
+
+                                            for (int iCC = 0; iCC < intItemQty; iCC++)
+                                            {
+                                                decimal Amount = 0;
+                                                decimal decPrevDiscount = 0;
+                                                decimal decPrevTotalDiscount = 0;
+                                                decimal decTotalbillAmount = 0;
+
+                                                if (blnIspercentage == false)
+                                                {
+                                                    string strFilt = "";
+                                                    if (dtBillItems.Columns.Contains("IsContribution"))
+                                                    {
+                                                        strFilt = "SEQ = " + drdtBillItems[jCount]["SEQ"] + " and mLevel= " + drdtBillItems[jCount]["mLevel"] + " and IsContribution=0" + " and ServiceID=" + drdtBillItems[jCount]["ServiceID"];
+                                                        DataRow[] drPrevDiscount = dtBillItems.Select(strFilt, "");
+                                                        if (drPrevDiscount.Length > 0)
+                                                        {
+                                                            foreach (DataRow drr in drPrevDiscount)
+                                                                decPrevDiscount += Convert.ToDecimal(drr["Discount"]);
+                                                        }
+                                                        decPrevTotalDiscount = Convert.ToDecimal(dtBillItems.Compute("Sum([Discount])", "mLevel=5"));
+                                                    }
+                                                    foreach (DataRow drt in drdtBillItems)
+                                                    {
+                                                        if (strBillType == "CR")
+                                                            decTotalbillAmount += Convert.ToDecimal(drt["CPAY"]);
+                                                        else
+                                                            decTotalbillAmount += Convert.ToDecimal(drt["PPAY"]) * Convert.ToDecimal(drt["BQTY"]);
+                                                    }
+                                                }
+                                                if (strBillType == "CR")
+                                                {
+                                                    if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                                    {
+                                                        if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                                        {
+                                                            decCPAY = Convert.ToDecimal(drdtBillItems[jCount]["cpay"]) / Convert.ToDecimal(drdtBillItems[jCount]["BQTY"]);
+                                                            decPPAY = Convert.ToDecimal(drdtBillItems[jCount]["ppay"]); ;
+                                                            Amount = decCPAY + decPPAY;
+                                                        }
+                                                        else
+                                                        {
+                                                            Amount = Convert.ToDecimal(drdtBillItems[jCount]["cpay"]) / Math.Abs(Convert.ToDecimal(drdtBillItems[jCount]["BQTY"]));
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        Amount = Convert.ToDecimal(drdtBillItems[jCount]["cpay"]) / Math.Abs(Convert.ToDecimal(drdtBillItems[jCount]["BQTY"]));
+                                                    }
+                                                }
+                                                else
+                                                    Amount = Convert.ToDecimal(drdtBillItems[jCount]["ppay"]);
+
+
+                                                if (Amount != 0)
+                                                {
+                                                    drNewrow = dtFinaltable.NewRow();
+                                                    drNewrow["mLevel"] = drdtBillItems[jCount]["mlevel"];
+                                                    drNewrow["Type"] = strDisName;
+                                                    drNewrow["serviceid"] = drdtBillItems[jCount]["serviceid"];
+                                                    drNewrow["ServiceName"] = drdtBillItems[jCount]["ServiceName"];
+                                                    drNewrow["HospDeptID"] = drdtBillItems[jCount]["HospDeptID"];
+                                                    drNewrow["DepartmentName"] = drdtBillItems[jCount]["DepartmentName"];
+                                                    drNewrow["SpecialiseID"] = drdtBillItems[jCount]["SpecialiseID"];
+                                                    drNewrow["Specialisation"] = drdtBillItems[jCount]["Specialisation"];
+                                                    drNewrow["ServiceItemID"] = drdtBillItems[jCount]["ServiceItemID"];
+                                                    drNewrow["ServiceItemName"] = drdtBillItems[jCount]["ServiceItemName"];
+                                                    drNewrow["Total"] = Amount;
+                                                    drNewrow["OrderID"] = drdtBillItems[jCount]["orderID"];
+                                                    if (dtBillItems.Columns.Contains("BatchID"))
+                                                    {
+                                                        if (!string.IsNullOrEmpty(drdtBillItems[jCount]["BatchID"].ToString()))
+                                                            drNewrow["BatchID"] = drdtBillItems[jCount]["BatchID"];
+                                                    }
+
+                                                    double DiscountAmount = 0;
+                                                    if (blnIspercentage == true)
+                                                    {
+                                                        if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                                        {
+                                                            if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                                            {
+                                                                decDCOM = Convert.ToDouble((decCPAY * decDiscount) / 100);
+                                                                decDPAT = Convert.ToDouble((decPPAY * decDiscount) / 100);
+                                                                DiscountAmount = decDCOM + decDPAT;
+                                                                DiscountAmount = Math.Round(Convert.ToDouble(DiscountAmount), 2);
+                                                                drNewrow["Discount"] = DiscountAmount;
+                                                            }
+                                                            else
+                                                            {
+                                                                DiscountAmount = Convert.ToDouble((Amount * decDiscount) / 100);
+                                                                DiscountAmount = Math.Round(Convert.ToDouble(DiscountAmount), 2);
+                                                                drNewrow["Discount"] = DiscountAmount;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            DiscountAmount = Convert.ToDouble((Amount * decDiscount) / 100);
+                                                            DiscountAmount = Math.Round(Convert.ToDouble(DiscountAmount), 2);
+                                                            drNewrow["Discount"] = DiscountAmount;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        DiscountAmount = Convert.ToDouble((Convert.ToDecimal(Amount - decPrevDiscount) * decDiscount) / (decTotalbillAmount - decPrevTotalDiscount));
+                                                        DiscountAmount = Math.Round(Convert.ToDouble(DiscountAmount), 2);
+                                                        drNewrow["Discount"] = DiscountAmount;
+                                                    }
+
+                                                    drNewrow["CPAY"] = 0;
+                                                    drNewrow["PPAY"] = 0;
+
+                                                    if (strBillType == "CR")
+                                                    {
+                                                        if ((object)(ConfigurationManager.AppSettings["CRDiscountforPatient"]) != null)
+                                                        {
+                                                            if (ConfigurationManager.AppSettings["CRDiscountforPatient"].ToString().ToUpper() == "YES")
+                                                            {
+                                                                drNewrow["DCOM"] = decDCOM;
+                                                                drNewrow["DPAT"] = decDPAT;
+                                                            }
+                                                            else
+                                                            {
+                                                                drNewrow["DCOM"] = DiscountAmount;
+                                                                drNewrow["DPAT"] = 0;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            drNewrow["DCOM"] = DiscountAmount;
+                                                            drNewrow["DPAT"] = 0;
+                                                        }
+                                                    }
+                                                    else
+                                                        drNewrow["DPAT"] = DiscountAmount;
+
+                                                    drNewrow["DPER"] = 0;
+                                                    drNewrow["QTY"] = 1;
+                                                    drNewrow["BQTY"] = 1;
+                                                    drNewrow["SEQ"] = 122;
+                                                    if (flag)
+                                                        drNewrow["BatchID"] = drdtBillItems[jCount]["BatchID"];
+                                                    dtFinaltable.Rows.Add(drNewrow);
+                                                    dtFinaltable.AcceptChanges();
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    #endregion
+                    if (dtFinaltable.Rows.Count > 0)
+                    {
+                        DataRow[] drr = dtFinaltable.Select("mlevel <>5", "");
+                        decimal dectotaldiscont = 0;
+                        decimal decitemlevelDiscont = 0;
+                        dectotaldiscont = Convert.ToDecimal(dtFinaltable.Compute("Sum([Discount])", "seq <> 122"));
+                        if (dtFinaltable.Compute("Sum([Discount])", "mlevel = 5").ToString() == "")
+                            decitemlevelDiscont = 0;
+                        else
+                            decitemlevelDiscont = Convert.ToDecimal(dtFinaltable.Compute("Sum([Discount])", "mlevel = 5"));
+                        if (drr.Length > 0)
+                        {
+                            for (int ij = 0; ij < drr.Length; ij++)
+                            {
+                                drr[ij].Delete();
+                            }
+
+                        }
+                        dtFinaltable.AcceptChanges();
+
+                        if (decitemlevelDiscont < dectotaldiscont)
+                        {
+                            if (dtFinaltable.Rows.Count > 0)
+                            {
+                                if (strBillType == "CR")
+                                    drNewrow["DCOM"] = Convert.ToDecimal(drNewrow["DCOM"]) + (dectotaldiscont - decitemlevelDiscont);
+                                else
+                                    drNewrow["DPAT"] = Convert.ToDecimal(drNewrow["DPAT"]) + (dectotaldiscont - decitemlevelDiscont);
+
+                                drNewrow["Discount"] = Convert.ToDecimal(drNewrow["Discount"]) + (dectotaldiscont - decitemlevelDiscont);
+
+                            }
+
+                        }
+                        else if (decitemlevelDiscont > dectotaldiscont)
+                        {
+                            if (dtFinaltable.Rows.Count > 0)
+                            {
+                                if (strBillType == "CR")
+                                    drNewrow["DCOM"] = Convert.ToDecimal(drNewrow["DCOM"]) + (dectotaldiscont - decitemlevelDiscont);
+                                else
+                                    drNewrow["DPAT"] = Convert.ToDecimal(drNewrow["DPAT"]) + (dectotaldiscont - decitemlevelDiscont);
+
+                                drNewrow["Discount"] = Convert.ToDecimal(drNewrow["Discount"]) + (dectotaldiscont - decitemlevelDiscont);
+
+                            }
+                        }
+                        dtFinaltable.AcceptChanges();
+
+
+
+                        for (int ij = 0; ij < dtFinaltable.Rows.Count; ij++)
+                        {
+                            if (dtFinaltable.Rows[ij]["OrderID"].ToString() != null && dtFinaltable.Rows[ij]["OrderID"].ToString() != "")
+                            {
+
+                                string strfilter = string.Empty;
+                                if (dtBillItems.Columns.Contains("BatchID") & dtFinaltable.Columns.Contains("BatchID"))
+                                {
+                                    if (!string.IsNullOrEmpty(dtFinaltable.Rows[ij]["BatchID"].ToString()))
+                                        strfilter = "mlevel = 5 and serviceitemid=" + dtFinaltable.Rows[ij]["serviceitemid"].ToString() + " and OrderID =" + dtFinaltable.Rows[ij]["OrderID"].ToString() + " and BatchID=" + dtFinaltable.Rows[ij]["BatchID"].ToString() + " and ServiceID=" + dtFinaltable.Rows[ij]["ServiceID"];
+                                    else
+                                        strfilter = "mlevel = 5 and serviceitemid=" + dtFinaltable.Rows[ij]["serviceitemid"].ToString() + " and OrderID =" + dtFinaltable.Rows[ij]["OrderID"].ToString() + " and ServiceID=" + dtFinaltable.Rows[ij]["ServiceID"];
+                                }
+                                else
+                                    strfilter = "mlevel = 5 and serviceitemid=" + dtFinaltable.Rows[ij]["serviceitemid"].ToString() + " and OrderID =" + dtFinaltable.Rows[ij]["OrderID"].ToString() + " and ServiceID=" + dtFinaltable.Rows[ij]["ServiceID"];
+
+                                if (dtBillItems.Columns.Contains("OrderItemID") & dtFinaltable.Columns.Contains("OrderItemID"))
+                                {
+                                    if (!string.IsNullOrEmpty(dtFinaltable.Rows[ij]["OrderItemID"].ToString()))
+                                        strfilter = strfilter + " AND OrderItemID =" + dtFinaltable.Rows[ij]["OrderItemID"].ToString();
+                                }
+
+                                if (dtBillItems.Columns.Contains("BedSeq") & dtFinaltable.Columns.Contains("BedSeq"))
+                                {
+                                    if (!string.IsNullOrEmpty(dtFinaltable.Rows[ij]["BedSeq"].ToString()))
+                                        strfilter = strfilter + " AND BedSeq =" + dtFinaltable.Rows[ij]["BedSeq"].ToString();
+                                }
+                                DataRow[] drDtbills = dtBillItems.Select(strfilter, "");
+                                if (IPOP == 2)
+                                {
+                                    if (dtBillItems.Columns.Contains("BillItemSequence"))
+                                    {
+                                        dtFinaltable.Rows[ij]["SEQ"] = drDtbills[0]["BillItemSequence"];
+                                    }
+                                    else
+                                    {
+                                        dtFinaltable.Rows[ij]["SEQ"] = drDtbills[0]["Seq"];
+                                    }
+
+                                }
+                                else
+                                {
+                                    dtFinaltable.Rows[ij]["SEQ"] = drDtbills[0]["Seq"];
+                                }
+                                dtFinaltable.AcceptChanges();
+                            }
+                            else
+                            {
+
+                                if (dtFinaltable.Rows[ij]["OrderID"] == DBNull.Value || dtFinaltable.Rows[ij]["OrderID"].ToString() == "")
+                                {
+
+                                    string strfilter;
+                                    if (dtBillItems.Columns.Contains("BatchID") & dtFinaltable.Columns.Contains("BatchID"))
+                                    {
+                                        if (!string.IsNullOrEmpty(dtFinaltable.Rows[ij]["BatchID"].ToString()))
+                                            strfilter = "mlevel = 5 and serviceitemid=" + dtFinaltable.Rows[ij]["serviceitemid"].ToString() + " and BatchID=" + dtFinaltable.Rows[ij]["BatchID"].ToString() + " and ServiceID=" + dtFinaltable.Rows[ij]["ServiceID"];
+                                        else
+                                            strfilter = "mlevel = 5 and serviceitemid=" + dtFinaltable.Rows[ij]["serviceitemid"].ToString() + " and ServiceID=" + dtFinaltable.Rows[ij]["ServiceID"];
+
+                                    }
+                                    else
+                                        strfilter = "mlevel = 5 and serviceitemid=" + dtFinaltable.Rows[ij]["serviceitemid"].ToString() + " and ServiceID=" + dtFinaltable.Rows[ij]["ServiceID"];
+
+                                    if (dtBillItems.Columns.Contains("BedSeq") & dtFinaltable.Columns.Contains("BedSeq"))
+                                    {
+                                        if (!string.IsNullOrEmpty(dtFinaltable.Rows[ij]["BedSeq"].ToString()))
+                                            strfilter = strfilter + " AND BedSeq =" + dtFinaltable.Rows[ij]["BedSeq"].ToString();
+                                    }
+
+                                    DataRow[] drDtbills = dtBillItems.Select(strfilter, "");
+                                    if (IPOP == 2)
+                                    {
+                                        if (dtBillItems.Columns.Contains("BillItemSequence"))
+                                            dtFinaltable.Rows[ij]["SEQ"] = drDtbills[0]["BillItemSequence"];
+                                        else dtFinaltable.Rows[ij]["SEQ"] = drDtbills[0]["Seq"];
+
+                                        dtFinaltable.Rows[ij]["OrderID"] = drDtbills[0]["OrderID"];
+                                        dtFinaltable.Rows[ij]["OrderItemID"] = drDtbills[0]["OrderItemID"];
+                                    }
+                                    else
+                                    {
+                                        dtFinaltable.Rows[ij]["SEQ"] = drDtbills[0]["Seq"];
+                                    }
+                                    dtFinaltable.AcceptChanges();
+                                }
+
+                            }
+                        }
+                    }
+                }
+                #endregion
+
+                #region Discount definition for IP Package
+                DataRow[] drFinaltbl = dtFinaltable.Select("Serviceid=4");
+                foreach (DataRow dr in drFinaltbl)
+                {
+                    DataRow[] drowdtBillItems = dtBillItems.Select("Serviceid=4 and mlevel=5");
+                    foreach (DataRow drow in drowdtBillItems)
+                    {
+                        if (Convert.ToInt32(drow["Serviceitemid"].ToString()) == Convert.ToInt32(dr["serviceitemid"].ToString()))
+                            dr["OrderID"] = string.IsNullOrEmpty(dr["OrderID"].ToString()) ? drow["OrderID"] : dr["OrderID"];
+
+                    }
+                }
+                #endregion
+
+                return dtFinaltable;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        private string[] FilterType(string strBillType, int IPOP)
+        {
+
+            if (strBillType == "CR")
+            {
+                if (Convert.ToInt32(IPOP) == 2)
+                    FilterQty = "BQTY";
+                else
+                    FilterQty = "MQTY";
+                Filter = "CPAY";
+
+            }
+            else if (strBillType == "SP")
+            {
+                if (Convert.ToInt32(IPOP) == 2)
+                {
+                    FilterQty = "BQTY";
+                    Filter = "PPAY";
+                }
+                else
+                {
+                    FilterQty = "MQTY";
+                    Filter = "SPAY";
+                }
+            }
+            else
+            {
+                if (IPOP == 2)
+                    FilterQty = "BQTY";
+                else
+                    FilterQty = "MQTY";
+                Filter = "PPAY";
+            }
+            string[] strFilter = new string[2];
+            strFilter[0] = Filter;
+            strFilter[1] = FilterQty;
+            return strFilter;
+
+        }
+
+        private DataTable BindCategoryItems(int CategoryID)
+        {
+            try
+            {
+                int userID = Convert.ToInt32(strDefaultUserId);
+                int workStationID = Convert.ToInt32(strDefWorkstationId);
+                int featureID = 22566; int functionID = 5; int error = 0;
+                string callContext = "Fetching Pharmacy Items";
+                DataSet dsCategoryItems = GetCategoryItems(CategoryID, userID, workStationID, featureID, functionID, callContext, error);
+                DataTable dtCategorysItems = dsCategoryItems.Tables[0];
+                return dtCategorysItems;
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in BindCategoryItems", "");
+                return null;
+            }
+        }
+
+        private DataTable LoadDetailsMPHL(DataTable dt, int intLevel, string strFilter)
+        {
+            DataTable dtDetails = new DataTable();
+            try
+            {
+                dtDetails = dt.Clone();
+                DataRow[] drDetails = null;
+                DataTable dtAppliedLvls = dt.Copy();
+                drDetails = dt.Select("mLevel=" + intLevel + " and " + strFilter + ">0 and ISDISCAPP=" + true);
+                foreach (DataRow dr in drDetails)
+                { dtDetails.ImportRow(dr); }
+                return dtDetails;
+            }
+            catch (Exception ex)
+            {
+                return dtDetails;
+            }
+        }
+
+        public DataSet FetchAllBillDetailsAdv(int Type, string Filter, int intUserID, int intWorkStnId, int intError)
+        {
+            try
+            {
+                objFOClient = new FrontOfficeServiceContractClient();
+                return objFOClient.FetchAllBillDetailsAdv(Type, Filter, intUserID, intWorkStnId, intError);
+            }
+
+            finally
+            {
+                objFOClient.Close();
+            }
+        }
+
+        public double RoundCorrect(double d, int decimals)
+        {
+            try
+            {
+                double multiplier = Math.Pow(10, decimals);
+
+                if (d < 0)
+                    multiplier *= -1;
+
+                return Math.Floor((d * multiplier) + 0.5) / multiplier;
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in RoundCorrect", "");
+                return 0;
+            }
+        }
+
+        public DataSet FetchfromAdv(string strProcedureName, string strType, string strFilter, int intUserID, int intWorkstationID, int? intFeatureID, int? intFunctionID, string strCallContext)
+        {
+            ContractMgmtServiceContractClient objContractMgmtServiceContractClient = new ContractMgmtServiceContractClient();
+            DataSet dsFetchfromAdv = new DataSet();
+            try
+            {
+                dsFetchfromAdv = objContractMgmtServiceContractClient.FetchfromAdv(strProcedureName, strType, strFilter, intUserID, intWorkstationID, intFeatureID, intFunctionID, strCallContext);
+            }
+
+            finally
+            {
+                objContractMgmtServiceContractClient.Close();
+
+            }
+            return dsFetchfromAdv;
+        }
+
+        private DataTable LoadDetails(DataTable dt, int intLevel, string strFilter)
+        {
+            DataTable dtDetails = new DataTable();
+            try
+            {
+                dtDetails = dt.Clone();
+                DataRow[] drDetails = null;
+                drDetails = dt.Select("mLevel=" + intLevel + " and " + strFilter + ">0");
+
+                foreach (DataRow dr in drDetails)
+                { dtDetails.ImportRow(dr); }
+                return dtDetails;
+            }
+            catch (Exception ex)
+            {
+
+                return dtDetails;
+            }
+        }
+
+        private void SetDiscLevelAppliedMPHL(DataTable dtSelectedItem, string strFilterCond)
+        {
+            DataRow[] drow = dtSelectedItem.Select("Mlevel=5 and " + strFilterCond);
+            for (int i = 0; i < drow.Length; i++)
+            {
+                drow[i]["ISDISCAPP"] = true;
+            }
+            dtSelectedItem.AcceptChanges();
+        }
+
+        private DataTable CreateDtSummary()
+        {
+            DataTable DtBillSummary = new DataTable();
+            try
+            {
+                DtBillSummary.Columns.Add("Description", typeof(string));
+                DtBillSummary.Columns.Add("Amount", typeof(string));
+
+                DataRow drSumryRow = DtBillSummary.NewRow();
+                drSumryRow["Description"] = "Bill Amount";
+                DtBillSummary.Rows.Add(drSumryRow);
+                drSumryRow = DtBillSummary.NewRow();
+                drSumryRow["Description"] = "Payer Amount";
+                DtBillSummary.Rows.Add(drSumryRow);
+
+                drSumryRow = DtBillSummary.NewRow();
+                drSumryRow["Description"] = "Discount Amount";
+                DtBillSummary.Rows.Add(drSumryRow);
+                drSumryRow = DtBillSummary.NewRow();
+                drSumryRow["Description"] = "VAT";
+                DtBillSummary.Rows.Add(drSumryRow);
+                drSumryRow = DtBillSummary.NewRow();
+
+                drSumryRow["Description"] = "Deposit Amount";
+                DtBillSummary.Rows.Add(drSumryRow);
+                drSumryRow = DtBillSummary.NewRow();
+                drSumryRow["Description"] = "Refund Amount";
+                DtBillSummary.Rows.Add(drSumryRow);
+
+                drSumryRow = DtBillSummary.NewRow();
+                drSumryRow["Description"] = "Receipt Amount";
+                DtBillSummary.Rows.Add(drSumryRow);
+                drSumryRow = DtBillSummary.NewRow();
+                drSumryRow["Description"] = "Balance Amount";
+                DtBillSummary.Rows.Add(drSumryRow);
+
+                drSumryRow = DtBillSummary.NewRow();
+                drSumryRow["Description"] = "Collectable";
+                DtBillSummary.Rows.Add(drSumryRow);
+                return DtBillSummary;
+            }
+            catch (Exception ex)
+            {
+                //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in CreateDtSummary", "");
+                return null;
+            }
+        }
+
+        public decimal FetchMaxCollectable(DateTime dtFromDate, DateTime dtToDate, int intPatientID, int intGradeID, int intCompanyid, int intSpecialisationid, int PatentLOAID, string strTbl, int intUserid, int intworkstationid, int intError, int intFeatureid, int intFunctionid, string strCallcontext)
+        {
+            try
+            {
+                objFOClient = new FrontOfficeServiceContractClient();
+                return objFOClient.FetchMaxCollectable(dtFromDate, dtToDate, intPatientID, intGradeID, intCompanyid, intSpecialisationid, PatentLOAID, strTbl, intUserid, intworkstationid, intError, intFeatureid, intFunctionid, strCallcontext);
+            }
+
+            finally
+            {
+                objFOClient.Close();
             }
         }
 
