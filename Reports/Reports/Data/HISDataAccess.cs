@@ -46,13 +46,13 @@ namespace HISDataAccess
                 switch (DataBaseID)
                 {
                     case 1:
-                        this.connString = ConfigurationManager.ConnectionStrings["DBConnectionStringMasters"].ConnectionString;
+                        this.connString = System.Configuration.ConfigurationManager.AppSettings["DBConnectionStringMasters"].ToString();
                         break;
                     case 2:
-                        this.connString = ConfigurationManager.ConnectionStrings["DBConnectionStringTrans"].ConnectionString;
+                        this.connString = System.Configuration.ConfigurationManager.AppSettings["DBConnectionStringTrans"].ToString();
                         break;
                     case 3:
-                        this.connString = ConfigurationManager.ConnectionStrings["DBConnectionStringReports"].ConnectionString;
+                        this.connString = System.Configuration.ConfigurationManager.AppSettings["DBConnectionStringReports"].ToString();
                         break;
                     default:
                         throw new Exception("Database ID Error");
