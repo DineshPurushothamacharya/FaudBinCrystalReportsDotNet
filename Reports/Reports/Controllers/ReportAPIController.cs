@@ -1277,18 +1277,19 @@ namespace Reports.Controllers
 
         [HttpGet]
         [Route("api/reportapi/payment")]
-        public string Payment(String Test)
+        //https://localhost:44351/api/reportapi/payment?HospitalID=1&RegCode=PFBS.0000363921&ScheduleId=5891
+        public PatientBiillInfoList Payment(String HospitalID, string RegCode, string ScheduleId)
         {
             PaymentsClass objPayment = new PaymentsClass();
 
             PatientBillList objRequest = new PatientBillList();
-            objRequest.HospitalId = 1;
-            objRequest.RegCode = "PFBS.0000363921";
-            objRequest.ScheduleID = "5891";
+            objRequest.HospitalId = int.Parse(HospitalID); // 1;
+            objRequest.RegCode = RegCode; // "PFBS.0000363921";
+            objRequest.ScheduleID = ScheduleId; // "5891";
 
-            objPayment.GettingPatientList(objRequest);
+            var objPatientBillInfoList = objPayment.GettingPatientList(objRequest);
 
-            return string.Empty;
+            return objPatientBillInfoList;
         }
 
 
