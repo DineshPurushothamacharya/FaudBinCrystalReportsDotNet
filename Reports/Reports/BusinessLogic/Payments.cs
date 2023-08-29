@@ -1276,6 +1276,7 @@ namespace Reports.BusinessLogic
                                     objPatientList.Message = ex.Message;
                                 }
                             }
+                            objPatientList.BillSummary = new List<PatientBiillInfoListN>();
                             objPatientList.BillSummary.Add(objPatientListN);
                             if (objPatientList.BillSummary.Count > 0)
                             {
@@ -1519,7 +1520,7 @@ namespace Reports.BusinessLogic
             {
 
                 List<IDbDataParameter> objIDbDataParameters = new List<IDbDataParameter>();
-                objIDbDataParameters.Add(CreateParam(objDataHelper, "@Type", HISConfigValues.ToString(), DbType.String, ParameterDirection.Input));
+                objIDbDataParameters.Add(CreateParam(objDataHelper, "@Type", DBNull.Value, DbType.String, ParameterDirection.Input));
                 objIDbDataParameters.Add(CreateParam(objDataHelper, "@Hospitalid", PatientBillList.HospitalId, DbType.Int32, ParameterDirection.Input));
 
                 dsSpecConfig = objDataHelper.RunSPReturnDS("Pr_HISConfiguration_MAPI", objIDbDataParameters.ToArray());
@@ -3549,7 +3550,7 @@ namespace Reports.BusinessLogic
                             IPIDUHID = "0";
                             PType = "1";
                         }
-                        drRow["SessionId"] = System.Web.HttpContext.Current.Session.SessionID;
+                        drRow["SessionId"] = "123123123"; // System.Web.HttpContext.Current.Session.SessionID;
                         SessionID = drRow["SessionId"].ToString();
                         drRow["IsDefaultLOA"] = hdnIsDefaultLOA == "false" ? false : true;
                         if (!string.IsNullOrEmpty(hdnDocSpecialiseId))
@@ -5284,11 +5285,15 @@ namespace Reports.BusinessLogic
             {
                 List<IDbDataParameter> objIDbDataParameters = new List<IDbDataParameter>();
                 objIDbDataParameters.Add(CreateParam(objDataHelper, "@sessionid", SessionID, DbType.String, ParameterDirection.Input));
-                objDataHelper.RunSP("Pr_DeleteTempBillDetails", objIDbDataParameters.ToArray());
+                objDataHelper.RunSP("Pr_DeleteTempBillDetails_MAPI", objIDbDataParameters.ToArray());
                 if (intTransaction >= 0)
                     intTransaction = 1;
                 else
                     intTransaction = 0;
+            }
+            catch (Exception ex)
+            { 
+                
             }
             finally
             {
@@ -8706,7 +8711,10 @@ namespace Reports.BusinessLogic
 
                 return objFacadeClient.CalucalteOPBill(dsBillDetails, InputWorkStationId);
             }
-
+            catch (Exception ex)
+            {
+                return null;
+            }
             finally
             {
                 objFacadeClient.Close();
