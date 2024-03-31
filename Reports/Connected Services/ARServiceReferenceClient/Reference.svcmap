@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="137417df-f311-40db-9ffc-a52eb80c0d68" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/Wipro.NxG.AR/ARServiceReference.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ARServiceReference.xsd" MetadataType="Schema" ID="e26ca207-e89f-49e0-85c2-97e364ddd263" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.AR/ARServiceReference.svc?xsd=xsd4" />
+    <MetadataFile FileName="ARServiceReference1.xsd" MetadataType="Schema" ID="8fe998a9-1a79-4992-8940-280eee077a78" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.AR/ARServiceReference.svc?xsd=xsd5" />
+    <MetadataFile FileName="ARServiceReference2.xsd" MetadataType="Schema" ID="cad615a3-7d15-4b52-b29a-1043f2266336" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.AR/ARServiceReference.svc?xsd=xsd0" />
+    <MetadataFile FileName="ARService.wsdl" MetadataType="Wsdl" ID="158198a3-1f51-4111-8aa8-5daab0ac36b9" SourceId="1" SourceUrl="http://localhost/Wipro.NxG.AR/ARServiceReference.svc?wsdl" />
+    <MetadataFile FileName="ARServiceReference3.xsd" MetadataType="Schema" ID="3d82727b-df79-401a-9b91-829478c13fe7" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.AR/ARServiceReference.svc?xsd=xsd1" />
+    <MetadataFile FileName="ARServiceReference4.xsd" MetadataType="Schema" ID="06c9c79c-4a30-4f87-99fa-bca974ccdcc2" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.AR/ARServiceReference.svc?xsd=xsd2" />
+    <MetadataFile FileName="ARServiceReference5.xsd" MetadataType="Schema" ID="9fce2b71-e43c-4178-9b2b-bb1ff478e6ba" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.AR/ARServiceReference.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="87b3f683-cc41-47b6-a0de-b5c8cdf4888b" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/Wipro.NxG.ContractMgmt/ContractMgmtServiceReference.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ContractMgmtServiceReference.xsd" MetadataType="Schema" ID="ee1d0eb7-ea8d-47cd-9043-14c490f922d0" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.ContractMgmt/ContractMgmtServiceReference.svc?xsd=xsd4" />
+    <MetadataFile FileName="ContractMgmtServiceReference1.xsd" MetadataType="Schema" ID="2773600c-44f2-4273-9514-0650a97d39da" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.ContractMgmt/ContractMgmtServiceReference.svc?xsd=xsd1" />
+    <MetadataFile FileName="ContractMgmtService.wsdl" MetadataType="Wsdl" ID="b7fa8bd9-cae7-4796-9cb5-59ac0c67cde2" SourceId="1" SourceUrl="http://localhost/Wipro.NxG.ContractMgmt/ContractMgmtServiceReference.svc?wsdl" />
+    <MetadataFile FileName="ContractMgmtServiceReference2.xsd" MetadataType="Schema" ID="707d2de4-d7a7-4ede-bf7a-5544498996ef" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.ContractMgmt/ContractMgmtServiceReference.svc?xsd=xsd0" />
+    <MetadataFile FileName="ContractMgmtServiceReference3.xsd" MetadataType="Schema" ID="1ed9d494-707e-4824-86af-deb7cc0b2ce0" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.ContractMgmt/ContractMgmtServiceReference.svc?xsd=xsd3" />
+    <MetadataFile FileName="ContractMgmtServiceReference4.xsd" MetadataType="Schema" ID="c0b893f1-1c63-4d61-a274-01a4e1788aeb" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.ContractMgmt/ContractMgmtServiceReference.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

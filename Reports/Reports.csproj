@@ -1,0 +1,426 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A66F0CDA-52D7-4D87-B973-2580D06EBCB5}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Reports</RootNamespace>
+    <AssemblyName>Reports</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44351</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Design">
+      <HintPath>..\..\ConsoleApp3\ConsoleApp3\bin\Debug\CrystalDecisions.CrystalReports.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportAppServer.CommLayer, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalReports.ReportAppServer.CommLayer.13.0.4001\lib\net40\CrystalDecisions.ReportAppServer.CommLayer.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.CommonObjectModel, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalReports.ReportAppServer.CommonObjectModel.13.0.4001\lib\net40\CrystalDecisions.ReportAppServer.CommonObjectModel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.Controllers, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalReports.ReportAppServer.Controllers.13.0.4001\lib\net40\CrystalDecisions.ReportAppServer.Controllers.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.CubeDefModel, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalReports.ReportAppServer.CubeDefModel.13.0.4001\lib\net40\CrystalDecisions.ReportAppServer.CubeDefModel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.DataDefModel, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalReports.ReportAppServer.DataDefModel.13.0.4001\lib\net40\CrystalDecisions.ReportAppServer.DataDefModel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.ReportDefModel, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalReports.ReportAppServer.ReportDefModel.13.0.4001\lib\net40\CrystalDecisions.ReportAppServer.ReportDefModel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalReports.Shared.13.0.4001\lib\net40\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Reflection.Context" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\AdminServiceClient\Admin.wsdl" />
+    <None Include="Connected Services\AdminServiceClient\AdminServiceRef.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AdminServiceClient\AdminServiceRef1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AdminServiceClient\AdminServiceRef2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\ARService.wsdl" />
+    <None Include="Connected Services\ARServiceReferenceClient\ARServiceReference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\ARServiceReference1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\ARServiceReference2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\ARServiceReference3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\ARServiceReference4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\ARServiceReference5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingCalculationServiceClient\BillingCalculationService.wsdl" />
+    <None Include="Connected Services\BillingCalculationServiceClient\BillingCalculationServiceReference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingCalculationServiceClient\BillingCalculationServiceReference1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingCalculationServiceClient\BillingCalculationServiceReference2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingCalculationServiceClient\BillingCalculationServiceReference3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingCalculationServiceClient\BillingCalculationServiceReference4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingFacadeServiceClient\BillingFacadeService.wsdl" />
+    <None Include="Connected Services\BillingFacadeServiceClient\BillingFacadeServiceReference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingFacadeServiceClient\BillingFacadeServiceReference1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BillingFacadeServiceClient\BillingFacadeServiceReference2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\BillingFacadeServiceClient\Reports.BillingFacadeServiceClient.CalucalteOPBillNewResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\CommonSearchServiceClient\CommonSearchService.wsdl" />
+    <None Include="Connected Services\CommonSearchServiceClient\CommonSearchService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommonSearchServiceClient\CommonSearchService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommonSearchServiceClient\CommonSearchService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommonSearchServiceClient\CommonSearchService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommonSearchServiceClient\CommonSearchService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ContractMgmtServiceClient\ContractMgmtService.wsdl" />
+    <None Include="Connected Services\ContractMgmtServiceClient\ContractMgmtServiceReference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ContractMgmtServiceClient\ContractMgmtServiceReference1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ContractMgmtServiceClient\ContractMgmtServiceReference2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ContractMgmtServiceClient\ContractMgmtServiceReference3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ContractMgmtServiceClient\ContractMgmtServiceReference4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrontOfficeServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\FrontOfficeServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\FrontOfficeServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\AdminServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\AdminServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\AdminServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\ARServiceReferenceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\ARServiceReferenceClient\configuration.svcinfo" />
+    <None Include="Connected Services\ARServiceReferenceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\BillingCalculationServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\BillingCalculationServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\BillingCalculationServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\BillingFacadeServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\BillingFacadeServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\BillingFacadeServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\CommonSearchServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\CommonSearchServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\CommonSearchServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\ContractMgmtServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\ContractMgmtServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\ContractMgmtServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\IPBillingServiceClient\configuration91.svcinfo" />
+    <None Include="Connected Services\IPBillingServiceClient\configuration.svcinfo" />
+    <None Include="Connected Services\IPBillingServiceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BusinessLogic\PatientBillPayment.cs" />
+    <Compile Include="BusinessLogic\PaymentProcess.cs" />
+    <Compile Include="BusinessLogic\Payments.cs" />
+    <Compile Include="Common\Utilities.cs" />
+    <Compile Include="Connected Services\AdminServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\ARServiceReferenceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\BillingCalculationServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\BillingFacadeServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\CommonSearchServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\ContractMgmtServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\FrontOfficeServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\IPBillingServiceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\PatientBillPaymentController.cs" />
+    <Compile Include="Controllers\PaymentAPIController.cs" />
+    <Compile Include="Controllers\PaymentInitiatedController.cs" />
+    <Compile Include="Controllers\PaymentProcessController.cs" />
+    <Compile Include="Controllers\ReportAPIController.cs" />
+    <Compile Include="Data\CustomeException.cs" />
+    <Compile Include="Data\ExceptionManager.cs" />
+    <Compile Include="Data\HISDataAccess.cs" />
+    <Compile Include="Data\HISResource.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeService.wsdl" />
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeServiceReference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeServiceReference1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeServiceReference2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeServiceReference3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeServiceReference4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FrontOfficeServiceClient\FrontOfficeServiceReference5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\FrontOfficeServiceClient\Reports.FrontOfficeServiceClient.SetBillDetailsNewResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\IPBillingServiceClient\IPBillingService.wsdl" />
+    <None Include="Connected Services\IPBillingServiceClient\IPBillingServiceReference.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\IPBillingServiceClient\IPBillingServiceReference1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\IPBillingServiceClient\IPBillingServiceReference2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\IPBillingServiceClient\Reports.IPBillingServiceClient.ApplyAgreementRuleResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\IPBillingServiceClient\Reports.IPBillingServiceClient.ModifyPatientAdmitDateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Compile Include="Data\CodeBasedException.cs" />
+    <None Include="packages.config" />
+    <Content Include="Properties\DataSources\System.Data.DataSet.datasource" />
+    <Content Include="Properties\DataSources\System.Data.DataTable.datasource" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\AdminServiceClient\" />
+    <WCFMetadataStorage Include="Connected Services\ARServiceReferenceClient\" />
+    <WCFMetadataStorage Include="Connected Services\BillingCalculationServiceClient\" />
+    <WCFMetadataStorage Include="Connected Services\BillingFacadeServiceClient\" />
+    <WCFMetadataStorage Include="Connected Services\CommonSearchServiceClient\" />
+    <WCFMetadataStorage Include="Connected Services\ContractMgmtServiceClient\" />
+    <WCFMetadataStorage Include="Connected Services\FrontOfficeServiceClient\" />
+    <WCFMetadataStorage Include="Connected Services\IPBillingServiceClient\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>57216</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44351/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="23afb438-7b92-4724-9128-bd56093af2d4" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/Wipro.NxG.Common/CommonSearchService.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CommonSearchService.xsd" MetadataType="Schema" ID="8ae29934-a902-443e-af24-3be29c1d91b7" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.Common/CommonSearchService.svc?xsd=xsd1" />
+    <MetadataFile FileName="CommonSearchService1.xsd" MetadataType="Schema" ID="49b2f8bf-7183-40a6-a41f-9f552626a24f" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.Common/CommonSearchService.svc?xsd=xsd0" />
+    <MetadataFile FileName="CommonSearchService2.xsd" MetadataType="Schema" ID="464c065b-85e7-4728-9dc2-45403cf882cd" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.Common/CommonSearchService.svc?xsd=xsd3" />
+    <MetadataFile FileName="CommonSearchService3.xsd" MetadataType="Schema" ID="bfcd8ffe-85c3-493e-a413-ce086e669402" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.Common/CommonSearchService.svc?xsd=xsd2" />
+    <MetadataFile FileName="CommonSearchService.wsdl" MetadataType="Wsdl" ID="f81eb86d-0fbb-4af7-ba65-e28c60f0d23d" SourceId="1" SourceUrl="http://localhost/Wipro.NxG.Common/CommonSearchService.svc?wsdl" />
+    <MetadataFile FileName="CommonSearchService4.xsd" MetadataType="Schema" ID="b84abee1-96a9-4e40-9198-a64607bf74d5" SourceId="1" SourceUrl="http://agphsrv-his06.pfbsh.com.sa/Wipro.NxG.Common/CommonSearchService.svc?xsd=xsd4" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
