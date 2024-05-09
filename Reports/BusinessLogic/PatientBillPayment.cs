@@ -195,6 +195,8 @@ namespace Reports.BusinessLogic
         #endregion
         //Sangamesh
         PatientBiillInfoList objPatientList = new PatientBiillInfoList();
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         internal enum Database
         {
             Master = 1,
@@ -708,8 +710,8 @@ namespace Reports.BusinessLogic
                     dtDocOrders = dtDtDoc.Clone();
                     if (ConfigurationSettings.AppSettings["OPUnBilledPrescLimitinDays"] != "null")
                     {
-                        DataTable dtblooddetails = dtBankDetails.Copy();
-                        dtBankDetails.Clear();
+                       // DataTable dtblooddetails = dtBankDetails.Copy();
+                        // dtBankDetails.Clear();
                         int days = Convert.ToInt32(ConfigurationSettings.AppSettings["OPUnBilledPrescLimitinDays"]);
                         DateTime dtD = DateTime.Today.AddDays(-days);
                         foreach (DataRow dr in dtDtDoc.Select("Status=0 OR UnbilledItems > 0", ""))
@@ -724,11 +726,17 @@ namespace Reports.BusinessLogic
                                     dtDocOrders.ImportRow(dr);
                             }
                         }
-                        foreach (DataRow dr in dtblooddetails.Select())
+                        if (dtBankDetails != null)
                         {
-                            DateTime date = Convert.ToDateTime(dr["VisitDate"]);
-                            if (date > dtD)
-                                dtBankDetails.ImportRow(dr);
+                            DataTable dtblooddetails = dtBankDetails.Copy();
+                            dtBankDetails.Clear();
+
+                            foreach (DataRow dr in dtblooddetails.Select())
+                            {
+                                DateTime date = Convert.ToDateTime(dr["VisitDate"]);
+                                if (date > dtD)
+                                    dtBankDetails.ImportRow(dr);
+                            }
                         }
                     }
                     else
@@ -1287,6 +1295,8 @@ namespace Reports.BusinessLogic
                                             objPatientList.Code = (int)ProcessStatus.Fail;
                                             objPatientList.Status = ProcessStatus.Fail.ToString();
                                             objPatientList.Message = ex.Message;
+                                            objPatientList.Message2L = "Error while Iterating the bill summary";
+
                                         }
                                     }
                                     int Trans = DeleteTempBill(SessionID);
@@ -1302,7 +1312,9 @@ namespace Reports.BusinessLogic
 
                             #endregion
 
+                            Console.WriteLine("started saving the final bill");
                             StrFinalBillNo = SaveFinalBill();
+                            Console.WriteLine("Completed saving the final bill");
                             if (!string.IsNullOrEmpty(StrFinalBillNo))
                             {
 
@@ -1350,9 +1362,11 @@ namespace Reports.BusinessLogic
                                     }
                                     catch (Exception ex)
                                     {
+                                        Console.WriteLine("exception while saving/processing the final bill");
                                         objPatientList.Code = (int)ProcessStatus.Fail;
                                         objPatientList.Status = ProcessStatus.Fail.ToString();
                                         objPatientList.Message = ex.Message;
+                                        objPatientList.Message2L = "exception while saving/processing the final bill";
                                     }
                                 }
                                 objPatientList.BillSummary.Add(objPatientListN);
@@ -1378,6 +1392,7 @@ namespace Reports.BusinessLogic
                             }
                             else
                             {
+                                Console.WriteLine("StrBillNo is Null or Emptry");
                                 objPatientList.Code = (int)ProcessStatus.Fail;
                                 objPatientList.Status = ProcessStatus.Fail.ToString();
                                 //objPatientList.Message = Resources.English.ResourceManager.GetString("FAILGBILL");
@@ -5128,7 +5143,7 @@ namespace Reports.BusinessLogic
                                     else
                                         inttempipid = Convert.ToInt32(hdnIPID);
                                     //DataTable dtapprovals = FetchMISProcedureDetails("Pr_FetchApprovalRequestAdv", "EntryID", "Customerid=" + strCompanyID + " and GradeID=" + strGradeID + " and specialiseid=" + hdnDocSpecialiseId + " and visitid=" + inttempipid, "order by EntryID", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0].Copy();
-                                    DataTable dtapprovals = FetchApprovalRequestEntryIDMAPI(Convert.ToInt32(inttempipid), Convert.ToInt32(strCompanyID), Convert.ToInt32(strGradeID), Convert.ToInt32(hdnDocSpecialiseId), Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+                                    DataTable dtapprovals = FetchApprovalRequestEntryIDMAPI(Convert.ToInt32(hdnPatientID), Convert.ToInt32(inttempipid), Convert.ToInt32(strCompanyID), Convert.ToInt32(strGradeID), Convert.ToInt32(hdnDocSpecialiseId), Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
                                     string reqNumber = string.Empty;
 
                                     if (dtapprovals.Rows.Count > 0)
@@ -13390,13 +13405,14 @@ namespace Reports.BusinessLogic
             return dsFetchApprovalRequest;
         }
 
-        public DataSet FetchApprovalRequestEntryIDMAPI(int Visitid, int Customerid, int GradeID, int Specialiseid, int intWorkstationId, PatientBillList PatientBillList)
+        public DataSet FetchApprovalRequestEntryIDMAPI(int Patientid, int Visitid, int Customerid, int GradeID, int Specialiseid, int intWorkstationId, PatientBillList PatientBillList)
         {
             DataHelper objDataHelper = new DataHelper(DEFAULTWORKSTATION, (int)Database.Master);
             DataSet dsSpecConfig = new DataSet("ChkPatient");
             try
             {
                 List<IDbDataParameter> objIDbDataParameters = new List<IDbDataParameter>();
+                objIDbDataParameters.Add(CreateParam(objDataHelper, "@PatientId", Patientid.ToString(), DbType.Int32, ParameterDirection.Input));
                 objIDbDataParameters.Add(CreateParam(objDataHelper, "@Visitid", Visitid.ToString(), DbType.Int32, ParameterDirection.Input));
                 objIDbDataParameters.Add(CreateParam(objDataHelper, "@Customerid", Customerid, DbType.Int32, ParameterDirection.Input));
                 objIDbDataParameters.Add(CreateParam(objDataHelper, "@GradeID", GradeID, DbType.Int32, ParameterDirection.Input));

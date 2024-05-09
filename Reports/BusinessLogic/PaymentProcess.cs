@@ -37,6 +37,8 @@ namespace Reports.BusinessLogic
         static String strDefaultUserId = ConfigurationManager.AppSettings["DefaultUserId"].ToString();
         static String strDefaultHospitalId = ConfigurationManager.AppSettings["DefaultHospitalId"].ToString();
         string json = "";
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         internal enum Database
         {
             Master = 1,
@@ -55,6 +57,7 @@ namespace Reports.BusinessLogic
             FetchingPaymentIntitatedList objPayIntitatedList = new FetchingPaymentIntitatedList();
             try
             {
+                log.Debug("Begin FetchingPaymentIntitatedList");
                 FetchingPaymentIntitatedListN obj = new FetchingPaymentIntitatedListN();
                 obj.SCHEDULEID = PaymentIntitatedList.ScheduleID;
                 obj.PaymentStatus = "Pending";
@@ -95,6 +98,7 @@ namespace Reports.BusinessLogic
             }
             catch (Exception ex)
             {
+                log.Debug("Exception while FetchingPaymentIntitatedList", ex);
                 objPayIntitatedList.Code =(int) ProcessStatus.Fail;
                 objPayIntitatedList.Status = ProcessStatus.Fail.ToString();
                 objPayIntitatedList.Message = ex.Message;
@@ -113,6 +117,7 @@ namespace Reports.BusinessLogic
             var paymentString = PaymentProcessList.PaymentString;
 
             strDefaultHospitalId = PaymentProcessList.HospitalId.ToString();
+            log.Debug("Begin FetchingPaymentProcessList");
 
             FetchingPaymentProcessList objPayProcessList = new FetchingPaymentProcessList();
             string CardNo = string.Empty;

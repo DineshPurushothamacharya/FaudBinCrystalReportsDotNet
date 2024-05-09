@@ -20,6 +20,9 @@ namespace Reports.Controllers
         public object ExportFormatType { get; private set; }
         public object CrFormatTypeOptions { get; private set; }
 
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
         // GET api/<controller>
         public IEnumerable<string> Get()
         {
@@ -1287,8 +1290,9 @@ namespace Reports.Controllers
             objRequest.RegCode = RegCode; // "PFBS.0000363921";
             objRequest.ScheduleID = ScheduleId; // "5891";
 
+            log.Info("Begin Payment from controller");
             var objPatientBillInfoList = objPayment.GettingPatientList(objRequest);
-
+            log.Info("End Payment from controller");
             return objPatientBillInfoList;
         }
 

@@ -16,14 +16,17 @@ namespace Reports.Controllers
 {
     public class PaymentProcessController : ApiController
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
         [Route("api/paymentprocess/PaymentProcessList")]
         public FetchingPaymentProcessList PaymentProcessList(PaymentProcessList objPaymentProcessList)
         {
+            log.Info("Begin: PaymentProcessList");
             PaymentProcess objPaymentProcess = new PaymentProcess();
             var result = objPaymentProcess.FetchingPaymentProcessList(objPaymentProcessList);
+            log.Info("End: PaymentProcessList");
 
-
-            
             return result;
         }
 

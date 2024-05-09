@@ -196,6 +196,7 @@ namespace Reports.BusinessLogic
         #endregion
         //Sangamesh
         PatientBiillInfoList objPatientList = new PatientBiillInfoList();
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         internal enum Database
         {
             Master = 1,
@@ -233,7 +234,7 @@ namespace Reports.BusinessLogic
 
         public PatientBiillInfoList GettingPatientList(PatientBillList PatientBillList)
         {
-
+            log.Debug("Begin GettingPatientList");
             DataSet dsSearchResults = null;
             int PatId = 0; string strSearch = string.Empty;
             string strFilterCond = string.Empty; string PatientID = string.Empty; int intprev = 0; bool blnCreditpinBlock = false;
