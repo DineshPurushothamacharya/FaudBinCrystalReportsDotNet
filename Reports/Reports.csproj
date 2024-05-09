@@ -257,6 +257,9 @@
     </None>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
