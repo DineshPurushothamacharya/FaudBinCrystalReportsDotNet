@@ -19,6 +19,8 @@ using System.Reflection;
 using System.Resources;
 using Reports.ARServiceReferenceClient;
 using System.Globalization;
+using log4net;
+using log4net.Config;
 
 namespace Reports.BusinessLogic
 {

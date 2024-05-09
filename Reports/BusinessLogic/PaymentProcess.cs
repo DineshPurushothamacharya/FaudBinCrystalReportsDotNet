@@ -26,6 +26,8 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Net.Http;
 using System.Threading.Tasks;
+using log4net;
+using log4net.Config;
 
 namespace Reports.BusinessLogic
 {

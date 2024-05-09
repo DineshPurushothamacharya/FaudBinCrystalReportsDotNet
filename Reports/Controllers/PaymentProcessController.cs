@@ -11,6 +11,8 @@ using System.Web.Http;
 using Reports.Common;
 using Reports.BusinessLogic;
 using static Reports.BusinessLogic.PaymentProcess;
+using log4net;
+using log4net.Config;
 
 namespace Reports.Controllers
 {

@@ -18,6 +18,8 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using log4net;
+using log4net.Config;
 
 namespace Reports.BusinessLogic
 {
