@@ -1428,7 +1428,7 @@ namespace Reports.BusinessLogic
             }
             catch (Exception ex)
             {
-
+                log.Error(ex);
             }
             return objPatientList;
         }
@@ -10257,7 +10257,7 @@ namespace Reports.BusinessLogic
                 DataTable dtconfig = HISCONFIG.Copy();
                 dtconfig.AcceptChanges();
                 DataRow[] drnat = dtconfig.Select("Parameter ='Host_Nationality'");
-                if (drnat[0]["Value"].ToString() == hdnNationalityId)// need to implement and assign value
+                if (drnat != null && drnat.Length > 0 && drnat[0]["Value"].ToString() == hdnNationalityId)// need to implement and assign value
                     blnIsSaud = true;
             }
             foreach (DataRow dr in dtBillContributions.Select())
