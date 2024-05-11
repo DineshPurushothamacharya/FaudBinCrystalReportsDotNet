@@ -709,8 +709,8 @@ namespace Reports.BusinessLogic
                     dtDocOrders = dtDtDoc.Clone();
                     if (ConfigurationSettings.AppSettings["OPUnBilledPrescLimitinDays"] != null)
                     {
-                        DataTable dtblooddetails = dtBankDetails.Copy();
-                        dtBankDetails.Clear();
+                        //DataTable dtblooddetails = dtBankDetails.Copy();
+                        //dtBankDetails.Clear();
                         int days = Convert.ToInt32(ConfigurationSettings.AppSettings["OPUnBilledPrescLimitinDays"]);
                         DateTime dtD = DateTime.Today.AddDays(-days);
                         foreach (DataRow dr in dtDtDoc.Select("Status=0 OR UnbilledItems > 0", ""))
@@ -725,11 +725,17 @@ namespace Reports.BusinessLogic
                                     dtDocOrders.ImportRow(dr);
                             }
                         }
-                        foreach (DataRow dr in dtblooddetails.Select())
+                        if (dtBankDetails != null)
                         {
-                            DateTime date = Convert.ToDateTime(dr["VisitDate"]);
-                            if (date > dtD)
-                                dtBankDetails.ImportRow(dr);
+                            DataTable dtblooddetails = dtBankDetails.Copy();
+                            dtBankDetails.Clear();
+
+                            foreach (DataRow dr in dtblooddetails.Select())
+                            {
+                                DateTime date = Convert.ToDateTime(dr["VisitDate"]);
+                                if (date > dtD)
+                                    dtBankDetails.ImportRow(dr);
+                            }
                         }
                     }
                     else
@@ -1290,6 +1296,7 @@ namespace Reports.BusinessLogic
                             }
                             else
                             {
+                                log.Debug("objPatientList.BillSummary.Count is equal to zero");
                                 objPatientList.Code = (int)ProcessStatus.Success;
                                 objPatientList.Status = ProcessStatus.Success.ToString();
                                 //objPatientList.Message = Resources.English.ResourceManager.GetString("NoRecordsFound");
@@ -1300,6 +1307,7 @@ namespace Reports.BusinessLogic
                         }
                         else
                         {
+                            log.Debug("BillSummary.Rows.Count is equal to zero");
                             objPatientList.Code = (int)ProcessStatus.Success;
                             objPatientList.Status = ProcessStatus.Success.ToString();
                             //objPatientList.Message = Resources.English.ResourceManager.GetString("NoRecordsFound");
@@ -1310,6 +1318,7 @@ namespace Reports.BusinessLogic
                     }
                     else
                     {
+                        log.Debug("BillSummary is null");
                         objPatientList.Code = (int)ProcessStatus.Success;
                         objPatientList.Status = ProcessStatus.Success.ToString();
                         //objPatientList.Message = Resources.English.ResourceManager.GetString("NoRecordsFound");
@@ -1326,8 +1335,8 @@ namespace Reports.BusinessLogic
                 //950
             }
             catch (Exception ex)
-            { 
-            
+            {
+                log.Error("Exception while payment", ex);
             }
             return objPatientList;
         }
@@ -3038,7 +3047,7 @@ namespace Reports.BusinessLogic
                                     else
                                         inttempipid = Convert.ToInt32(hdnIPID);
                                     //DataTable dtapprovals = FetchMISProcedureDetails("Pr_FetchApprovalRequestAdv", "EntryID", "Customerid=" + strCompanyID + " and GradeID=" + strGradeID + " and specialiseid=" + hdnDocSpecialiseId + " and visitid=" + inttempipid, "order by EntryID", Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0, false).Tables[0].Copy();
-                                    DataTable dtapprovals = FetchApprovalRequestEntryIDMAPI(Convert.ToInt32(inttempipid), Convert.ToInt32(strCompanyID), Convert.ToInt32(strGradeID), Convert.ToInt32(hdnDocSpecialiseId), Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
+                                    DataTable dtapprovals = FetchApprovalRequestEntryIDMAPI(Convert.ToInt32(hdnPatientID), Convert.ToInt32(inttempipid), Convert.ToInt32(strCompanyID), Convert.ToInt32(strGradeID), Convert.ToInt32(hdnDocSpecialiseId), Convert.ToInt32(strDefWorkstationId), PatientBillList).Tables[0];
                                     string reqNumber = string.Empty;
 
                                     if (dtapprovals.Rows.Count > 0)
@@ -5257,6 +5266,7 @@ namespace Reports.BusinessLogic
                     catch (Exception ex)
                     {
                         //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in imgbtnPayment_Click Event", "");
+                        log.Error("error while payment check", ex);
                     }
                     finally
                     {
@@ -5272,6 +5282,7 @@ namespace Reports.BusinessLogic
             catch (Exception ex)
             {
                 //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in imgbtnPayment_Click Event", "");
+                log.Error("error while payment check", ex);
             }
             finally
             {
@@ -8150,7 +8161,7 @@ namespace Reports.BusinessLogic
                 DataTable dtconfig = HISCONFIG.Copy();
                 dtconfig.AcceptChanges();
                 DataRow[] drnat = dtconfig.Select("Parameter ='Host_Nationality'");
-                if (drnat[0]["Value"].ToString() == hdnNationalityId)// need to implement and assign value
+                if (drnat != null && drnat.Length > 0 && drnat[0]["Value"].ToString() == hdnNationalityId)// need to implement and assign value
                     blnIsSaud = true;
             }
             foreach (DataRow dr in dtBillContributions.Select())
@@ -11300,13 +11311,14 @@ namespace Reports.BusinessLogic
             return dsFetchApprovalRequest;
         }
 
-        public DataSet FetchApprovalRequestEntryIDMAPI(int Visitid, int Customerid, int GradeID, int Specialiseid, int intWorkstationId, PatientBillList PatientBillList)
+        public DataSet FetchApprovalRequestEntryIDMAPI(int patientid, int Visitid, int Customerid, int GradeID, int Specialiseid, int intWorkstationId, PatientBillList PatientBillList)
         {
             DataHelper objDataHelper = new DataHelper(DEFAULTWORKSTATION, (int)Database.Master);
             DataSet dsSpecConfig = new DataSet("ChkPatient");
             try
             {
                 List<IDbDataParameter> objIDbDataParameters = new List<IDbDataParameter>();
+                objIDbDataParameters.Add(CreateParam(objDataHelper, "@PatientId", patientid.ToString(), DbType.Int32, ParameterDirection.Input));
                 objIDbDataParameters.Add(CreateParam(objDataHelper, "@Visitid", Visitid.ToString(), DbType.Int32, ParameterDirection.Input));
                 objIDbDataParameters.Add(CreateParam(objDataHelper, "@Customerid", Customerid, DbType.Int32, ParameterDirection.Input));
                 objIDbDataParameters.Add(CreateParam(objDataHelper, "@GradeID", GradeID, DbType.Int32, ParameterDirection.Input));
