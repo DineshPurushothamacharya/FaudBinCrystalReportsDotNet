@@ -1323,7 +1323,9 @@ namespace Reports.BusinessLogic
                                         }
                                     }
                                     int Trans = DeleteTempBill(SessionID);
+                                    objPatientList.BillSummary = new List<PatientBiillInfoListN>();
                                     objPatientList.BillSummary.Add(objPatientListN);
+                                   
                                     TotalBalanceAomuntDeposit = Convert.ToDecimal(TotalBalanceAomunt) - Convert.ToDecimal(hdnDepositAmount);
                                     objPatientList.Code = (int)ProcessStatus.Success;
                                     objPatientList.Status = ProcessStatus.Success.ToString();
@@ -1392,7 +1394,10 @@ namespace Reports.BusinessLogic
                                         objPatientList.Message2L = "exception while saving/processing the final bill";
                                     }
                                 }
+
+                                objPatientList.BillSummary = new List<PatientBiillInfoListN>();
                                 objPatientList.BillSummary.Add(objPatientListN);
+                                
                                 if (objPatientList.BillSummary.Count > 0)
                                 {
                                     objPatientList.Code = (int)ProcessStatus.Success;
