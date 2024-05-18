@@ -121,7 +121,7 @@ namespace Reports.BusinessLogic
         DataTable DtCompCRContribution = null;
         DataTable dtSummary = null;
         DataTable dtCRContribution = null; DataTable dtCashDiscounts = null; DataTable dtPackageItems = null;
-        DataTable dtCompanyCashContribution = null;
+        DataTable dtCompanyCashContribution = new DataTable();
         DataTable ViewStatedtCRContribution = null;
         DataTable ViewStatedtCompanyCashContribution = null;
         DataTable OPBAvailDisc = null;
@@ -189,7 +189,7 @@ namespace Reports.BusinessLogic
         int intEpisodeId = 0; string strDiscRemarks = "";
         string hdnAge, hdnGenderID, hdAgeUomid, hdnTitleID, hdnMarStatusID, hdnDOB, hdnPhno, hdnNationalID, hdnFamilyName, lblAddress, hdnMLC = string.Empty;
         string ClaimFormNo = string.Empty; decimal decCashGiven = 0; int bitXml = 0; int DiscountTypeID = 0;
-        string lblFirstName, lblMiddleName, lblLastName, hdnFirstName2L, hdnMiddleName2L, hdnLastName2L, hdnIsDirectPatient, hdnPOSTransactionNumber = string.Empty;
+        string lblFirstName, lblMiddleName, lblLastName, hdnFirstName2L = string.Empty, hdnMiddleName2L = string.Empty, hdnLastName2L = string.Empty, hdnIsDirectPatient, hdnPOSTransactionNumber = string.Empty;
         string AlreadySavedLetterID, ActualPatientAmount, txtpayer = string.Empty; decimal cash = 0;
         string hdnServicePatientNumber = string.Empty;
         DataTable POSTransatctionResult = null; decimal DepositAvailed = 0; StringBuilder strbuilderBillNo = new StringBuilder();
@@ -311,6 +311,7 @@ namespace Reports.BusinessLogic
                     }
                     if (intprev > 0)
                     {
+                        PatientOutstandingAmt = intprev;
                         objPatientList.Code = (int)ProcessStatus.Success;
                         objPatientList.Status = ProcessStatus.Success.ToString();
                         //objPatientList.Message = Resources.English.ResourceManager.GetString("PatientOutstandingAmount") + Convert.ToDecimal(intprev.ToString()) + "";
@@ -337,9 +338,31 @@ namespace Reports.BusinessLogic
                 if (DsPatientDetails.Tables[0].Rows.Count > 0)
                 {
                     hdnNationalityId = DsPatientDetails.Tables[0].Rows[0]["NationalityID"].ToString();
+                    hdnAge = DsPatientDetails.Tables[0].Rows[0]["Age"].ToString();
+                    hdnGenderID = DsPatientDetails.Tables[0].Rows[0]["GenderID"].ToString();
+                    hdAgeUomid = DsPatientDetails.Tables[0].Rows[0]["AgeUOMID"].ToString();
+                    hdnTitleID = DsPatientDetails.Tables[0].Rows[0]["TitleID"].ToString();
+                    hdnMarStatusID = DsPatientDetails.Tables[0].Rows[0]["MaritalStatusID"].ToString();
+                    hdnDOB = Convert.ToDateTime(DsPatientDetails.Tables[0].Rows[0]["DOB"]).ToString("dd-MMM-yyyy");
+                    hdnPhno = DsPatientDetails.Tables[0].Rows[0]["MobileNo"].ToString();
+                    hdnFamilyName = DsPatientDetails.Tables[0].Rows[0]["Familyname"].ToString();
+                    lblAddress = string.Empty;
+                    hdnMLC = "0";
 
+                    lblFirstName = DsPatientDetails.Tables[0].Rows[0]["FirstName"].ToString();
+                    lblMiddleName = DsPatientDetails.Tables[0].Rows[0]["MiddleName"].ToString();
+                    lblLastName = DsPatientDetails.Tables[0].Rows[0]["LastName"].ToString();
+                    hdnFirstName2L = DsPatientDetails.Tables[0].Rows[0]["FirstName2l"].ToString();
 
+                    hdnMiddleName2L = DsPatientDetails.Tables[0].Rows[0]["MiddleName2l"].ToString();
+                    hdnLastName2L = DsPatientDetails.Tables[0].Rows[0]["LastName2l"].ToString();
+                    txtpayer = DsPatientDetails.Tables[0].Rows[0]["CompanyName"].ToString();
 
+                    hdnIsDirectPatient = "0";
+                    hdnPOSTransactionNumber = string.Empty;
+
+                    dtPatientDetails = DsPatientDetails.Tables[0].Copy();
+                    dtPatientDetails.AcceptChanges();
                     if (DsPatientDetails.Tables[4].Rows.Count > 0)
                     {
                         if (DsPatientDetails.Tables[4].Columns.Contains("ActiveStatus") && DsPatientDetails.Tables[4].Columns.Contains("GradeBlocked"))
@@ -702,7 +725,7 @@ namespace Reports.BusinessLogic
                     return objPatientList;
                 }
 
-                if (dsScheduledOrders.Tables.Count > 1)
+                if (dsScheduledOrders.Tables.Count >= 1)
                     DtSchRef = dsScheduledOrders.Tables[1];
                 dsDtDoc = FetchOtherDocDetails(Convert.ToInt32(PatientID), intPatientType, Convert.ToInt32(strDefaultUserId), Convert.ToInt32(strDefWorkstationId), 0);
                 dtDtDoc = dsDtDoc.Tables[0].Copy();
@@ -712,7 +735,7 @@ namespace Reports.BusinessLogic
                     dtDocOrders = dtDtDoc.Clone();
                     if (ConfigurationSettings.AppSettings["OPUnBilledPrescLimitinDays"] != "null")
                     {
-                       // DataTable dtblooddetails = dtBankDetails.Copy();
+                        // DataTable dtblooddetails = dtBankDetails.Copy();
                         // dtBankDetails.Clear();
                         int days = Convert.ToInt32(ConfigurationSettings.AppSettings["OPUnBilledPrescLimitinDays"]);
                         DateTime dtD = DateTime.Today.AddDays(-days);
@@ -728,11 +751,10 @@ namespace Reports.BusinessLogic
                                     dtDocOrders.ImportRow(dr);
                             }
                         }
-                        if (dtBankDetails != null)
-                        {
+
+                        if (dtBankDetails != null) {
                             DataTable dtblooddetails = dtBankDetails.Copy();
                             dtBankDetails.Clear();
-
                             foreach (DataRow dr in dtblooddetails.Select())
                             {
                                 DateTime date = Convert.ToDateTime(dr["VisitDate"]);
@@ -1297,7 +1319,6 @@ namespace Reports.BusinessLogic
                                             objPatientList.Code = (int)ProcessStatus.Fail;
                                             objPatientList.Status = ProcessStatus.Fail.ToString();
                                             objPatientList.Message = ex.Message;
-                                            objPatientList.Message2L = "Error while Iterating the bill summary";
 
                                         }
                                     }
@@ -1429,8 +1450,30 @@ namespace Reports.BusinessLogic
             catch (Exception ex)
             {
                 log.Error(ex);
+ 				objPatientList.Code = (int) ProcessStatus.Fail;
+                objPatientList.Status = ProcessStatus.Fail.ToString();
+                objPatientList.Message = ex.Message;
             }
+            finally
+            {
+            }
+
             return objPatientList;
+        }
+
+        public DataSet GetPatientAdmissionStatus(string searchName, int min, int max, string filterCondition, int userID, int workStationID, int featureID, int functionID, string callcontext, string orderType)
+        {
+            DataSet dsSearchResults = null;
+            CommonSearchServiceContractClient searchService = new CommonSearchServiceContractClient();
+            try
+            {
+                dsSearchResults = searchService.GetSearchResultsPageWise(searchName, min, max, filterCondition, userID, workStationID, featureID, functionID, callcontext, orderType);
+            }
+            finally
+            {
+                searchService.Close();
+            }
+            return dsSearchResults;
         }
 
         private string SaveFinalBill()
@@ -1561,6 +1604,7 @@ namespace Reports.BusinessLogic
             catch (Exception ex)
             {
                 //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in btnSave_Click Event", "");
+                log.Error("exception while saving final bill", ex);
                 return StrFBLNO;
             }
         }
@@ -2072,7 +2116,7 @@ namespace Reports.BusinessLogic
                     else
                         intTitleid = 0;
 
-                    string Sessionid = System.Web.HttpContext.Current.Session.SessionID;
+                    string Sessionid = "123123123"; // System.Web.HttpContext.Current.Session.SessionID;
                     intHospitalid = Convert.ToInt32(strDefaultHospitalId);
                     intFacilityid = Convert.ToInt32(strDefWorkstationId);
                     intUserid = Convert.ToInt32(strDefaultUserId);
@@ -2098,9 +2142,12 @@ namespace Reports.BusinessLogic
                         strFamilyName = hdnFamilyName.ToString();
                     else strFamilyName = string.Empty;
 
-                    if (lblAddress != string.Empty)
+                    if (!string.IsNullOrEmpty(lblAddress))
+                    {
                         strAddr1 = lblAddress.ToString();
-                    strAddr2 = lblAddress.ToString();
+                        strAddr2 = lblAddress.ToString();
+                    }
+
                     if (!string.IsNullOrEmpty(hdnMLC))
                         intMLCtype = Convert.ToInt32(hdnMLC);
                     else intMLCtype = 0;
@@ -3387,6 +3434,7 @@ namespace Reports.BusinessLogic
                 }
                 catch (Exception ex)
                 {
+                    log.Error("exception while saving bill", ex);
                     //HIS.TOOLS.Logger.ErrorLog.LogToXMLFile = true;
                     DataTable dtSaveBillMeth = new DataTable("SaveBillMeth");
                     dtSaveBillMeth.Rows.Add("row"); dtSaveBillMeth.AcceptChanges();
@@ -3414,6 +3462,7 @@ namespace Reports.BusinessLogic
             }
             catch (Exception ex)
             {
+                log.Error("exception while saving bill", ex);
                 //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in SaveBill", "");
                 return string.Empty;
             }
@@ -3652,7 +3701,7 @@ namespace Reports.BusinessLogic
                 objIDbDataParameters.Add(CreateParam(objDataHelper, "@PatientID", intPatientID, DbType.Int64, ParameterDirection.Input));
                 objIDbDataParameters.Add(CreateParam(objDataHelper, "@HospitalId", intHospitalsId, DbType.Int32, ParameterDirection.Input));
                 objIDbDataParameters.Add(CreateParam(objDataHelper, "@NoOfDays", intNoOfDays, DbType.Int32, ParameterDirection.Input));
-
+                objIDbDataParameters.Add(CreateParam(objDataHelper, "@TBL", 0, DbType.String, ParameterDirection.Input));
                 ds = objDataHelper.RunSPReturnDS("Pr_FetchResourceCalanderPerf_mapi", objIDbDataParameters.ToArray());
 
             }
@@ -6424,15 +6473,15 @@ namespace Reports.BusinessLogic
                             DtCompCRContribution = DsOutPut.Tables["DtCompCRContribution"].Copy();
 
                         dtSummary = DsOutPut.Tables["BillSummary"];
-                        dtCompanyCashContribution = null;
+                        ViewStatedtCompanyCashContribution = null;
                         if (DsOutPut.Tables.Contains("CashBillContributions"))
                         {
-                            dtCompanyCashContribution = DsOutPut.Tables["CashBillContributions"];
+                            ViewStatedtCompanyCashContribution = DsOutPut.Tables["CashBillContributions"];
                             dtCompanyCashContribution = DsOutPut.Tables["CashBillContributions"].Copy();
                         }
                         if (DsOutPut.Tables.Contains("CreditBillContributions"))
                         {
-                            dtCRContribution = DsOutPut.Tables["CreditBillContributions"];
+                            ViewStatedtCRContribution = DsOutPut.Tables["CreditBillContributions"];
                             dtCompanyCashContribution = DsOutPut.Tables["CreditBillContributions"].Copy();
                         }
 
@@ -6504,8 +6553,9 @@ namespace Reports.BusinessLogic
 
                                 dtCompanyCashContribution = GetCashContributions(DtCompCSContribution.Copy(), Convert.ToInt32(BillType), DsOutPut.Tables["BillSummary"].Copy(), DtDiscountDetails, DtCashBillItems);
                                 dtCompanyCashContribution.AcceptChanges();
-                                dtCompanyCashContribution = dtCompanyCashContribution.Copy();
-                                dtCompanyCashContribution.AcceptChanges();
+                                ViewStatedtCompanyCashContribution = dtCompanyCashContribution.Copy();
+                                ViewStatedtCompanyCashContribution.AcceptChanges();
+
 
                                 #region Newly Added on 26-08-2011 for dual bill
                                 if (BillType == "2")
@@ -6549,10 +6599,14 @@ namespace Reports.BusinessLogic
                                 #region Fetching BillContribution DataTable                               
                                 dtCompanyCreditContribution = GetCreditContributions(DtCompCRContribution.Copy(), Convert.ToInt32(BillType), DsOutPut.Tables["BillSummary"].Copy(), DtDiscountDetails, DtCreditBillItems);
                                 dtCompanyCreditContribution.AcceptChanges();
+
+                                ViewStatedtCompanyCashContribution = dtCompanyCashContribution.Copy();
+                                ViewStatedtCompanyCashContribution.AcceptChanges();
+
                                 #region Newly Added on 26-08-2011 for dual bill
 
-                                dtCRContribution = dtCompanyCreditContribution.Copy();
-                                dtCRContribution.AcceptChanges();
+                                ViewStatedtCRContribution = dtCompanyCreditContribution.Copy();
+                                ViewStatedtCRContribution.AcceptChanges();
                                 if (!dtCompanyCreditContribution.Columns.Contains("BillTypeID"))
                                     dtCompanyCreditContribution.Columns.Add("BillTypeID", typeof(int));
                                 if (!dtCompanyCreditContribution.Columns.Contains("BillType"))
@@ -6926,8 +6980,8 @@ namespace Reports.BusinessLogic
                                 dtCompanyCreditContribution.AcceptChanges();
 
 
-                                dtCRContribution = dtCompanyCreditContribution.Copy();
-                                dtCRContribution.AcceptChanges();
+                                ViewStatedtCRContribution = dtCompanyCreditContribution.Copy();
+                                ViewStatedtCRContribution.AcceptChanges();
                                 if (!dtCompanyCreditContribution.Columns.Contains("BillTypeID"))
                                     dtCompanyCreditContribution.Columns.Add("BillTypeID", typeof(int));
                                 if (!dtCompanyCreditContribution.Columns.Contains("BillType"))
@@ -7364,6 +7418,7 @@ namespace Reports.BusinessLogic
                     catch (Exception ex)
                     {
                         //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in imgbtnPayment_Click Event", "");
+                        log.Error("error while payment check", ex);
                     }
                     finally
                     {
@@ -7379,6 +7434,7 @@ namespace Reports.BusinessLogic
             catch (Exception ex)
             {
                 //HIS.TOOLS.Logger.ErrorLog.ErrorRoutine(ex, MODULE_NAME, "Error in imgbtnPayment_Click Event", "");
+                log.Error("error while payment check", ex);
             }
             finally
             {
@@ -10565,6 +10621,9 @@ namespace Reports.BusinessLogic
 
         private void DisplayBillSummary(DataTable dtAvailDiscountDetails, decimal AvailDesposit)
         {
+            TotAmount = null;
+            dtSummaryTable = null;
+
             decimal intBillAmount = 0;
             decimal dcPayerAmount = 0;
             decimal dcDiscountAmount = 0;
@@ -10640,7 +10699,8 @@ namespace Reports.BusinessLogic
             BlanceAomunt = Convert.ToDecimal(Convert.ToDecimal(DtBillSummary.Rows[7]["Amount"]).ToString(hdnsCurrencyFormat));
             BAmount = BlanceAomunt;
             txtamount = BlanceAomunt.ToString(hdnsCurrencyFormat);
-
+            TotalBalwithoutDeposit = Convert.ToDecimal(Convert.ToDecimal(DtBillSummary.Rows[0]["Amount"]) - (Convert.ToDecimal(DtBillSummary.Rows[1]["Amount"]) + Convert.ToDecimal(DtBillSummary.Rows[2]["Amount"]) + Convert.ToDecimal(DtBillSummary.Rows[5]["Amount"]) + Convert.ToDecimal(DtBillSummary.Rows[6]["Amount"]))).ToString(hdnsCurrencyFormat);
+            
             #region Rounding Amounts
 
             decimal decamount = Convert.ToDecimal(DtBillSummary.Rows[0]["Amount"]);
