@@ -157,6 +157,10 @@ namespace Reports.BusinessLogic
                     CardType = data["source"]["type"].ToString();
                     var details = JObject.Parse(PaymentInfoText);
                     Amount = Convert.ToDecimal(details["amount"].ToString());
+                    if (Amount > 0)
+                    {
+                        Amount = Amount / 100;
+                    }
 
                     #endregion
 
